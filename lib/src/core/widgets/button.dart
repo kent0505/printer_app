@@ -1,0 +1,29 @@
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+
+class Button extends StatelessWidget {
+  const Button({
+    super.key,
+    this.onPressed,
+    this.padding = EdgeInsets.zero,
+    this.minSize = kMinInteractiveDimensionCupertino,
+    required this.child,
+  });
+
+  final VoidCallback? onPressed;
+  final EdgeInsetsGeometry padding;
+  final double minSize;
+  final Widget child;
+
+  @override
+  Widget build(BuildContext context) {
+    return CupertinoButton(
+      onPressed: onPressed,
+      padding: padding,
+      minSize: minSize,
+      focusColor: Colors.redAccent,
+      sizeStyle: CupertinoButtonSize.small,
+      child: child,
+    );
+  }
+}

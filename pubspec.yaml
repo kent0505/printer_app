@@ -1,0 +1,50 @@
+name: printer_app
+description: "A new Flutter project."
+publish_to: 'none'
+version: 1.0.0+1
+environment:
+  sdk: ^3.6.0 # выше 3.6 некрасиво форматирует код
+dependencies:
+  flutter:
+    sdk: flutter
+  cupertino_icons: ^1.0.8
+  ###
+  # state
+  flutter_bloc: ^9.1.1
+  # others
+  shared_preferences: ^2.5.3
+  flutter_svg: ^2.1.0
+  intl: ^0.19.0
+  go_router: ^15.1.2
+  # internet check
+  connectivity_plus: ^6.1.4
+  # display images
+  photo_manager: ^3.6.4 
+  # display web page
+  webview_flutter: ^4.11.0
+  # pick_files
+  file_picker: ^10.1.9
+  ###
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^5.0.0
+flutter:
+  uses-material-design: true
+  assets:
+    - assets/
+    - assets/fonts/
+    - assets/images/
+  fonts:
+    - family: inter400
+      fonts:
+        - asset: assets/fonts/Inter-Regular.ttf
+    - family: inter500
+      fonts:
+        - asset: assets/fonts/Inter-Medium.ttf
+    - family: inter600
+      fonts:
+        - asset: assets/fonts/Inter-SemiBold.ttf
+    - family: inter700
+      fonts:
+        - asset: assets/fonts/Inter-Bold.ttf

@@ -1,0 +1,162 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+
+import '../../../core/config/constants.dart';
+import '../../../core/config/my_colors.dart';
+import '../../../core/widgets/svg_widget.dart';
+import '../../../core/widgets/button.dart';
+import '../bloc/home_bloc.dart';
+
+class NavBar extends StatelessWidget {
+  const NavBar({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    final colors = Theme.of(context).extension<MyColors>()!;
+
+    return Align(
+      alignment: Alignment.bottomCenter,
+      child: Container(
+        height: 70,
+        padding: const EdgeInsets.symmetric(horizontal: 16),
+        decoration: BoxDecoration(
+          color: colors.bgOne,
+          border: Border(
+            top: BorderSide(
+              width: 1,
+              color: colors.tertiaryThree,
+            ),
+          ),
+        ),
+        child: BlocBuilder<HomeBloc, HomeState>(
+          builder: (context, state) {
+            return Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                _Scanner(
+                  title: 'Scanner',
+                  asset: Assets.scanner,
+                  onPressed: () {},
+                ),
+                _NavBarButton(
+                  index: 1,
+                  title: 'Printer',
+                  asset: Assets.printer,
+                  active: state is HomePrinter,
+                ),
+                _NavBarButton(
+                  index: 2,
+                  title: 'Settings',
+                  asset: Assets.settings,
+                  active: state is HomeSettings,
+                ),
+              ],
+            );
+          },
+        ),
+      ),
+    );
+  }
+}
+
+class _NavBarButton extends StatelessWidget {
+  const _NavBarButton({
+    required this.index,
+    required this.asset,
+    required this.title,
+    required this.active,
+  });
+
+  final String title;
+  final String asset;
+  final int index;
+  final bool active;
+
+  @override
+  Widget build(BuildContext context) {
+    final colors = Theme.of(context).extension<MyColors>()!;
+
+    return Expanded(
+      child: Container(
+        height: 54,
+        decoration: active
+            ? BoxDecoration(
+                color: colors.tertiaryTwo,
+                borderRadius: BorderRadius.circular(12),
+              )
+            : null,
+        child: Button(
+          onPressed: active
+              ? null
+              : () {
+                  context.read<HomeBloc>().add(ChangePage(index: index));
+                },
+          child: Column(
+            children: [
+              const SizedBox(height: 4),
+              SvgWidget(
+                asset,
+                height: 24,
+                color: active ? colors.accentPrimary : colors.tertiaryOne,
+              ),
+              const SizedBox(height: 4),
+              Text(
+                title,
+                style: TextStyle(
+                  color: active ? colors.accentPrimary : colors.tertiaryOne,
+                  fontSize: 12,
+                  fontFamily: AppFonts.inter500,
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class _Scanner extends StatelessWidget {
+  const _Scanner({
+    required this.title,
+    required this.asset,
+    required this.onPressed,
+  });
+
+  final String title;
+  final String asset;
+  final VoidCallback onPressed;
+
+  @override
+  Widget build(BuildContext context) {
+    final colors = Theme.of(context).extension<MyColors>()!;
+
+    return Expanded(
+      child: SizedBox(
+        height: 54,
+        child: Button(
+          onPressed: onPressed,
+          child: Column(
+            children: [
+              const SizedBox(height: 4),
+              SvgWidget(
+                asset,
+                height: 24,
+                color: colors.tertiaryOne,
+              ),
+              const SizedBox(height: 4),
+              Text(
+                title,
+                style: TextStyle(
+                  color: colors.tertiaryOne,
+                  fontSize: 12,
+                  fontFamily: AppFonts.inter500,
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
