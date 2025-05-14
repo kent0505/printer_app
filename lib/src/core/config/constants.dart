@@ -13,11 +13,18 @@ abstract final class Assets {
   static const share = 'assets/share.svg';
   static const left = 'assets/left.svg';
   static const right = 'assets/right.svg';
+  static const up = 'assets/up.svg';
   static const down = 'assets/down.svg';
+  static const close = 'assets/close.svg';
   static const empty = 'assets/empty.svg';
   static const lock = 'assets/lock.svg';
   static const photo = 'assets/photo.svg';
   static const splash = 'assets/splash.svg';
+  static const connect1 = 'assets/connect1.svg';
+  static const connect2 = 'assets/connect2.svg';
+  static const connect3 = 'assets/connect3.svg';
+  static const connect4 = 'assets/connect4.svg';
+  static const connect5 = 'assets/connect5.svg';
 
   static const allFeatures = 'assets/images/all_features.png';
   static const documents = 'assets/images/documents.png';

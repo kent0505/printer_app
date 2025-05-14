@@ -20,6 +20,8 @@ final class MyColors extends ThemeExtension<MyColors> {
     required this.tertiaryThree,
     required this.tertiaryFour,
     required this.system,
+    required this.gradient1,
+    required this.gradient2,
   });
 
   final Color bgOne;
@@ -38,6 +40,8 @@ final class MyColors extends ThemeExtension<MyColors> {
   final Color tertiaryThree;
   final Color tertiaryFour;
   final Color system;
+  final Color gradient1;
+  final Color gradient2;
 
   factory MyColors.light() {
     return MyColors(
@@ -57,6 +61,8 @@ final class MyColors extends ThemeExtension<MyColors> {
       tertiaryThree: const Color(0xffeaeff4),
       tertiaryFour: const Color(0xffffffff),
       system: const Color(0xffff3b30),
+      gradient1: const Color(0xff097AF1),
+      gradient2: const Color(0xff003C7C),
     );
   }
 
@@ -78,6 +84,8 @@ final class MyColors extends ThemeExtension<MyColors> {
     Color? tertiaryThree,
     Color? tertiaryFour,
     Color? system,
+    Color? gradient1,
+    Color? gradient2,
   }) {
     return MyColors(
       bgOne: bgOne ?? this.bgOne,
@@ -96,6 +104,8 @@ final class MyColors extends ThemeExtension<MyColors> {
       tertiaryThree: tertiaryThree ?? this.tertiaryThree,
       tertiaryFour: tertiaryFour ?? this.tertiaryFour,
       system: system ?? this.system,
+      gradient1: gradient1 ?? this.gradient1,
+      gradient2: gradient2 ?? this.gradient2,
     );
   }
 
@@ -119,6 +129,8 @@ final class MyColors extends ThemeExtension<MyColors> {
       tertiaryThree: Color.lerp(tertiaryThree, other.tertiaryThree, t)!,
       tertiaryFour: Color.lerp(tertiaryFour, other.tertiaryFour, t)!,
       system: Color.lerp(system, other.system, t)!,
+      gradient1: Color.lerp(gradient1, other.gradient1, t)!,
+      gradient2: Color.lerp(gradient2, other.gradient2, t)!,
     );
   }
 }

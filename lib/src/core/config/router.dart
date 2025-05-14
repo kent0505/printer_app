@@ -6,8 +6,9 @@ import '../../features/printer/screens/email_screen.dart';
 import '../../features/printer/screens/photo_screen.dart';
 import '../../features/printer/screens/printables_screen.dart';
 import '../../features/printer/screens/web_pages_screen.dart';
-import '../../features/splash/screens/onboard_screen.dart';
-import '../../features/splash/screens/splash_screen.dart';
+import '../../features/onboard/screens/onboard_screen.dart';
+import '../../features/onboard/screens/splash_screen.dart';
+import '../../features/scanner/screens/scanner_screen.dart';
 
 final routerConfig = GoRouter(
   initialLocation: '/',
@@ -45,6 +46,12 @@ final routerConfig = GoRouter(
     GoRoute(
       path: PrintablesScreen.routePath,
       builder: (context, state) => const PrintablesScreen(),
+    ),
+
+    // SCANNER
+    GoRoute(
+      path: ScannerScreen.routePath,
+      builder: (context, state) => const ScannerScreen(),
     ),
   ],
 );

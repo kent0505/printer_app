@@ -75,7 +75,7 @@ class PrinterCard extends StatelessWidget {
             ),
           ),
           if (locked)
-            Positioned(
+            const Positioned(
               top: 8,
               right: 8,
               child: SvgWidget(Assets.lock),

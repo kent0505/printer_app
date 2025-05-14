@@ -7,7 +7,7 @@ import 'src/core/config/router.dart';
 import 'src/core/config/themes.dart';
 import 'src/features/internet/bloc/internet_bloc.dart';
 import 'src/features/home/bloc/home_bloc.dart';
-import 'src/features/splash/data/onboard_repository.dart';
+import 'src/features/onboard/data/onboard_repository.dart';
 
 // final colors = Theme.of(context).extension<MyColors>()!;
 Future<void> main() async {
@@ -18,6 +18,7 @@ Future<void> main() async {
   ]);
 
   final prefs = await SharedPreferences.getInstance();
+  // await prefs.clear();
 
   runApp(
     MultiRepositoryProvider(
