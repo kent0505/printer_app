@@ -34,6 +34,11 @@ abstract final class Assets {
   static const onboard1 = 'assets/images/onboard1.png';
   static const onboard2 = 'assets/images/onboard2.png';
   static const onboard3 = 'assets/images/onboard3.png';
+  static const phone1 = 'assets/images/phone1.png';
+  static const phone2 = 'assets/images/phone2.png';
+  static const phone3 = 'assets/images/phone3.png';
+  static const phone4 = 'assets/images/phone4.png';
+  static const phone5 = 'assets/images/phone5.png';
 }
 
 abstract final class Keys {

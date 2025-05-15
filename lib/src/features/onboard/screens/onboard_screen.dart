@@ -47,6 +47,12 @@ class _OnboardScreenState extends State<OnboardScreen> {
   }
 
   @override
+  void dispose() {
+    pageController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     final colors = Theme.of(context).extension<MyColors>()!;
 
