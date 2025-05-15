@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 import '../../../core/config/constants.dart';
 import '../../../core/config/my_colors.dart';
 import '../../../core/widgets/button.dart';
 import '../../../core/widgets/image_widget.dart';
 import '../../../core/widgets/svg_widget.dart';
+import 'printer_wifi_screen.dart';
 
 class SettingsScreen extends StatelessWidget {
   const SettingsScreen({super.key});
@@ -31,7 +33,9 @@ class SettingsScreen extends StatelessWidget {
         ),
         _SettingsTile(
           title: 'How to connect a printer to WIFI?',
-          onPressed: () {},
+          onPressed: () {
+            context.push(PrinterWifiScreen.routePath);
+          },
         ),
         _SettingsTile(
           title: 'Manage Subscription',
@@ -205,7 +209,7 @@ class _SettingsTile extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.only(bottom: 4),
       child: Button(
-        onPressed: () {},
+        onPressed: onPressed,
         minSize: 48,
         child: Row(
           children: [

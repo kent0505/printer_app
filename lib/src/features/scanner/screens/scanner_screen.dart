@@ -18,9 +18,7 @@ class ScannerScreen extends StatefulWidget {
 class _ScannerScreenState extends State<ScannerScreen> {
   final controller = MobileScannerController();
 
-  void onStart() {
-    controller.start();
-  }
+  void onStart() {}
 
   @override
   Widget build(BuildContext context) {
@@ -28,38 +26,44 @@ class _ScannerScreenState extends State<ScannerScreen> {
 
     return Scaffold(
       body: Stack(
+        fit: StackFit.expand,
         children: [
-          MobileScanner(),
-          Container(
-            height: 110,
-            alignment: Alignment.bottomCenter,
-            padding: const EdgeInsets.symmetric(
-              horizontal: 16,
-              vertical: 8,
-            ),
-            color: colors.layerFive,
-            child: Row(
-              children: [
-                Button(
-                  onPressed: () {
-                    context.pop();
-                  },
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 12,
-                      vertical: 8,
-                    ),
-                    child: Text(
-                      'Cancel',
-                      style: TextStyle(
-                        color: colors.bgOne,
-                        fontSize: 16,
-                        fontFamily: AppFonts.inter600,
+          const MobileScanner(),
+          Positioned(
+            top: 0,
+            left: 0,
+            right: 0,
+            child: Container(
+              height: 110,
+              alignment: Alignment.bottomCenter,
+              padding: const EdgeInsets.symmetric(
+                horizontal: 16,
+                vertical: 8,
+              ),
+              color: colors.layerFive,
+              child: Row(
+                children: [
+                  Button(
+                    onPressed: () {
+                      context.pop();
+                    },
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 12,
+                        vertical: 8,
+                      ),
+                      child: Text(
+                        'Cancel',
+                        style: TextStyle(
+                          color: colors.bgOne,
+                          fontSize: 16,
+                          fontFamily: AppFonts.inter600,
+                        ),
                       ),
                     ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
           Positioned(

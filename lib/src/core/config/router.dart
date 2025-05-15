@@ -9,6 +9,7 @@ import '../../features/printer/screens/web_pages_screen.dart';
 import '../../features/onboard/screens/onboard_screen.dart';
 import '../../features/onboard/screens/splash_screen.dart';
 import '../../features/scanner/screens/scanner_screen.dart';
+import '../../features/settings/screens/printer_wifi_screen.dart';
 
 final routerConfig = GoRouter(
   initialLocation: '/',
@@ -52,6 +53,12 @@ final routerConfig = GoRouter(
     GoRoute(
       path: ScannerScreen.routePath,
       builder: (context, state) => const ScannerScreen(),
+    ),
+
+    // SETTINGS
+    GoRoute(
+      path: PrinterWifiScreen.routePath,
+      builder: (context, state) => const PrinterWifiScreen(),
     ),
   ],
 );

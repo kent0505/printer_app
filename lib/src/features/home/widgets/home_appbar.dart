@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 
 import '../../../core/config/constants.dart';
 import '../../../core/config/my_colors.dart';
 import '../../../core/widgets/button.dart';
 import '../../../core/widgets/svg_widget.dart';
+import '../../settings/screens/printer_wifi_screen.dart';
 import '../bloc/home_bloc.dart';
 
 class HomeAppbar extends StatelessWidget implements PreferredSizeWidget {
@@ -40,7 +42,9 @@ class HomeAppbar extends StatelessWidget implements PreferredSizeWidget {
       actions: [
         state is HomePrinter
             ? Button(
-                onPressed: () {},
+                onPressed: () {
+                  context.push(PrinterWifiScreen.routePath);
+                },
                 minSize: 52,
                 child: const SvgWidget(
                   Assets.info,

@@ -39,6 +39,7 @@ abstract final class Assets {
   static const phone3 = 'assets/images/phone3.png';
   static const phone4 = 'assets/images/phone4.png';
   static const phone5 = 'assets/images/phone5.png';
+  static const router = 'assets/images/router.png';
 }
 
 abstract final class Keys {
