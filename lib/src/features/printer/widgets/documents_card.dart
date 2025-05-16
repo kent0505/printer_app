@@ -1,5 +1,8 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:file_picker/file_picker.dart';
 
 import '../../../core/config/constants.dart';
 import '../../../core/config/my_colors.dart';
@@ -22,8 +25,19 @@ class DocumentsCard extends StatelessWidget {
         borderRadius: BorderRadius.circular(20),
       ),
       child: Button(
-        onPressed: () {
-          context.push(DocumentsScreen.routePath);
+        onPressed: () async {
+          final result = await FilePicker.platform.pickFiles(
+            type: FileType.custom,
+            allowedExtensions: ['pdf', 'txt'],
+          );
+          if (result != null && result.files.single.path != null) {
+            if (context.mounted) {
+              context.push(
+                DocumentsScreen.routePath,
+                extra: File(result.files.single.path!),
+              );
+            }
+          }
         },
         child: Column(
           children: [

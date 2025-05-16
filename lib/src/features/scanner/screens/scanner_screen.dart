@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:mobile_scanner/mobile_scanner.dart';
 
 import '../../../core/config/constants.dart';
 import '../../../core/config/my_colors.dart';
@@ -16,8 +15,6 @@ class ScannerScreen extends StatefulWidget {
 }
 
 class _ScannerScreenState extends State<ScannerScreen> {
-  final controller = MobileScannerController();
-
   void onStart() {}
 
   @override
@@ -28,7 +25,9 @@ class _ScannerScreenState extends State<ScannerScreen> {
       body: Stack(
         fit: StackFit.expand,
         children: [
-          const MobileScanner(),
+          // MobileScanner(
+          //   controller: controller,
+          // ),
           Positioned(
             top: 0,
             left: 0,

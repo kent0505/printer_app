@@ -8,6 +8,7 @@ import 'src/core/config/themes.dart';
 import 'src/features/internet/bloc/internet_bloc.dart';
 import 'src/features/home/bloc/home_bloc.dart';
 import 'src/features/onboard/data/onboard_repository.dart';
+import 'src/features/printer/bloc/printer_bloc.dart';
 
 // final colors = Theme.of(context).extension<MyColors>()!;
 Future<void> main() async {
@@ -33,6 +34,7 @@ Future<void> main() async {
             create: (context) => InternetBloc()..add(CheckInternet()),
           ),
           BlocProvider(create: (context) => HomeBloc()),
+          BlocProvider(create: (context) => PrinterBloc()),
         ],
         child: const MyApp(),
       ),
