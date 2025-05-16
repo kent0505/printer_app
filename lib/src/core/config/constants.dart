@@ -40,9 +40,26 @@ abstract final class Assets {
   static const phone4 = 'assets/images/phone4.png';
   static const phone5 = 'assets/images/phone5.png';
   static const router = 'assets/images/router.png';
+
+  static const card1 = 'assets/printables/card1.svg';
+  static const card2 = 'assets/printables/card2.svg';
+  static const card3 = 'assets/printables/card3.svg';
+  static const card4 = 'assets/printables/card4.svg';
+  static const card5 = 'assets/printables/card5.svg';
+
+  static const calendar1 = 'assets/printables/calendar1.svg';
+  static const calendar2 = 'assets/printables/calendar2.svg';
+  static const calendar3 = 'assets/printables/calendar3.svg';
+  static const calendar4 = 'assets/printables/calendar4.svg';
+  static const calendar5 = 'assets/printables/calendar5.svg';
+
+  static const planner1 = 'assets/printables/planner1.svg';
+  static const planner2 = 'assets/printables/planner2.svg';
+  static const planner3 = 'assets/printables/planner3.svg';
+  static const planner4 = 'assets/printables/planner4.svg';
+  static const planner5 = 'assets/printables/planner5.svg';
 }
 
 abstract final class Keys {
   static const onboard = 'onboard';
-  static const locale = 'locale';
 }

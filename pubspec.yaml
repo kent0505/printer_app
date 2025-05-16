@@ -32,6 +32,7 @@ flutter:
     - assets/
     - assets/fonts/
     - assets/images/
+    - assets/printables/
   fonts:
     - family: inter400
       fonts:

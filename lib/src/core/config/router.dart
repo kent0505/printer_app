@@ -3,15 +3,17 @@ import 'dart:io';
 import 'package:go_router/go_router.dart';
 
 import '../../features/home/screens/home_screen.dart';
+import '../../features/printables/screens/printables_detail_screen.dart';
 import '../../features/printer/screens/documents_screen.dart';
 import '../../features/printer/screens/email_screen.dart';
 import '../../features/printer/screens/photo_screen.dart';
-import '../../features/printer/screens/printables_screen.dart';
+import '../../features/printables/screens/printables_screen.dart';
 import '../../features/printer/screens/web_pages_screen.dart';
 import '../../features/onboard/screens/onboard_screen.dart';
 import '../../features/onboard/screens/splash_screen.dart';
 import '../../features/scanner/screens/scanner_screen.dart';
 import '../../features/settings/screens/printer_wifi_screen.dart';
+import '../models/printable.dart';
 
 final routerConfig = GoRouter(
   initialLocation: '/',
@@ -48,9 +50,17 @@ final routerConfig = GoRouter(
       path: WebPagesScreen.routePath,
       builder: (context, state) => const WebPagesScreen(),
     ),
+
+    // PRINTABLES
     GoRoute(
       path: PrintablesScreen.routePath,
       builder: (context, state) => const PrintablesScreen(),
+    ),
+    GoRoute(
+      path: PrintableDetailScreen.routePath,
+      builder: (context, state) => PrintableDetailScreen(
+        printable: state.extra as Printable,
+      ),
     ),
 
     // SCANNER
