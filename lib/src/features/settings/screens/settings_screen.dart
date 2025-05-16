@@ -103,7 +103,7 @@ class _Unlock extends StatelessWidget {
                 Padding(
                   padding: const EdgeInsets.only(
                     left: 16,
-                    right: 134,
+                    right: 100,
                   ),
                   child: Text(
                     'Print web pages, calendars, photos, and more — effortlessly',

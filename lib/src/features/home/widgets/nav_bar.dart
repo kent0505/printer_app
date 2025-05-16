@@ -19,8 +19,11 @@ class NavBar extends StatelessWidget {
     return Align(
       alignment: Alignment.bottomCenter,
       child: Container(
-        height: 70,
-        padding: const EdgeInsets.symmetric(horizontal: 16),
+        height: 62 + MediaQuery.of(context).viewPadding.bottom,
+        padding: const EdgeInsets.symmetric(
+          horizontal: 16,
+        ).copyWith(top: 4),
+        alignment: Alignment.topCenter,
         decoration: BoxDecoration(
           color: colors.bgOne,
           border: Border(
