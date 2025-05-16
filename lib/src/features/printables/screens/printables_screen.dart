@@ -54,6 +54,7 @@ class PrintablesScreen extends StatelessWidget {
               Assets.planner5,
             ],
           ),
+          SizedBox(height: 16),
         ],
       ),
     );
@@ -74,6 +75,7 @@ class _Card extends StatelessWidget {
     final colors = Theme.of(context).extension<MyColors>()!;
 
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Padding(
           padding: const EdgeInsets.only(
@@ -91,37 +93,35 @@ class _Card extends StatelessWidget {
         ),
         SizedBox(
           height: 188,
-          child: ListView(
+          child: ListView.builder(
             padding: const EdgeInsets.only(
               left: 16,
               right: 8,
             ),
             scrollDirection: Axis.horizontal,
-            children: List.generate(
-              assets.length,
-              (index) {
-                final asset = assets[index];
+            itemCount: assets.length,
+            itemBuilder: (context, index) {
+              final asset = assets[index];
 
-                return Padding(
-                  padding: const EdgeInsets.only(right: 8),
-                  child: Button(
-                    onPressed: () {
-                      context.push(
-                        PrintableDetailScreen.routePath,
-                        extra: Printable(
-                          title: title,
-                          asset: asset,
-                        ),
-                      );
-                    },
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(8),
-                      child: SvgWidget(asset),
-                    ),
+              return Padding(
+                padding: const EdgeInsets.only(right: 8),
+                child: Button(
+                  onPressed: () {
+                    context.push(
+                      PrintableDetailScreen.routePath,
+                      extra: Printable(
+                        title: title,
+                        asset: asset,
+                      ),
+                    );
+                  },
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(8),
+                    child: SvgWidget(asset),
                   ),
-                );
-              },
-            ),
+                ),
+              );
+            },
           ),
         ),
       ],
