@@ -27,25 +27,31 @@ class DocumentsScreen extends StatefulWidget {
 class _DocumentsScreenState extends State<DocumentsScreen> {
   final pdf = pw.Document();
 
-  void createPdf() {
-    pdf.addPage(
-      pw.Page(
-        build: (pw.Context context) {
-          return pw.Center(
-            child: pw.Text('Hello, Flutter Printer!'),
-          );
-        },
-      ),
-    );
+  void createPdf() async {
+    try {
+      final imageBytes = await widget.file.readAsBytes();
+
+      pdf.addPage(
+        pw.Page(
+          pageFormat: PdfPageFormat.a4,
+          margin: pw.EdgeInsets.zero,
+          build: (pw.Context context) {
+            return pw.Center(
+              child: pw.Image(
+                pw.MemoryImage(imageBytes),
+              ),
+            );
+          },
+        ),
+      );
+    } catch (e) {
+      logger(e);
+    }
   }
 
   void printDocument() {
     Printing.layoutPdf(
       format: PdfPageFormat.a4,
-      // usePrinterSettings: false,
-      // dynamicLayout: false,
-      // forceCustomPrintPaper: false,
-      name: 'Aaa',
       onLayout: (PdfPageFormat format) async => pdf.save(),
     );
   }
@@ -58,7 +64,6 @@ class _DocumentsScreenState extends State<DocumentsScreen> {
 
   @override
   Widget build(BuildContext context) {
-    logger(widget.file.path);
     final colors = Theme.of(context).extension<MyColors>()!;
 
     return Scaffold(
@@ -69,15 +74,15 @@ class _DocumentsScreenState extends State<DocumentsScreen> {
           child: const SvgWidget(Assets.printer),
         ),
       ),
-      body: Center(
-        child: PdfPreview(
-          useActions: false,
-          pdfPreviewPageDecoration: BoxDecoration(color: colors.bgOne),
-          scrollViewDecoration: BoxDecoration(color: colors.bgTwo),
-          padding: const EdgeInsets.all(16),
-          loadingWidget: const LoadingWidget(),
-          build: (format) => pdf.save(),
-        ),
+      body: PdfPreview(
+        useActions: false,
+        pdfPreviewPageDecoration: BoxDecoration(color: colors.bgOne),
+        scrollViewDecoration: BoxDecoration(color: colors.bgTwo),
+        loadingWidget: const LoadingWidget(),
+        build: (format) {
+          // if (widget.file.readAsString()) return widget.file.readAsBytes();
+          return pdf.save();
+        },
       ),
     );
   }

@@ -32,16 +32,16 @@ class PrintableDetailScreen extends StatefulWidget {
 class _PrintableDetailScreenState extends State<PrintableDetailScreen> {
   final screenshotController = ScreenshotController();
 
-  String path = '';
   final pdf = pw.Document();
+  File file = File('');
 
   void convert() async {
     try {
       await Future.delayed(
-        Duration.zero,
+        const Duration(milliseconds: 500),
         () async {
           Uint8List? imageBytes = await screenshotController.capture();
-          if (imageBytes == null) throw Exception();
+          if (imageBytes == null) throw Exception('imageBytes is null');
 
           final dir = await getTemporaryDirectory();
 
@@ -60,9 +60,8 @@ class _PrintableDetailScreenState extends State<PrintableDetailScreen> {
             ),
           );
 
-          final file = File('${dir.path}/${widget.printable.title}.jpg');
+          file = File('${dir.path}/${widget.printable.title}.png');
           await file.writeAsBytes(imageBytes);
-          path = file.path;
         },
       );
     } catch (e) {
@@ -72,9 +71,9 @@ class _PrintableDetailScreenState extends State<PrintableDetailScreen> {
 
   void onShare() async {
     try {
-      if (path.isNotEmpty) {
+      if (file.path.isNotEmpty) {
         await Share.shareXFiles(
-          [XFile(path)],
+          [XFile(file.path)],
           sharePositionOrigin: Rect.fromLTWH(100, 100, 200, 200),
         );
       } else {
@@ -114,27 +113,31 @@ class _PrintableDetailScreenState extends State<PrintableDetailScreen> {
           ),
         ),
       ),
-      body: Column(
-        children: [
-          Expanded(
-            child: Padding(
-              padding: const EdgeInsets.all(16),
-              child: Screenshot(
-                controller: screenshotController,
-                child: SvgWidget(
-                  widget.printable.asset,
-                  height: double.infinity,
+      body: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 16),
+        child: Column(
+          children: [
+            Expanded(
+              child: FittedBox(
+                child: Screenshot(
+                  controller: screenshotController,
+                  child: SvgWidget(
+                    widget.printable.asset,
+                    height: 180 * 3,
+                    width: 134 * 3,
+                    fit: BoxFit.cover,
+                  ),
                 ),
               ),
             ),
-          ),
-          MainButton(
-            title: 'Print',
-            horizontal: 16,
-            onPressed: onPrint,
-          ),
-          const SizedBox(height: 44),
-        ],
+            MainButton(
+              title: 'Print',
+              asset: Assets.printer,
+              onPressed: onPrint,
+            ),
+            const SizedBox(height: 44),
+          ],
+        ),
       ),
     );
   }

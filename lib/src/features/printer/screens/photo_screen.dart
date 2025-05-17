@@ -9,6 +9,7 @@ import '../../../core/utils.dart';
 import '../../../core/widgets/appbar.dart';
 import '../../../core/widgets/button.dart';
 import '../../../core/widgets/image_widget.dart';
+import '../../../core/widgets/main_button.dart';
 import '../../../core/widgets/svg_widget.dart';
 
 class PhotoScreen extends StatefulWidget {
@@ -40,7 +41,7 @@ class _PhotoScreenState extends State<PhotoScreen> {
         );
         final List<AssetEntity> media = await albums[0].getAssetListPaged(
           page: 0,
-          size: 100,
+          size: 10000,
         );
 
         setState(() {
@@ -83,38 +84,60 @@ class _PhotoScreenState extends State<PhotoScreen> {
           ),
         ),
       ),
-      body: GridView.builder(
-        padding: const EdgeInsets.all(16),
-        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 3,
-          crossAxisSpacing: 4,
-          mainAxisSpacing: 4,
-          childAspectRatio: 1,
-        ),
-        itemCount: _images.length,
-        itemBuilder: (context, index) {
-          return FutureBuilder<Uint8List?>(
-            future: _images[index].thumbnailDataWithSize(
-              const ThumbnailSize(200, 200),
-            ),
-            builder: (context, snapshot) {
-              if (snapshot.connectionState == ConnectionState.done &&
-                  snapshot.hasData &&
-                  snapshot.data != null) {
-                return ClipRRect(
-                  borderRadius: BorderRadius.circular(2),
-                  child: Image.memory(
-                    snapshot.data!,
-                    fit: BoxFit.cover,
-                    frameBuilder: frameBuilder,
+      body: Column(
+        children: [
+          Expanded(
+            child: GridView.builder(
+              padding: const EdgeInsets.all(16),
+              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 3,
+                crossAxisSpacing: 4,
+                mainAxisSpacing: 4,
+                childAspectRatio: 1,
+              ),
+              itemCount: _images.length,
+              itemBuilder: (context, index) {
+                return FutureBuilder<Uint8List?>(
+                  future: _images[index].thumbnailDataWithSize(
+                    const ThumbnailSize(200, 200),
                   ),
-                );
-              }
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.done &&
+                        snapshot.hasData &&
+                        snapshot.data != null) {
+                      return ClipRRect(
+                        borderRadius: BorderRadius.circular(2),
+                        child: Image.memory(
+                          snapshot.data!,
+                          fit: BoxFit.cover,
+                          frameBuilder: frameBuilder,
+                        ),
+                      );
+                    }
 
-              return const SizedBox();
-            },
-          );
-        },
+                    return const SizedBox();
+                  },
+                );
+              },
+            ),
+          ),
+          Container(
+            height: 110,
+            color: colors.tertiaryFour,
+            child: Column(
+              children: [
+                const SizedBox(height: 10),
+                MainButton(
+                  title: 'Print',
+                  asset: Assets.printer,
+                  horizontal: 16,
+                  active: false,
+                  onPressed: () {},
+                ),
+              ],
+            ),
+          ),
+        ],
       ),
     );
   }

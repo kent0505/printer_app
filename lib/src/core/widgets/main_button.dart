@@ -3,11 +3,13 @@ import 'package:flutter/material.dart';
 import '../config/constants.dart';
 import '../config/my_colors.dart';
 import 'button.dart';
+import 'svg_widget.dart';
 
 class MainButton extends StatelessWidget {
   const MainButton({
     super.key,
     required this.title,
+    this.asset = '',
     this.width,
     this.horizontal = 0,
     this.color,
@@ -16,6 +18,7 @@ class MainButton extends StatelessWidget {
   });
 
   final String title;
+  final String asset;
   final double? width;
   final double horizontal;
   final Color? color;
@@ -37,15 +40,25 @@ class MainButton extends StatelessWidget {
       ),
       child: Button(
         onPressed: active ? onPressed : null,
-        child: Center(
-          child: Text(
-            title,
-            style: TextStyle(
-              color: colors.bgOne,
-              fontSize: 16,
-              fontFamily: AppFonts.inter700,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            if (asset.isNotEmpty) ...[
+              SvgWidget(
+                asset,
+                color: colors.tertiaryFour,
+              ),
+              const SizedBox(width: 10),
+            ],
+            Text(
+              title,
+              style: TextStyle(
+                color: colors.bgOne,
+                fontSize: 16,
+                fontFamily: AppFonts.inter700,
+              ),
             ),
-          ),
+          ],
         ),
       ),
     );

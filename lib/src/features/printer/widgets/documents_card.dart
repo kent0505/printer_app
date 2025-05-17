@@ -28,7 +28,12 @@ class DocumentsCard extends StatelessWidget {
         onPressed: () async {
           final result = await FilePicker.platform.pickFiles(
             type: FileType.custom,
-            allowedExtensions: ['pdf', 'txt'],
+            allowedExtensions: [
+              'pdf',
+              'txt',
+              'png',
+              'jpg',
+            ],
           );
           if (result != null && result.files.single.path != null) {
             if (context.mounted) {

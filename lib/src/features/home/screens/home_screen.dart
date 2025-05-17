@@ -21,14 +21,26 @@ class HomeScreen extends StatelessWidget {
       body: Stack(
         children: [
           Padding(
-            padding: const EdgeInsets.only(bottom: 70),
+            padding: EdgeInsets.only(
+              bottom: 62 + MediaQuery.of(context).viewPadding.bottom,
+            ),
             child: BlocConsumer<HomeBloc, HomeState>(
               listener: (context, state) {
                 logger(state.runtimeType);
               },
-              builder: (context, state) => switch (state) {
-                HomePrinter() => const PrinterScreen(),
-                HomeSettings() => const SettingsScreen(),
+              buildWhen: (previous, current) {
+                return previous.runtimeType != current.runtimeType;
+              },
+              builder: (context, state) {
+                int index = state is HomePrinter ? 0 : 1;
+
+                return IndexedStack(
+                  index: index,
+                  children: const [
+                    PrinterScreen(),
+                    SettingsScreen(),
+                  ],
+                );
               },
             ),
           ),

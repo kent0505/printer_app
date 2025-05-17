@@ -22,6 +22,7 @@ class PrintablesScreen extends StatelessWidget {
         padding: EdgeInsets.zero,
         children: const [
           SizedBox(height: 16),
+          _Title(title: 'Gift cards'),
           _Card(
             title: 'Gift cards',
             assets: [
@@ -33,6 +34,7 @@ class PrintablesScreen extends StatelessWidget {
             ],
           ),
           SizedBox(height: 24),
+          _Title(title: 'Calendars'),
           _Card(
             title: 'Calendars',
             assets: [
@@ -44,6 +46,7 @@ class PrintablesScreen extends StatelessWidget {
             ],
           ),
           SizedBox(height: 24),
+          _Title(title: 'Planners'),
           _Card(
             title: 'Planners',
             assets: [
@@ -61,6 +64,32 @@ class PrintablesScreen extends StatelessWidget {
   }
 }
 
+class _Title extends StatelessWidget {
+  const _Title({required this.title});
+
+  final String title;
+
+  @override
+  Widget build(BuildContext context) {
+    final colors = Theme.of(context).extension<MyColors>()!;
+
+    return Padding(
+      padding: const EdgeInsets.only(
+        left: 16,
+        bottom: 8,
+      ),
+      child: Text(
+        title,
+        style: TextStyle(
+          color: colors.textPrimary,
+          fontSize: 16,
+          fontFamily: AppFonts.inter600,
+        ),
+      ),
+    );
+  }
+}
+
 class _Card extends StatelessWidget {
   const _Card({
     required this.title,
@@ -72,59 +101,38 @@ class _Card extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final colors = Theme.of(context).extension<MyColors>()!;
-
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Padding(
-          padding: const EdgeInsets.only(
-            left: 16,
-            bottom: 8,
-          ),
-          child: Text(
-            title,
-            style: TextStyle(
-              color: colors.textPrimary,
-              fontSize: 16,
-              fontFamily: AppFonts.inter600,
-            ),
-          ),
+    return SizedBox(
+      height: 188,
+      child: ListView.builder(
+        padding: const EdgeInsets.only(
+          left: 16,
+          right: 8,
         ),
-        SizedBox(
-          height: 188,
-          child: ListView.builder(
-            padding: const EdgeInsets.only(
-              left: 16,
-              right: 8,
-            ),
-            scrollDirection: Axis.horizontal,
-            itemCount: assets.length,
-            itemBuilder: (context, index) {
-              final asset = assets[index];
+        scrollDirection: Axis.horizontal,
+        itemCount: assets.length,
+        itemBuilder: (context, index) {
+          final asset = assets[index];
 
-              return Padding(
-                padding: const EdgeInsets.only(right: 8),
-                child: Button(
-                  onPressed: () {
-                    context.push(
-                      PrintableDetailScreen.routePath,
-                      extra: Printable(
-                        title: title,
-                        asset: asset,
-                      ),
-                    );
-                  },
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(8),
-                    child: SvgWidget(asset),
+          return Padding(
+            padding: const EdgeInsets.only(right: 8),
+            child: Button(
+              onPressed: () {
+                context.push(
+                  PrintableDetailScreen.routePath,
+                  extra: Printable(
+                    title: title,
+                    asset: asset,
                   ),
-                ),
-              );
-            },
-          ),
-        ),
-      ],
+                );
+              },
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(8),
+                child: SvgWidget(asset),
+              ),
+            ),
+          );
+        },
+      ),
     );
   }
 }
