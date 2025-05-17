@@ -123,8 +123,8 @@ class _PrintableDetailScreenState extends State<PrintableDetailScreen> {
                   controller: screenshotController,
                   child: SvgWidget(
                     widget.printable.asset,
-                    height: 180 * 3,
-                    width: 134 * 3,
+                    height: 180 * 4,
+                    width: 134 * 4,
                     fit: BoxFit.cover,
                   ),
                 ),

@@ -20,6 +20,7 @@ abstract final class Assets {
   static const lock = 'assets/lock.svg';
   static const photo = 'assets/photo.svg';
   static const splash = 'assets/splash.svg';
+  static const checkbox = 'assets/checkbox.svg';
   static const connect1 = 'assets/connect1.svg';
   static const connect2 = 'assets/connect2.svg';
   static const connect3 = 'assets/connect3.svg';
@@ -40,6 +41,7 @@ abstract final class Assets {
   static const phone4 = 'assets/images/phone4.png';
   static const phone5 = 'assets/images/phone5.png';
   static const router = 'assets/images/router.png';
+  static const album = 'assets/images/album.jpg';
 
   static const card1 = 'assets/printables/card1.svg';
   static const card2 = 'assets/printables/card2.svg';

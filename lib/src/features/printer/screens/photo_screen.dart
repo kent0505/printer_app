@@ -1,16 +1,18 @@
 import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
-import 'package:photo_manager/photo_manager.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../core/config/constants.dart';
 import '../../../core/config/my_colors.dart';
-import '../../../core/utils.dart';
+import '../../../core/models/album.dart';
 import '../../../core/widgets/appbar.dart';
 import '../../../core/widgets/button.dart';
 import '../../../core/widgets/image_widget.dart';
+import '../../../core/widgets/loading_widget.dart';
 import '../../../core/widgets/main_button.dart';
 import '../../../core/widgets/svg_widget.dart';
+import '../bloc/printer_bloc.dart';
 
 class PhotoScreen extends StatefulWidget {
   const PhotoScreen({super.key});
@@ -22,56 +24,43 @@ class PhotoScreen extends StatefulWidget {
 }
 
 class _PhotoScreenState extends State<PhotoScreen> {
-  List<AssetEntity> _images = [];
+  void onShare() {}
+
+  void onPrint() {}
 
   @override
   void initState() {
     super.initState();
-    _loadGalleryImages();
-  }
-
-  Future<void> _loadGalleryImages() async {
-    try {
-      final PermissionState ps = await PhotoManager.requestPermissionExtend();
-      if (ps.isAuth) {
-        final List<AssetPathEntity> albums =
-            await PhotoManager.getAssetPathList(
-          type: RequestType.image,
-          onlyAll: true,
-        );
-        final List<AssetEntity> media = await albums[0].getAssetListPaged(
-          page: 0,
-          size: 10000,
-        );
-
-        setState(() {
-          _images = media;
-        });
-      } else {
-        PhotoManager.openSetting();
-      }
-    } catch (e) {
-      logger(e);
-    }
+    context.read<PrinterBloc>().add(LoadPhotos());
   }
 
   @override
   Widget build(BuildContext context) {
     final colors = Theme.of(context).extension<MyColors>()!;
+    final state = context.watch<PrinterBloc>().state;
 
     return Scaffold(
       appBar: Appbar(
-        right: Button(
-          onPressed: () {},
-          child: const SvgWidget(Assets.share),
-        ),
+        right: state is PhotosLoaded && state.selected.isNotEmpty
+            ? Button(
+                onPressed: onShare,
+                child: SvgWidget(
+                  Assets.share,
+                  color: colors.accentPrimary,
+                ),
+              )
+            : null,
         child: Button(
-          onPressed: () {},
+          onPressed: () {
+            context
+                .read<PrinterBloc>()
+                .add(state is PhotosLoaded ? LoadAlbums() : LoadPhotos());
+          },
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text(
-                'Name of album',
+                state is PhotosLoaded ? state.albumTitle : 'Albums',
                 style: TextStyle(
                   color: colors.textPrimary,
                   fontSize: 14,
@@ -79,7 +68,7 @@ class _PhotoScreenState extends State<PhotoScreen> {
                 ),
               ),
               const SizedBox(width: 4),
-              const SvgWidget(Assets.down),
+              SvgWidget(state is PhotosLoaded ? Assets.down : Assets.up),
             ],
           ),
         ),
@@ -87,39 +76,33 @@ class _PhotoScreenState extends State<PhotoScreen> {
       body: Column(
         children: [
           Expanded(
-            child: GridView.builder(
-              padding: const EdgeInsets.all(16),
-              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 3,
-                crossAxisSpacing: 4,
-                mainAxisSpacing: 4,
-                childAspectRatio: 1,
-              ),
-              itemCount: _images.length,
-              itemBuilder: (context, index) {
-                return FutureBuilder<Uint8List?>(
-                  future: _images[index].thumbnailDataWithSize(
-                    const ThumbnailSize(200, 200),
-                  ),
-                  builder: (context, snapshot) {
-                    if (snapshot.connectionState == ConnectionState.done &&
-                        snapshot.hasData &&
-                        snapshot.data != null) {
-                      return ClipRRect(
-                        borderRadius: BorderRadius.circular(2),
-                        child: Image.memory(
-                          snapshot.data!,
-                          fit: BoxFit.cover,
-                          frameBuilder: frameBuilder,
-                        ),
-                      );
-                    }
-
-                    return const SizedBox();
+            child: switch (state) {
+              AlbumsLoaded() => ListView.builder(
+                  padding: const EdgeInsets.all(16),
+                  itemCount: state.albums.length,
+                  itemBuilder: (context, index) {
+                    return _AlbumTile(album: state.albums[index]);
                   },
-                );
-              },
-            ),
+                ),
+              PhotosLoaded() => GridView.builder(
+                  padding: const EdgeInsets.all(16),
+                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 3,
+                    crossAxisSpacing: 4,
+                    mainAxisSpacing: 4,
+                    childAspectRatio: 1,
+                  ),
+                  itemCount: state.thumbnails.length,
+                  itemBuilder: (context, index) {
+                    return _Photo(
+                      bytes: state.thumbnails[index]!,
+                      selected:
+                          state.selected.contains(state.thumbnails[index]!),
+                    );
+                  },
+                ),
+              _ => const LoadingWidget(),
+            },
           ),
           Container(
             height: 110,
@@ -131,13 +114,114 @@ class _PhotoScreenState extends State<PhotoScreen> {
                   title: 'Print',
                   asset: Assets.printer,
                   horizontal: 16,
-                  active: false,
-                  onPressed: () {},
+                  active: state is PhotosLoaded && state.selected.isNotEmpty,
+                  onPressed: onPrint,
                 ),
               ],
             ),
           ),
         ],
+      ),
+    );
+  }
+}
+
+class _Photo extends StatelessWidget {
+  const _Photo({
+    required this.bytes,
+    required this.selected,
+  });
+
+  final Uint8List bytes;
+  final bool selected;
+
+  @override
+  Widget build(BuildContext context) {
+    return Button(
+      onPressed: () {
+        context.read<PrinterBloc>().add(SelectPhoto(
+              bytes: bytes,
+              remove: selected,
+            ));
+      },
+      child: Stack(
+        fit: StackFit.expand,
+        children: [
+          ClipRRect(
+            borderRadius: BorderRadius.circular(2),
+            child: Image.memory(
+              bytes,
+              fit: BoxFit.cover,
+              frameBuilder: frameBuilder,
+              errorBuilder: (context, error, stackTrace) {
+                return const SizedBox();
+              },
+            ),
+          ),
+          if (selected)
+            const Positioned(
+              right: 8,
+              bottom: 8,
+              child: SvgWidget(Assets.checkbox),
+            ),
+        ],
+      ),
+    );
+  }
+}
+
+class _AlbumTile extends StatelessWidget {
+  const _AlbumTile({required this.album});
+
+  final Album album;
+
+  @override
+  Widget build(BuildContext context) {
+    final colors = Theme.of(context).extension<MyColors>()!;
+
+    return SizedBox(
+      height: 80,
+      child: Button(
+        onPressed: () {
+          context
+              .read<PrinterBloc>()
+              .add(LoadPhotosFromAlbum(album: album.asset));
+        },
+        child: Row(
+          children: [
+            ImageWidget(
+              Assets.album,
+              height: 64,
+              width: 64,
+              fit: BoxFit.cover,
+              borderRadius: BorderRadius.circular(2.5),
+            ),
+            const SizedBox(width: 8),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  album.asset.name,
+                  style: TextStyle(
+                    color: colors.textPrimary,
+                    fontSize: 16,
+                    fontFamily: AppFonts.inter600,
+                  ),
+                ),
+                const SizedBox(height: 8),
+                Text(
+                  album.amount.toString(),
+                  style: TextStyle(
+                    color: colors.textSecondary,
+                    fontSize: 14,
+                    fontFamily: AppFonts.inter400,
+                  ),
+                ),
+              ],
+            ),
+          ],
+        ),
       ),
     );
   }

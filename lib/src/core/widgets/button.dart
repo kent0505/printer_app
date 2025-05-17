@@ -1,5 +1,4 @@
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
 
 class Button extends StatelessWidget {
   const Button({
@@ -21,7 +20,6 @@ class Button extends StatelessWidget {
       onPressed: onPressed,
       padding: padding,
       minSize: minSize,
-      focusColor: Colors.redAccent,
       sizeStyle: CupertinoButtonSize.small,
       child: child,
     );

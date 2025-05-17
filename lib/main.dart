@@ -30,10 +30,10 @@ Future<void> main() async {
       ],
       child: MultiBlocProvider(
         providers: [
+          BlocProvider(create: (context) => HomeBloc()),
           BlocProvider(
             create: (context) => InternetBloc()..add(CheckInternet()),
           ),
-          BlocProvider(create: (context) => HomeBloc()),
           BlocProvider(create: (context) => PrinterBloc()),
         ],
         child: const MyApp(),
