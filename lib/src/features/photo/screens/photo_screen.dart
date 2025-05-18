@@ -1,7 +1,11 @@
-import 'dart:typed_data';
+import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:pdf/pdf.dart';
+import 'package:pdf/widgets.dart' as pw;
+import 'package:printing/printing.dart';
+import 'package:share_plus/share_plus.dart';
 
 import '../../../core/config/constants.dart';
 import '../../../core/config/my_colors.dart';
@@ -12,7 +16,7 @@ import '../../../core/widgets/image_widget.dart';
 import '../../../core/widgets/loading_widget.dart';
 import '../../../core/widgets/main_button.dart';
 import '../../../core/widgets/svg_widget.dart';
-import '../bloc/printer_bloc.dart';
+import '../bloc/photo_bloc.dart';
 
 class PhotoScreen extends StatefulWidget {
   const PhotoScreen({super.key});
@@ -24,20 +28,60 @@ class PhotoScreen extends StatefulWidget {
 }
 
 class _PhotoScreenState extends State<PhotoScreen> {
-  void onShare() {}
+  void onShare() async {
+    final state = context.read<PhotoBloc>().state;
+    if (state is PhotosLoaded) {
+      await Share.shareXFiles(
+        List.generate(
+          state.selected.length,
+          (index) => XFile(state.selected[index].path),
+        ),
+        sharePositionOrigin: Rect.fromLTWH(100, 100, 200, 200),
+      );
+    }
+  }
 
-  void onPrint() {}
+  void onPrint() async {
+    final state = context.read<PhotoBloc>().state;
+    if (state is PhotosLoaded) {
+      final pdf = pw.Document();
+
+      for (final file in state.selected) {
+        final bytes = await file.readAsBytes();
+
+        pdf.addPage(
+          pw.Page(
+            margin: pw.EdgeInsets.zero,
+            pageFormat: PdfPageFormat.a4,
+            build: (context) {
+              return pw.Center(
+                child: pw.Image(
+                  pw.MemoryImage(bytes),
+                  fit: pw.BoxFit.contain,
+                ),
+              );
+            },
+          ),
+        );
+      }
+
+      Printing.layoutPdf(
+        format: PdfPageFormat.a4,
+        onLayout: (PdfPageFormat format) async => pdf.save(),
+      );
+    }
+  }
 
   @override
   void initState() {
     super.initState();
-    context.read<PrinterBloc>().add(LoadPhotos());
+    context.read<PhotoBloc>().add(LoadPhotos());
   }
 
   @override
   Widget build(BuildContext context) {
     final colors = Theme.of(context).extension<MyColors>()!;
-    final state = context.watch<PrinterBloc>().state;
+    final state = context.watch<PhotoBloc>().state;
 
     return Scaffold(
       appBar: Appbar(
@@ -53,7 +97,7 @@ class _PhotoScreenState extends State<PhotoScreen> {
         child: Button(
           onPressed: () {
             context
-                .read<PrinterBloc>()
+                .read<PhotoBloc>()
                 .add(state is PhotosLoaded ? LoadAlbums() : LoadPhotos());
           },
           child: Row(
@@ -92,12 +136,11 @@ class _PhotoScreenState extends State<PhotoScreen> {
                     mainAxisSpacing: 4,
                     childAspectRatio: 1,
                   ),
-                  itemCount: state.thumbnails.length,
+                  itemCount: state.files.length,
                   itemBuilder: (context, index) {
                     return _Photo(
-                      bytes: state.thumbnails[index]!,
-                      selected:
-                          state.selected.contains(state.thumbnails[index]!),
+                      file: state.files[index]!,
+                      selected: state.selected.contains(state.files[index]),
                     );
                   },
                 ),
@@ -128,29 +171,28 @@ class _PhotoScreenState extends State<PhotoScreen> {
 
 class _Photo extends StatelessWidget {
   const _Photo({
-    required this.bytes,
+    required this.file,
     required this.selected,
   });
 
-  final Uint8List bytes;
+  final File file;
   final bool selected;
 
   @override
   Widget build(BuildContext context) {
     return Button(
       onPressed: () {
-        context.read<PrinterBloc>().add(SelectPhoto(
-              bytes: bytes,
-              remove: selected,
-            ));
+        context
+            .read<PhotoBloc>()
+            .add(SelectPhoto(file: file, remove: selected));
       },
       child: Stack(
         fit: StackFit.expand,
         children: [
           ClipRRect(
             borderRadius: BorderRadius.circular(2),
-            child: Image.memory(
-              bytes,
+            child: Image.file(
+              file,
               fit: BoxFit.cover,
               frameBuilder: frameBuilder,
               errorBuilder: (context, error, stackTrace) {
@@ -184,7 +226,7 @@ class _AlbumTile extends StatelessWidget {
       child: Button(
         onPressed: () {
           context
-              .read<PrinterBloc>()
+              .read<PhotoBloc>()
               .add(LoadPhotosFromAlbum(album: album.asset));
         },
         child: Row(

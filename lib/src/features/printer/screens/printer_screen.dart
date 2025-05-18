@@ -7,10 +7,10 @@ import '../../../core/config/my_colors.dart';
 import '../../internet/bloc/internet_bloc.dart';
 import '../../internet/widgets/no_internet.dart';
 import '../../printables/screens/printables_screen.dart';
+import '../../photo/screens/photo_screen.dart';
 import '../widgets/documents_card.dart';
 import '../widgets/printer_card.dart';
 import 'email_screen.dart';
-import 'photo_screen.dart';
 import 'web_pages_screen.dart';
 
 class PrinterScreen extends StatelessWidget {

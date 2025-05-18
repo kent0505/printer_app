@@ -87,7 +87,6 @@ class _PrintableDetailScreenState extends State<PrintableDetailScreen> {
   void onPrint() {
     Printing.layoutPdf(
       format: PdfPageFormat.a4,
-      name: 'Aaa',
       onLayout: (PdfPageFormat format) async => pdf.save(),
     );
   }

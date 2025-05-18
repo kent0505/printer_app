@@ -6,7 +6,7 @@ import '../../features/home/screens/home_screen.dart';
 import '../../features/printables/screens/printables_detail_screen.dart';
 import '../../features/printer/screens/documents_screen.dart';
 import '../../features/printer/screens/email_screen.dart';
-import '../../features/printer/screens/photo_screen.dart';
+import '../../features/photo/screens/photo_screen.dart';
 import '../../features/printables/screens/printables_screen.dart';
 import '../../features/printer/screens/web_pages_screen.dart';
 import '../../features/onboard/screens/onboard_screen.dart';
@@ -39,16 +39,18 @@ final routerConfig = GoRouter(
       ),
     ),
     GoRoute(
-      path: PhotoScreen.routePath,
-      builder: (context, state) => const PhotoScreen(),
-    ),
-    GoRoute(
       path: EmailScreen.routePath,
       builder: (context, state) => const EmailScreen(),
     ),
     GoRoute(
       path: WebPagesScreen.routePath,
       builder: (context, state) => const WebPagesScreen(),
+    ),
+
+    // PHOTO
+    GoRoute(
+      path: PhotoScreen.routePath,
+      builder: (context, state) => const PhotoScreen(),
     ),
 
     // PRINTABLES

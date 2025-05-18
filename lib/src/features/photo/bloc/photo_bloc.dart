@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:photo_manager/photo_manager.dart';
@@ -5,16 +7,16 @@ import 'package:photo_manager/photo_manager.dart';
 import '../../../core/models/album.dart';
 import '../../../core/utils.dart';
 
-part 'printer_event.dart';
-part 'printer_state.dart';
+part 'photo_event.dart';
+part 'photo_state.dart';
 
-class PrinterBloc extends Bloc<PrinterEvent, PrinterState> {
-  List<Uint8List?> thumbnails = [];
-  List<Uint8List> selected = [];
+class PhotoBloc extends Bloc<PhotoEvent, PhotoState> {
+  List<File?> files = [];
+  List<File> selected = [];
   String albumTitle = '';
 
-  PrinterBloc() : super(PrinterInitial()) {
-    on<PrinterEvent>(
+  PhotoBloc() : super(PhotoInitial()) {
+    on<PhotoEvent>(
       (event, emit) => switch (event) {
         LoadPhotos() => _loadPhotos(event, emit),
         LoadAlbums() => _loadAlbums(event, emit),
@@ -26,7 +28,7 @@ class PrinterBloc extends Bloc<PrinterEvent, PrinterState> {
 
   void _loadPhotos(
     LoadPhotos event,
-    Emitter<PrinterState> emit,
+    Emitter<PhotoState> emit,
   ) async {
     try {
       final PermissionState ps = await PhotoManager.requestPermissionExtend();
@@ -40,15 +42,11 @@ class PrinterBloc extends Bloc<PrinterEvent, PrinterState> {
           start: 0,
           end: 1000,
         );
-        thumbnails = await Future.wait(
-          photos.map(
-            (e) => e.thumbnailDataWithSize(const ThumbnailSize(200, 200)),
-          ),
-        );
+        files = await Future.wait(photos.map((e) => e.file));
         albumTitle = albums[0].name;
-
+        selected = [];
         emit(PhotosLoaded(
-          thumbnails: thumbnails,
+          files: files,
           albumTitle: albumTitle,
         ));
       } else {
@@ -61,7 +59,7 @@ class PrinterBloc extends Bloc<PrinterEvent, PrinterState> {
 
   void _loadAlbums(
     LoadAlbums event,
-    Emitter<PrinterState> emit,
+    Emitter<PhotoState> emit,
   ) async {
     try {
       final PermissionState ps = await PhotoManager.requestPermissionExtend();
@@ -90,20 +88,17 @@ class PrinterBloc extends Bloc<PrinterEvent, PrinterState> {
 
   void _loadPhotosFromAlbum(
     LoadPhotosFromAlbum event,
-    Emitter<PrinterState> emit,
+    Emitter<PhotoState> emit,
   ) async {
     try {
       final List<AssetEntity> photos = await event.album.getAssetListRange(
         start: 0,
         end: await event.album.assetCountAsync,
       );
-      final thumbnails = await Future.wait(
-        photos.map(
-          (e) => e.thumbnailDataWithSize(const ThumbnailSize(200, 200)),
-        ),
-      );
+      files = await Future.wait(photos.map((e) => e.file));
+      selected = [];
       emit(PhotosLoaded(
-        thumbnails: thumbnails,
+        files: files,
         albumTitle: event.album.name,
       ));
     } catch (e) {
@@ -113,25 +108,25 @@ class PrinterBloc extends Bloc<PrinterEvent, PrinterState> {
 
   void _selectPhoto(
     SelectPhoto event,
-    Emitter<PrinterState> emit,
+    Emitter<PhotoState> emit,
   ) async {
     try {
       if (event.remove) {
-        for (Uint8List bytes in selected) {
-          if (bytes == event.bytes) {
-            selected.remove(bytes);
+        for (File file in selected) {
+          if (file == event.file) {
+            selected.remove(file);
             break;
           }
         }
       } else {
-        selected.add(event.bytes);
+        selected.add(event.file);
       }
     } catch (e) {
       logger(e);
     }
 
     emit(PhotosLoaded(
-      thumbnails: thumbnails,
+      files: files,
       selected: selected,
       albumTitle: albumTitle,
     ));
