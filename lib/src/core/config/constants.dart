@@ -6,32 +6,30 @@ abstract final class AppFonts {
 }
 
 abstract final class Assets {
-  static const settings = 'assets/settings.svg';
-  static const printer = 'assets/printer.svg';
-  static const scanner = 'assets/scanner.svg';
-  static const info = 'assets/info.svg';
-  static const share = 'assets/share.svg';
-  static const left = 'assets/left.svg';
-  static const right = 'assets/right.svg';
-  static const up = 'assets/up.svg';
-  static const down = 'assets/down.svg';
-  static const close = 'assets/close.svg';
-  static const empty = 'assets/empty.svg';
-  static const lock = 'assets/lock.svg';
-  static const photo = 'assets/photo.svg';
-  static const splash = 'assets/splash.svg';
   static const checkbox = 'assets/checkbox.svg';
+  static const close = 'assets/close.svg';
   static const connect1 = 'assets/connect1.svg';
   static const connect2 = 'assets/connect2.svg';
   static const connect3 = 'assets/connect3.svg';
   static const connect4 = 'assets/connect4.svg';
   static const connect5 = 'assets/connect5.svg';
+  static const down = 'assets/down.svg';
+  static const empty = 'assets/empty.svg';
+  static const info = 'assets/info.svg';
+  static const left = 'assets/left.svg';
+  static const premium = 'assets/premium.svg';
+  static const lock = 'assets/lock.svg';
+  static const settings = 'assets/settings.svg';
+  static const print = 'assets/print.svg';
+  static const printer = 'assets/printer.svg';
+  static const right = 'assets/right.svg';
+  static const scanner = 'assets/scanner.svg';
+  static const share = 'assets/share.svg';
+  static const splash = 'assets/splash.svg';
+  static const up = 'assets/up.svg';
 
+  // images
   static const allFeatures = 'assets/images/all_features.png';
-  static const documents = 'assets/images/documents.png';
-  static const email = 'assets/images/email.png';
-  static const webPages = 'assets/images/web_pages.png';
-  static const printables = 'assets/images/printables.png';
   static const onboard1 = 'assets/images/onboard1.png';
   static const onboard2 = 'assets/images/onboard2.png';
   static const onboard3 = 'assets/images/onboard3.png';
@@ -41,25 +39,31 @@ abstract final class Assets {
   static const phone4 = 'assets/images/phone4.png';
   static const phone5 = 'assets/images/phone5.png';
   static const router = 'assets/images/router.png';
-  static const album = 'assets/images/album.jpg';
 
-  static const card1 = 'assets/printables/card1.svg';
-  static const card2 = 'assets/printables/card2.svg';
-  static const card3 = 'assets/printables/card3.svg';
-  static const card4 = 'assets/printables/card4.svg';
-  static const card5 = 'assets/printables/card5.svg';
-
-  static const calendar1 = 'assets/printables/calendar1.svg';
-  static const calendar2 = 'assets/printables/calendar2.svg';
-  static const calendar3 = 'assets/printables/calendar3.svg';
-  static const calendar4 = 'assets/printables/calendar4.svg';
-  static const calendar5 = 'assets/printables/calendar5.svg';
-
-  static const planner1 = 'assets/printables/planner1.svg';
-  static const planner2 = 'assets/printables/planner2.svg';
-  static const planner3 = 'assets/printables/planner3.svg';
-  static const planner4 = 'assets/printables/planner4.svg';
-  static const planner5 = 'assets/printables/planner5.svg';
+  // printables
+  static const card1 = 'assets/printables/1.jpg';
+  static const card2 = 'assets/printables/2.jpg';
+  static const card3 = 'assets/printables/3.jpg';
+  static const card4 = 'assets/printables/4.jpg';
+  static const card5 = 'assets/printables/5.jpg';
+  static const calendar1 = 'assets/printables/6.jpg';
+  static const calendar2 = 'assets/printables/7.jpg';
+  static const calendar3 = 'assets/printables/8.jpg';
+  static const calendar4 = 'assets/printables/9.jpg';
+  static const calendar5 = 'assets/printables/10.jpg';
+  static const planner1 = 'assets/printables/11.jpg';
+  static const planner2 = 'assets/printables/12.jpg';
+  static const planner3 = 'assets/printables/13.jpg';
+  static const planner4 = 'assets/printables/14.jpg';
+  // printer
+  static const printer1 = 'assets/printer/printer1.svg';
+  static const printer2 = 'assets/printer/printer2.svg';
+  static const printer3 = 'assets/printer/printer3.svg';
+  static const printer4 = 'assets/printer/printer4.svg';
+  static const printer5 = 'assets/printer/printer5.svg';
+  static const printer6 = 'assets/printer/printer6.svg';
+  static const printer7 = 'assets/printer/printer7.svg';
+  static const printer8 = 'assets/printer/printer8.svg';
 }
 
 abstract final class Keys {

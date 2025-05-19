@@ -9,6 +9,7 @@ import 'src/features/onboard/data/onboard_repository.dart';
 import 'src/features/internet/bloc/internet_bloc.dart';
 import 'src/features/home/bloc/home_bloc.dart';
 import 'src/features/photo/bloc/photo_bloc.dart';
+import 'src/features/printer/data/printer_repository.dart';
 
 // final colors = Theme.of(context).extension<MyColors>()!;
 Future<void> main() async {
@@ -26,6 +27,9 @@ Future<void> main() async {
       providers: [
         RepositoryProvider<OnboardRepository>(
           create: (context) => OnboardRepositoryImpl(prefs: prefs),
+        ),
+        RepositoryProvider<PrinterRepository>(
+          create: (context) => PrinterRepositoryImpl(),
         ),
       ],
       child: MultiBlocProvider(

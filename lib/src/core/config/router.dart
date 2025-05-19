@@ -3,11 +3,11 @@ import 'dart:io';
 import 'package:go_router/go_router.dart';
 
 import '../../features/home/screens/home_screen.dart';
-import '../../features/printables/screens/printables_detail_screen.dart';
+import '../../features/printer/screens/printables_detail_screen.dart';
 import '../../features/printer/screens/documents_screen.dart';
 import '../../features/printer/screens/email_screen.dart';
 import '../../features/photo/screens/photo_screen.dart';
-import '../../features/printables/screens/printables_screen.dart';
+import '../../features/printer/screens/printables_screen.dart';
 import '../../features/printer/screens/web_pages_screen.dart';
 import '../../features/onboard/screens/onboard_screen.dart';
 import '../../features/onboard/screens/splash_screen.dart';

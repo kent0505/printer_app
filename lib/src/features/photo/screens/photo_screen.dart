@@ -155,7 +155,7 @@ class _PhotoScreenState extends State<PhotoScreen> {
                 const SizedBox(height: 10),
                 MainButton(
                   title: 'Print',
-                  asset: Assets.printer,
+                  asset: Assets.print,
                   horizontal: 16,
                   active: state is PhotosLoaded && state.selected.isNotEmpty,
                   onPressed: onPrint,
@@ -231,13 +231,13 @@ class _AlbumTile extends StatelessWidget {
         },
         child: Row(
           children: [
-            ImageWidget(
-              Assets.album,
-              height: 64,
-              width: 64,
-              fit: BoxFit.cover,
-              borderRadius: BorderRadius.circular(2.5),
-            ),
+            // ImageWidget(
+            //   album.asset.,
+            //   height: 64,
+            //   width: 64,
+            //   fit: BoxFit.cover,
+            //   borderRadius: BorderRadius.circular(2.5),
+            // ),
             const SizedBox(width: 8),
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,

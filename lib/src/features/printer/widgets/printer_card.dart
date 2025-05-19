@@ -3,14 +3,13 @@ import 'package:flutter/material.dart';
 import '../../../core/config/constants.dart';
 import '../../../core/config/my_colors.dart';
 import '../../../core/widgets/button.dart';
-import '../../../core/widgets/image_widget.dart';
 import '../../../core/widgets/svg_widget.dart';
 
 class PrinterCard extends StatelessWidget {
   const PrinterCard({
     super.key,
     required this.title,
-    required this.description,
+    this.description = '',
     required this.asset,
     required this.color,
     this.locked = false,
@@ -20,7 +19,7 @@ class PrinterCard extends StatelessWidget {
   final String title;
   final String description;
   final String asset;
-  final Color color;
+  final List<Color> color;
   final bool locked;
   final VoidCallback onPressed;
 
@@ -33,10 +32,15 @@ class PrinterCard extends StatelessWidget {
       height: size,
       width: size,
       decoration: BoxDecoration(
-        color: color,
         borderRadius: BorderRadius.circular(20),
+        gradient: LinearGradient(
+          colors: color,
+          begin: Alignment.topCenter,
+          end: Alignment.bottomCenter,
+        ),
       ),
       child: Stack(
+        alignment: Alignment.center,
         children: [
           Button(
             onPressed: onPressed,
@@ -47,15 +51,13 @@ class PrinterCard extends StatelessWidget {
                   SizedBox(
                     height: 64,
                     width: 64,
-                    child: asset == Assets.photo
-                        ? SvgWidget(asset)
-                        : ImageWidget(asset),
+                    child: SvgWidget(asset),
                   ),
                   const SizedBox(height: 12),
                   Text(
                     title,
                     style: TextStyle(
-                      color: colors.textPrimary,
+                      color: colors.bgOne,
                       fontSize: 18,
                       fontFamily: AppFonts.inter600,
                     ),
@@ -65,7 +67,7 @@ class PrinterCard extends StatelessWidget {
                     description,
                     textAlign: TextAlign.center,
                     style: TextStyle(
-                      color: colors.textPrimary,
+                      color: colors.bgOne,
                       fontSize: 14,
                       fontFamily: AppFonts.inter400,
                     ),

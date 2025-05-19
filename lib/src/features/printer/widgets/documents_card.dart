@@ -7,7 +7,6 @@ import 'package:file_picker/file_picker.dart';
 import '../../../core/config/constants.dart';
 import '../../../core/config/my_colors.dart';
 import '../../../core/widgets/button.dart';
-import '../../../core/widgets/image_widget.dart';
 import '../screens/documents_screen.dart';
 
 class DocumentsCard extends StatelessWidget {
@@ -46,10 +45,10 @@ class DocumentsCard extends StatelessWidget {
         },
         child: Column(
           children: [
-            const ImageWidget(
-              Assets.documents,
-              height: 64,
-            ),
+            // const ImageWidget(
+            //   Assets.documents,
+            //   height: 64,
+            // ),
             const SizedBox(height: 8),
             Text(
               'Documents',

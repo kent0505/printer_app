@@ -1,6 +1,8 @@
 import 'dart:io';
+import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
 import 'package:printing/printing.dart';
@@ -12,6 +14,7 @@ import '../../../core/widgets/appbar.dart';
 import '../../../core/widgets/button.dart';
 import '../../../core/widgets/loading_widget.dart';
 import '../../../core/widgets/svg_widget.dart';
+import '../data/printer_repository.dart';
 
 class DocumentsScreen extends StatefulWidget {
   const DocumentsScreen({super.key, required this.file});
@@ -26,10 +29,11 @@ class DocumentsScreen extends StatefulWidget {
 
 class _DocumentsScreenState extends State<DocumentsScreen> {
   final pdf = pw.Document();
+  Uint8List? imageBytes;
 
   void createPdf() async {
     try {
-      final imageBytes = await widget.file.readAsBytes();
+      imageBytes = await widget.file.readAsBytes();
 
       pdf.addPage(
         pw.Page(
@@ -38,7 +42,7 @@ class _DocumentsScreenState extends State<DocumentsScreen> {
           build: (pw.Context context) {
             return pw.Center(
               child: pw.Image(
-                pw.MemoryImage(imageBytes),
+                pw.MemoryImage(imageBytes!),
               ),
             );
           },
@@ -49,11 +53,9 @@ class _DocumentsScreenState extends State<DocumentsScreen> {
     }
   }
 
-  void printDocument() {
-    Printing.layoutPdf(
-      format: PdfPageFormat.a4,
-      onLayout: (PdfPageFormat format) async => pdf.save(),
-    );
+  void printDocument() async {
+    final repo = context.read<PrinterRepository>();
+    repo.print(pdf);
   }
 
   @override
@@ -71,7 +73,7 @@ class _DocumentsScreenState extends State<DocumentsScreen> {
         title: 'Documents',
         right: Button(
           onPressed: printDocument,
-          child: const SvgWidget(Assets.printer),
+          child: const SvgWidget(Assets.print),
         ),
       ),
       body: PdfPreview(
@@ -80,8 +82,9 @@ class _DocumentsScreenState extends State<DocumentsScreen> {
         scrollViewDecoration: BoxDecoration(color: colors.bgTwo),
         loadingWidget: const LoadingWidget(),
         build: (format) {
-          // if (widget.file.readAsString()) return widget.file.readAsBytes();
-          return pdf.save();
+          return widget.file.path.toLowerCase().endsWith('.pdf')
+              ? imageBytes!
+              : pdf.save();
         },
       ),
     );

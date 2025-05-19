@@ -24,7 +24,7 @@ dependencies:
   share_plus: ^10.1.4
   path_provider: ^2.1.5
   screenshot: ^3.0.0
-  libre_doc_converter: ^0.1.1 # convert doc to pdf
+  # receive_sharing_intent: ^1.4.5
   # vip
   purchases_flutter: ^8.7.4
   purchases_ui_flutter: ^8.7.4
@@ -40,6 +40,7 @@ flutter:
     - assets/fonts/
     - assets/images/
     - assets/printables/
+    - assets/printer/
   fonts:
     - family: inter400
       fonts:

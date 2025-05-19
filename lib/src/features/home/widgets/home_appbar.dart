@@ -40,19 +40,43 @@ class HomeAppbar extends StatelessWidget implements PreferredSizeWidget {
         ),
       ),
       actions: [
-        state is HomePrinter
-            ? Button(
-                onPressed: () {
-                  context.push(PrinterWifiScreen.routePath);
-                },
-                minSize: 52,
-                child: const SvgWidget(
-                  Assets.info,
-                  height: 32,
-                  width: 32,
+        if (state is HomePrinter) ...[
+          Button(
+            onPressed: () {
+              context.push(PrinterWifiScreen.routePath);
+            },
+            minSize: 52,
+            child: const SvgWidget(
+              Assets.info,
+              height: 32,
+              width: 32,
+            ),
+          ),
+          const SizedBox(width: 8),
+          Button(
+            onPressed: () {},
+            child: Container(
+              height: 44,
+              width: 44,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(12),
+                gradient: LinearGradient(
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                  colors: [
+                    colors.gradient1,
+                    colors.gradient2,
+                  ],
                 ),
-              )
-            : const SizedBox(),
+              ),
+              child: const Center(
+                child: SvgWidget(
+                  Assets.premium,
+                ),
+              ),
+            ),
+          ),
+        ],
       ],
     );
   }

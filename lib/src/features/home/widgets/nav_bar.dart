@@ -48,7 +48,7 @@ class NavBar extends StatelessWidget {
                 _NavBarButton(
                   index: 1,
                   title: 'Printer',
-                  asset: Assets.printer,
+                  asset: Assets.print,
                   active: state is HomePrinter,
                 ),
                 _NavBarButton(
