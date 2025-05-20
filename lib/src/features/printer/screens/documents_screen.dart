@@ -72,8 +72,7 @@ class _DocumentsScreenState extends State<DocumentsScreen> {
   }
 
   void printDocument() async {
-    final repo = context.read<PrinterRepository>();
-    repo.print(pdf);
+    context.read<PrinterRepository>().print(pdf);
   }
 
   @override

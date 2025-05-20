@@ -20,7 +20,6 @@ abstract interface class PrinterRepository {
   void share(List<File> files);
   void print(Document pdf);
   Future<Uint8List> getBytes(ScreenshotController controller);
-  Future<Document> getPdf(Uint8List bytes);
   Future<File> getFile(Uint8List bytes);
   Future<File?> pickFile();
   Future<File?> pickImage();
@@ -56,32 +55,6 @@ final class PrinterRepositoryImpl implements PrinterRepository {
     } catch (e) {
       logger(e);
     }
-  }
-
-  @override
-  Future<Document> getPdf(Uint8List bytes) async {
-    final pdf = Document();
-
-    try {
-      pdf.addPage(
-        Page(
-          margin: EdgeInsets.zero,
-          pageFormat: PdfPageFormat.a4,
-          build: (context) {
-            return Center(
-              child: Image(
-                MemoryImage(bytes),
-                fit: BoxFit.contain,
-              ),
-            );
-          },
-        ),
-      );
-    } catch (e) {
-      logger(e);
-    }
-
-    return pdf;
   }
 
   @override

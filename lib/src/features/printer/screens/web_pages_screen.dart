@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:pdf/pdf.dart';
+import 'package:pdf/widgets.dart' as pw;
 import 'package:screenshot/screenshot.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
@@ -22,6 +24,7 @@ class WebPagesScreen extends StatefulWidget {
 class _WebPagesScreenState extends State<WebPagesScreen> {
   late final WebViewController _controller;
   final screenshotController = ScreenshotController();
+  final pdf = pw.Document();
 
   void onLeft() async {
     if (await _controller.canGoBack()) {
@@ -42,7 +45,20 @@ class _WebPagesScreenState extends State<WebPagesScreen> {
   void onPrint() async {
     final repo = context.read<PrinterRepository>();
     final bytes = await repo.getBytes(screenshotController);
-    final pdf = await repo.getPdf(bytes);
+    pdf.addPage(
+      pw.Page(
+        margin: pw.EdgeInsets.zero,
+        pageFormat: PdfPageFormat.a4,
+        build: (context) {
+          return pw.Center(
+            child: pw.Image(
+              pw.MemoryImage(bytes),
+              fit: pw.BoxFit.contain,
+            ),
+          );
+        },
+      ),
+    );
     repo.print(pdf);
   }
 
