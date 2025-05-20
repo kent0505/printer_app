@@ -33,21 +33,39 @@ class _DocumentsScreenState extends State<DocumentsScreen> {
 
   void createPdf() async {
     try {
-      imageBytes = await widget.file.readAsBytes();
+      final path = widget.file.path.toLowerCase();
 
-      pdf.addPage(
-        pw.Page(
-          pageFormat: PdfPageFormat.a4,
-          margin: pw.EdgeInsets.zero,
-          build: (pw.Context context) {
-            return pw.Center(
-              child: pw.Image(
-                pw.MemoryImage(imageBytes!),
-              ),
-            );
-          },
-        ),
-      );
+      if (path.endsWith('.txt')) {
+        final textContent = await widget.file.readAsString();
+        pdf.addPage(
+          pw.Page(
+            pageFormat: PdfPageFormat.a4,
+            margin: const pw.EdgeInsets.all(32),
+            build: (pw.Context context) {
+              return pw.Text(
+                textContent,
+                style: const pw.TextStyle(fontSize: 14),
+              );
+            },
+          ),
+        );
+      } else {
+        imageBytes = await widget.file.readAsBytes();
+
+        pdf.addPage(
+          pw.Page(
+            pageFormat: PdfPageFormat.a4,
+            margin: pw.EdgeInsets.zero,
+            build: (pw.Context context) {
+              return pw.Center(
+                child: pw.Image(
+                  pw.MemoryImage(imageBytes!),
+                ),
+              );
+            },
+          ),
+        );
+      }
     } catch (e) {
       logger(e);
     }
@@ -82,9 +100,11 @@ class _DocumentsScreenState extends State<DocumentsScreen> {
         scrollViewDecoration: BoxDecoration(color: colors.bgTwo),
         loadingWidget: const LoadingWidget(),
         build: (format) {
-          return widget.file.path.toLowerCase().endsWith('.pdf')
-              ? imageBytes!
-              : pdf.save();
+          if (widget.file.path.toLowerCase().endsWith('.pdf')) {
+            return imageBytes!;
+          }
+
+          return pdf.save();
         },
       ),
     );

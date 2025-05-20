@@ -8,20 +8,42 @@ import '../../../core/widgets/svg_widget.dart';
 class PrinterCard extends StatelessWidget {
   const PrinterCard({
     super.key,
+    required this.id,
     required this.title,
     this.description = '',
-    required this.asset,
-    required this.color,
-    this.locked = false,
     required this.onPressed,
   });
 
+  final int id;
   final String title;
   final String description;
-  final String asset;
-  final List<Color> color;
-  final bool locked;
   final VoidCallback onPressed;
+
+  String getAsset() {
+    if (id == 1) return Assets.printer1;
+    if (id == 2) return Assets.printer2;
+    if (id == 3) return Assets.printer3;
+    if (id == 4) return Assets.printer4;
+    if (id == 5) return Assets.printer5;
+    if (id == 6) return Assets.printer6;
+    if (id == 7) return Assets.printer7;
+    return Assets.printer8;
+  }
+
+  List<Color> getColors() {
+    if (id == 1) return const [Color(0xff5C9EFD), Color(0xff1A76FF)];
+    if (id == 2) return const [Color(0xff536ED9), Color(0xff102880)];
+    if (id == 3) return const [Color(0xffFDE200), Color(0xffF9B400)];
+    if (id == 4) return const [Color(0xff37D6F3), Color(0xff0FBFEE)];
+    if (id == 5) return const [Color(0xff28F2CA), Color(0xff14DEB6)];
+    if (id == 6) return const [Color(0xff9F51FF), Color(0xff603199)];
+    if (id == 7) return const [Color(0xff28F23C), Color(0xff0DBE25)];
+    return const [Color(0xffED2F22), Color(0xffB00B00)];
+  }
+
+  bool getLocked() {
+    return id == 5 || id == 6 || id == 7 || id == 8;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -34,7 +56,7 @@ class PrinterCard extends StatelessWidget {
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(20),
         gradient: LinearGradient(
-          colors: color,
+          colors: getColors(),
           begin: Alignment.topCenter,
           end: Alignment.bottomCenter,
         ),
@@ -51,7 +73,7 @@ class PrinterCard extends StatelessWidget {
                   SizedBox(
                     height: 64,
                     width: 64,
-                    child: SvgWidget(asset),
+                    child: SvgWidget(getAsset()),
                   ),
                   const SizedBox(height: 12),
                   Text(
@@ -76,11 +98,14 @@ class PrinterCard extends StatelessWidget {
               ),
             ),
           ),
-          if (locked)
-            const Positioned(
+          if (getLocked())
+            Positioned(
               top: 8,
               right: 8,
-              child: SvgWidget(Assets.lock),
+              child: SvgWidget(
+                Assets.lock,
+                color: colors.tertiaryFour,
+              ),
             ),
         ],
       ),

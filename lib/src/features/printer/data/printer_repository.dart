@@ -25,6 +25,8 @@ abstract interface class PrinterRepository {
 }
 
 final class PrinterRepositoryImpl implements PrinterRepository {
+  PrinterRepositoryImpl();
+
   @override
   void share(List<File> files) async {
     try {

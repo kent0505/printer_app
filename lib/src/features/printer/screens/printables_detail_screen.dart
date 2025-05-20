@@ -1,5 +1,9 @@
+import 'dart:io';
+import 'dart:typed_data';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:pdf/widgets.dart' as pw;
 import 'package:screenshot/screenshot.dart';
 
 import '../../../core/config/constants.dart';
@@ -27,20 +31,35 @@ class PrintableDetailScreen extends StatefulWidget {
 class _PrintableDetailScreenState extends State<PrintableDetailScreen> {
   final screenshotController = ScreenshotController();
 
-  bool loading = true;
+  Uint8List bytes = Uint8List(0);
+  File file = File('');
+  pw.Document pdf = pw.Document();
 
   void onShare() async {
-    final repo = context.read<PrinterRepository>();
-    final bytes = await repo.getBytes(screenshotController);
-    final file = await repo.getFile(bytes);
-    repo.share([file]);
+    context.read<PrinterRepository>().share([file]);
   }
 
   void onPrint() async {
-    final repo = context.read<PrinterRepository>();
-    final bytes = await repo.getBytes(screenshotController);
-    final pdf = await repo.getPdf(bytes);
-    repo.print(pdf);
+    context.read<PrinterRepository>().print(pdf);
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    Future.delayed(
+      const Duration(seconds: 1),
+      () async {
+        if (mounted) {
+          final repo = context.read<PrinterRepository>();
+          bytes = await repo.getBytes(screenshotController);
+          file = await repo.getFile(bytes);
+          pdf = await repo.getPdf(bytes);
+          if (mounted) {
+            setState(() {});
+          }
+        }
+      },
+    );
   }
 
   @override
@@ -50,7 +69,7 @@ class _PrintableDetailScreenState extends State<PrintableDetailScreen> {
     return Scaffold(
       appBar: Appbar(
         title: widget.printable.title,
-        right: loading
+        right: bytes.isEmpty
             ? const SizedBox(
                 height: 44,
                 width: 44,
@@ -82,7 +101,7 @@ class _PrintableDetailScreenState extends State<PrintableDetailScreen> {
             MainButton(
               title: 'Print',
               asset: Assets.print,
-              active: !loading,
+              active: bytes.isNotEmpty,
               onPressed: onPrint,
             ),
             const SizedBox(height: 44),

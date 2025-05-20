@@ -69,3 +69,18 @@ abstract final class Assets {
 abstract final class Keys {
   static const onboard = 'onboard';
 }
+
+// abstract interface class OnboardRepository {
+//   const OnboardRepository();
+
+//   Future<void> removeOnboard();
+// }
+
+// final class OnboardRepositoryImpl implements OnboardRepository {
+//   OnboardRepositoryImpl({required SharedPreferences prefs}) : _prefs = prefs;
+
+//   final SharedPreferences _prefs;
+
+//   @override
+//   Future<void> removeOnboard() async {}
+// }

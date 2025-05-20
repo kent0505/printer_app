@@ -3,22 +3,12 @@ part of 'photo_bloc.dart';
 @immutable
 sealed class PhotoEvent {}
 
-final class LoadPhotos extends PhotoEvent {}
-
-final class LoadAlbums extends PhotoEvent {}
-
-final class LoadPhotosFromAlbum extends PhotoEvent {
-  LoadPhotosFromAlbum({required this.album});
-
-  final AssetPathEntity album;
-}
-
-final class SelectPhoto extends PhotoEvent {
-  SelectPhoto({
-    required this.file,
-    this.remove = false,
+final class LoadPhotos extends PhotoEvent {
+  LoadPhotos({
+    this.assetPathEntity,
+    this.showAlbums = false,
   });
 
-  final File file;
-  final bool remove;
+  final AssetPathEntity? assetPathEntity;
+  final bool showAlbums;
 }

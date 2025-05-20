@@ -9,6 +9,7 @@ import 'src/features/onboard/data/onboard_repository.dart';
 import 'src/features/internet/bloc/internet_bloc.dart';
 import 'src/features/home/bloc/home_bloc.dart';
 import 'src/features/photo/bloc/photo_bloc.dart';
+import 'src/features/photo/data/photo_repository.dart';
 import 'src/features/printer/data/printer_repository.dart';
 
 // final colors = Theme.of(context).extension<MyColors>()!;
@@ -31,6 +32,9 @@ Future<void> main() async {
         RepositoryProvider<PrinterRepository>(
           create: (context) => PrinterRepositoryImpl(),
         ),
+        RepositoryProvider<PhotoRepository>(
+          create: (context) => PhotoRepositoryImpl(),
+        ),
       ],
       child: MultiBlocProvider(
         providers: [
@@ -38,7 +42,11 @@ Future<void> main() async {
             create: (context) => InternetBloc()..add(CheckInternet()),
           ),
           BlocProvider(create: (context) => HomeBloc()),
-          BlocProvider(create: (context) => PhotoBloc()),
+          BlocProvider(
+            create: (context) => PhotoBloc(
+              repository: context.read<PhotoRepository>(),
+            ),
+          ),
         ],
         child: const MyApp(),
       ),
