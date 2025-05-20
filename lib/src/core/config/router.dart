@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:go_router/go_router.dart';
 
 import '../../features/home/screens/home_screen.dart';
+import '../../features/printer/screens/camera_screen.dart';
 import '../../features/printer/screens/printables_detail_screen.dart';
 import '../../features/printer/screens/documents_screen.dart';
 import '../../features/printer/screens/email_screen.dart';
@@ -35,6 +36,12 @@ final routerConfig = GoRouter(
     GoRoute(
       path: DocumentsScreen.routePath,
       builder: (context, state) => DocumentsScreen(
+        file: state.extra as File,
+      ),
+    ),
+    GoRoute(
+      path: CameraScreen.routePath,
+      builder: (context, state) => CameraScreen(
         file: state.extra as File,
       ),
     ),

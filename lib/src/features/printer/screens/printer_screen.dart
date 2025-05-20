@@ -7,6 +7,7 @@ import '../../internet/widgets/no_internet.dart';
 import '../../photo/screens/photo_screen.dart';
 import '../data/printer_repository.dart';
 import '../widgets/printer_card.dart';
+import 'camera_screen.dart';
 import 'documents_screen.dart';
 import 'email_screen.dart';
 import 'printables_screen.dart';
@@ -46,7 +47,16 @@ class PrinterScreen extends StatelessWidget {
                   id: 2,
                   title: 'Camera',
                   description: 'Make a photo and print',
-                  onPressed: () {},
+                  onPressed: () async {
+                    final file =
+                        await context.read<PrinterRepository>().pickImage();
+                    if (file != null && context.mounted) {
+                      context.push(
+                        CameraScreen.routePath,
+                        extra: file,
+                      );
+                    }
+                  },
                 ),
               ],
             ),

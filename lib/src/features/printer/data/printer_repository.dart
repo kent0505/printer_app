@@ -3,6 +3,7 @@ import 'dart:typed_data';
 import 'dart:ui';
 
 import 'package:file_picker/file_picker.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart';
@@ -22,6 +23,7 @@ abstract interface class PrinterRepository {
   Future<Document> getPdf(Uint8List bytes);
   Future<File> getFile(Uint8List bytes);
   Future<File?> pickFile();
+  Future<File?> pickImage();
 }
 
 final class PrinterRepositoryImpl implements PrinterRepository {
@@ -115,6 +117,21 @@ final class PrinterRepositoryImpl implements PrinterRepository {
       );
       if (result != null && result.files.single.path != null) {
         return File(result.files.single.path!);
+      }
+    } catch (e) {
+      logger(e);
+    }
+    return null;
+  }
+
+  @override
+  Future<File?> pickImage() async {
+    try {
+      final photo = await ImagePicker().pickImage(
+        source: ImageSource.camera,
+      );
+      if (photo != null) {
+        return File(photo.path);
       }
     } catch (e) {
       logger(e);
