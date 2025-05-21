@@ -6,6 +6,7 @@ import '../../../core/config/my_colors.dart';
 import '../../../core/widgets/button.dart';
 import '../../../core/widgets/image_widget.dart';
 import '../../../core/widgets/svg_widget.dart';
+import '../../onboard/screens/printer_model_screen.dart';
 import 'printer_wifi_screen.dart';
 
 class SettingsScreen extends StatelessWidget {
@@ -28,8 +29,13 @@ class SettingsScreen extends StatelessWidget {
           onPressed: () {},
         ),
         _SettingsTile(
-          title: 'FAQ',
-          onPressed: () {},
+          title: 'Printer Model',
+          onPressed: () {
+            context.push(
+              PrinterModelScreen.routePath,
+              extra: false,
+            );
+          },
         ),
         _SettingsTile(
           title: 'How to connect a printer to WIFI?',

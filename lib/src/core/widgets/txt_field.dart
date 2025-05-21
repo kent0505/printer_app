@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import '../config/constants.dart';
+import '../config/my_colors.dart';
 
 class TxtField extends StatelessWidget {
   const TxtField({
@@ -23,18 +24,21 @@ class TxtField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colors = Theme.of(context).extension<MyColors>()!;
+
     return TextField(
       controller: controller,
       keyboardType: number ? TextInputType.number : null,
       readOnly: readOnly,
       inputFormatters: [
-        LengthLimitingTextInputFormatter(50),
+        LengthLimitingTextInputFormatter(30),
         if (number) FilteringTextInputFormatter.digitsOnly,
       ],
       textCapitalization: TextCapitalization.sentences,
       style: TextStyle(
-        color: Colors.white,
-        fontFamily: AppFonts.inter600,
+        color: colors.textPrimary,
+        fontSize: 14,
+        fontFamily: AppFonts.inter400,
       ),
       decoration: InputDecoration(hintText: hintText),
       onTapOutside: (event) {

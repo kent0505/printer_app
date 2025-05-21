@@ -68,6 +68,8 @@ abstract final class Assets {
 
 abstract final class Keys {
   static const onboard = 'onboard';
+  static const printerModel = 'printerModel';
+  static const invoice = 'invoice';
 }
 
 // abstract interface class OnboardRepository {

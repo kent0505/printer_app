@@ -7,6 +7,9 @@ abstract interface class OnboardRepository {
 
   bool isOnboard();
   Future<void> removeOnboard();
+
+  String getPrinterModel();
+  Future<void> savePrinterModel(String value);
 }
 
 final class OnboardRepositoryImpl implements OnboardRepository {
@@ -22,5 +25,15 @@ final class OnboardRepositoryImpl implements OnboardRepository {
   @override
   Future<void> removeOnboard() async {
     await _prefs.setBool(Keys.onboard, false);
+  }
+
+  @override
+  String getPrinterModel() {
+    return _prefs.getString(Keys.printerModel) ?? '';
+  }
+
+  @override
+  Future<void> savePrinterModel(String value) async {
+    await _prefs.setString(Keys.printerModel, value);
   }
 }

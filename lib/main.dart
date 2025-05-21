@@ -5,6 +5,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import 'src/core/config/router.dart';
 import 'src/core/config/themes.dart';
+import 'src/features/firebase/data/firebase_repository.dart';
 import 'src/features/onboard/data/onboard_repository.dart';
 import 'src/features/internet/bloc/internet_bloc.dart';
 import 'src/features/home/bloc/home_bloc.dart';
@@ -28,6 +29,9 @@ Future<void> main() async {
       providers: [
         RepositoryProvider<OnboardRepository>(
           create: (context) => OnboardRepositoryImpl(prefs: prefs),
+        ),
+        RepositoryProvider<FirebaseRepository>(
+          create: (context) => FirebaseRepositoryImpl(prefs: prefs),
         ),
         RepositoryProvider<PrinterRepository>(
           create: (context) => PrinterRepositoryImpl(),

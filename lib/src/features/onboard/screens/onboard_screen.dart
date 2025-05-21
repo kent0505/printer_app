@@ -7,8 +7,8 @@ import '../../../core/config/constants.dart';
 import '../../../core/config/my_colors.dart';
 import '../../../core/widgets/image_widget.dart';
 import '../../../core/widgets/main_button.dart';
-import '../../home/screens/home_screen.dart';
 import '../data/onboard_repository.dart';
+import 'printer_model_screen.dart';
 
 class OnboardScreen extends StatefulWidget {
   const OnboardScreen({super.key});
@@ -27,7 +27,10 @@ class _OnboardScreenState extends State<OnboardScreen> {
     if (index == 2) {
       await context.read<OnboardRepository>().removeOnboard();
       if (mounted) {
-        context.go(HomeScreen.routePath);
+        context.go(
+          PrinterModelScreen.routePath,
+          extra: true,
+        );
       }
     } else {
       pageController.nextPage(

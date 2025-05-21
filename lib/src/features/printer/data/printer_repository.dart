@@ -11,7 +11,6 @@ import 'package:pdf/widgets.dart';
 import 'package:printing/printing.dart';
 import 'package:screenshot/screenshot.dart';
 import 'package:share_plus/share_plus.dart';
-
 import '../../../core/utils.dart';
 
 abstract interface class PrinterRepository {

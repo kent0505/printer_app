@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../firebase/data/firebase_repository.dart';
 import '../../internet/bloc/internet_bloc.dart';
 import '../../internet/widgets/no_internet.dart';
 import '../../photo/screens/photo_screen.dart';
@@ -105,25 +106,26 @@ class PrinterScreen extends StatelessWidget {
               ],
             ),
             const SizedBox(height: 16),
-            Row(
-              children: [
-                PrinterCard(
-                  id: 7,
-                  title: 'Invoice',
-                  onPressed: () {
-                    context.push(WebPagesScreen.routePath);
-                  },
-                ),
-                const SizedBox(width: 16),
-                PrinterCard(
-                  id: 8,
-                  title: 'PDF',
-                  onPressed: () {
-                    context.push(PrintablesScreen.routePath);
-                  },
-                ),
-              ],
-            ),
+            if (context.read<FirebaseRepository>().hasInvoice())
+              Row(
+                children: [
+                  PrinterCard(
+                    id: 7,
+                    title: 'Invoice',
+                    onPressed: () {
+                      context.push(WebPagesScreen.routePath);
+                    },
+                  ),
+                  const SizedBox(width: 16),
+                  PrinterCard(
+                    id: 8,
+                    title: 'PDF',
+                    onPressed: () {
+                      context.push(PrintablesScreen.routePath);
+                    },
+                  ),
+                ],
+              ),
           ],
         );
       },

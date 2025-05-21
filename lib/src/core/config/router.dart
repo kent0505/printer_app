@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:go_router/go_router.dart';
 
 import '../../features/home/screens/home_screen.dart';
+import '../../features/onboard/screens/printer_model_screen.dart';
 import '../../features/printer/screens/camera_screen.dart';
 import '../../features/printer/screens/printables_detail_screen.dart';
 import '../../features/printer/screens/documents_screen.dart';
@@ -82,6 +83,12 @@ final routerConfig = GoRouter(
     GoRoute(
       path: PrinterWifiScreen.routePath,
       builder: (context, state) => const PrinterWifiScreen(),
+    ),
+    GoRoute(
+      path: PrinterModelScreen.routePath,
+      builder: (context, state) => PrinterModelScreen(
+        onboard: state.extra as bool,
+      ),
     ),
   ],
 );
