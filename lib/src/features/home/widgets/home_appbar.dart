@@ -6,6 +6,7 @@ import '../../../core/config/constants.dart';
 import '../../../core/config/my_colors.dart';
 import '../../../core/widgets/button.dart';
 import '../../../core/widgets/svg_widget.dart';
+import '../../firebase/data/firebase_repository.dart';
 import '../../settings/screens/printer_wifi_screen.dart';
 import '../bloc/home_bloc.dart';
 
@@ -54,7 +55,9 @@ class HomeAppbar extends StatelessWidget implements PreferredSizeWidget {
           ),
           const SizedBox(width: 8),
           Button(
-            onPressed: () {},
+            onPressed: () async {
+              await context.read<FirebaseRepository>().getInvoice();
+            },
             child: Container(
               height: 44,
               width: 44,

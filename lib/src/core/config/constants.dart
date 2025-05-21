@@ -70,6 +70,9 @@ abstract final class Keys {
   static const onboard = 'onboard';
   static const printerModel = 'printerModel';
   static const invoice = 'invoice';
+  static const paywall1 = 'paywall1';
+  static const paywall2 = 'paywall2';
+  static const paywall3 = 'paywall3';
 }
 
 // abstract interface class OnboardRepository {

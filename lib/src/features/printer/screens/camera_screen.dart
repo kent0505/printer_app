@@ -7,10 +7,13 @@ import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
 import 'package:printing/printing.dart';
 
+import '../../../core/config/constants.dart';
 import '../../../core/config/my_colors.dart';
 import '../../../core/utils.dart';
 import '../../../core/widgets/appbar.dart';
+import '../../../core/widgets/button.dart';
 import '../../../core/widgets/loading_widget.dart';
+import '../../../core/widgets/svg_widget.dart';
 import '../data/printer_repository.dart';
 
 class CameraScreen extends StatefulWidget {
@@ -65,7 +68,13 @@ class _CameraScreenState extends State<CameraScreen> {
     final colors = Theme.of(context).extension<MyColors>()!;
 
     return Scaffold(
-      appBar: Appbar(title: 'Camera'),
+      appBar: Appbar(
+        title: 'Camera',
+        right: Button(
+          onPressed: printDocument,
+          child: const SvgWidget(Assets.print),
+        ),
+      ),
       body: PdfPreview(
         useActions: false,
         pdfPreviewPageDecoration: BoxDecoration(color: colors.bgOne),

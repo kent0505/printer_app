@@ -16,16 +16,20 @@ dependencies:
   go_router: ^15.1.2
   connectivity_plus: ^6.1.4
   smooth_page_indicator: ^1.2.1
-  photo_manager: ^3.6.4 # display images
   webview_flutter: ^4.11.0
   image_picker: ^1.1.2
   file_picker: ^10.1.9
   pdf: ^3.11.3
-  printing: ^5.14.2
   share_plus: ^10.1.4
   path_provider: ^2.1.5
-  screenshot: ^3.0.0
+  photo_manager: ^3.6.4 # display images
+  printing: ^5.14.2 # print document
+  screenshot: ^3.0.0 # flutter widget to image
+  google_mlkit_text_recognition: ^0.15.0 # extract text from image
   # receive_sharing_intent: ^1.4.5
+  # firebase
+  firebase_core: ^3.13.1
+  cloud_firestore: ^5.6.8
   # vip
   purchases_flutter: ^8.7.4
   purchases_ui_flutter: ^8.7.4
