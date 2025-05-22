@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:purchases_flutter/purchases_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:firebase_core/firebase_core.dart';
 
@@ -14,6 +16,7 @@ import 'src/features/home/bloc/home_bloc.dart';
 import 'src/features/photo/bloc/photo_bloc.dart';
 import 'src/features/photo/data/photo_repository.dart';
 import 'src/features/printer/data/printer_repository.dart';
+import 'src/features/vip/bloc/vip_bloc.dart';
 
 // final colors = Theme.of(context).extension<MyColors>()!;
 Future<void> main() async {
@@ -25,6 +28,12 @@ Future<void> main() async {
 
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
+  );
+
+  await dotenv.load(fileName: ".env");
+
+  await Purchases.configure(
+    PurchasesConfiguration(dotenv.env['API_KEY'] ?? 'xyz'),
   );
 
   final prefs = await SharedPreferences.getInstance();
@@ -52,6 +61,7 @@ Future<void> main() async {
             create: (context) => InternetBloc()..add(CheckInternet()),
           ),
           BlocProvider(create: (context) => HomeBloc()),
+          BlocProvider(create: (context) => VipBloc()),
           BlocProvider(
             create: (context) => PhotoBloc(
               repository: context.read<PhotoRepository>(),
@@ -71,7 +81,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp.router(
       debugShowCheckedModeBanner: false,
-      theme: lightTheme,
+      theme: theme,
       routerConfig: routerConfig,
     );
   }

@@ -3,30 +3,30 @@ import 'package:flutter/material.dart';
 import 'constants.dart';
 import 'my_colors.dart';
 
-final _ligth = MyColors.light();
+final _colors = MyColors.light();
 
-final lightTheme = ThemeData(
+final theme = ThemeData(
   useMaterial3: false,
   brightness: Brightness.light,
   fontFamily: AppFonts.inter400,
   textSelectionTheme: TextSelectionThemeData(
-    cursorColor: _ligth.accentPrimary,
-    selectionColor: _ligth.accentPrimary,
-    selectionHandleColor: _ligth.accentPrimary,
+    cursorColor: _colors.accentPrimary,
+    selectionColor: _colors.accentPrimary,
+    selectionHandleColor: _colors.accentPrimary,
   ),
 
   // OVERSCROLL
   colorScheme: ColorScheme.light(
-    surface: _ligth.bgOne, // bg color when push
-    secondary: _ligth.tertiaryThree, // overscroll
+    surface: _colors.bgOne, // bg color when push
+    secondary: _colors.tertiaryThree, // overscroll
   ),
 
   // SCAFFOLD
-  scaffoldBackgroundColor: _ligth.bgOne,
+  scaffoldBackgroundColor: _colors.bgOne,
 
   // APPBAR
   appBarTheme: AppBarTheme(
-    backgroundColor: _ligth.bgOne,
+    backgroundColor: _colors.bgOne,
     centerTitle: true,
     toolbarHeight: 60, // app bar size
     elevation: 0,
@@ -35,14 +35,14 @@ final lightTheme = ThemeData(
       vertical: 8,
     ),
     titleTextStyle: TextStyle(
-      color: _ligth.textPrimary,
+      color: _colors.textPrimary,
       fontSize: 18,
       fontFamily: AppFonts.inter600,
     ),
     shape: Border(
       bottom: BorderSide(
         width: 1,
-        color: _ligth.tertiaryThree,
+        color: _colors.tertiaryThree,
       ),
     ),
   ),
@@ -58,7 +58,7 @@ final lightTheme = ThemeData(
   // TEXTFIELD
   inputDecorationTheme: InputDecorationTheme(
     filled: true,
-    // fillColor: _ligth.tertiaryOne,
+    // fillColor: _colors.tertiaryOne,
     contentPadding: const EdgeInsets.symmetric(
       vertical: 16,
       horizontal: 16,
@@ -72,7 +72,7 @@ final lightTheme = ThemeData(
       borderSide: const BorderSide(color: Colors.transparent),
     ),
     hintStyle: TextStyle(
-      color: _ligth.textSecondary,
+      color: _colors.textSecondary,
       fontSize: 14,
       fontFamily: AppFonts.inter400,
     ),
@@ -80,7 +80,7 @@ final lightTheme = ThemeData(
 
   // BOTTOM SHEET
   // bottomSheetTheme: BottomSheetThemeData(
-  //   backgroundColor: _ligth.bg,
+  //   backgroundColor: _colors.bg,
   // ),
-  extensions: [_ligth],
+  extensions: [_colors],
 );

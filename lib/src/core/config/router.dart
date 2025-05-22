@@ -15,6 +15,7 @@ import '../../features/onboard/screens/onboard_screen.dart';
 import '../../features/onboard/screens/splash_screen.dart';
 import '../../features/scanner/screens/scanner_screen.dart';
 import '../../features/settings/screens/printer_wifi_screen.dart';
+import '../../features/vip/screens/vip_screen.dart';
 import '../models/printable.dart';
 
 final routerConfig = GoRouter(
@@ -77,6 +78,12 @@ final routerConfig = GoRouter(
     GoRoute(
       path: ScannerScreen.routePath,
       builder: (context, state) => const ScannerScreen(),
+    ),
+
+    // VIP
+    GoRoute(
+      path: VipScreen.routePath,
+      builder: (context, state) => const VipScreen(),
     ),
 
     // SETTINGS

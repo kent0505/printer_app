@@ -3,13 +3,13 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../core/config/constants.dart';
 import '../../../core/utils.dart';
-import 'firebase_data.dart';
+import '../../../core/models/firebase_data.dart';
 
 abstract interface class FirebaseRepository {
   const FirebaseRepository();
 
-  Future<void> saveInvoice();
   Future<FirebaseData> getInvoice();
+  Future<FirebaseData> checkInvoice();
 }
 
 final class FirebaseRepositoryImpl implements FirebaseRepository {
@@ -18,12 +18,17 @@ final class FirebaseRepositoryImpl implements FirebaseRepository {
   final SharedPreferences _prefs;
 
   @override
-  Future<void> saveInvoice() async {
-    await _prefs.setBool(Keys.invoice, true);
+  Future<FirebaseData> getInvoice() async {
+    return FirebaseData(
+      invoice: _prefs.getBool(Keys.invoice) ?? false,
+      paywall1: _prefs.getString(Keys.paywall1) ?? '',
+      paywall2: _prefs.getString(Keys.paywall2) ?? '',
+      paywall3: _prefs.getString(Keys.paywall3) ?? '',
+    );
   }
 
   @override
-  Future<FirebaseData> getInvoice() async {
+  Future<FirebaseData> checkInvoice() async {
     try {
       final firebase = FirebaseFirestore.instance;
       final querySnapshot = await firebase
@@ -39,9 +44,13 @@ final class FirebaseRepositoryImpl implements FirebaseRepository {
       logger(data.paywall3);
 
       await _prefs.setBool(Keys.invoice, data.invoice);
+      await _prefs.setString(Keys.paywall1, data.paywall1);
+      await _prefs.setString(Keys.paywall2, data.paywall2);
+      await _prefs.setString(Keys.paywall3, data.paywall3);
 
       return data;
     } catch (e) {
+      logger('XYZ');
       logger(e);
     }
 

@@ -11,12 +11,14 @@ class PrinterCard extends StatelessWidget {
     required this.id,
     required this.title,
     this.description = '',
+    this.locked = false,
     required this.onPressed,
   });
 
   final int id;
   final String title;
   final String description;
+  final bool locked;
   final VoidCallback onPressed;
 
   String getAsset() {
@@ -39,10 +41,6 @@ class PrinterCard extends StatelessWidget {
     if (id == 6) return const [Color(0xff9F51FF), Color(0xff603199)];
     if (id == 7) return const [Color(0xff28F23C), Color(0xff0DBE25)];
     return const [Color(0xffED2F22), Color(0xffB00B00)];
-  }
-
-  bool getLocked() {
-    return id == 5 || id == 6 || id == 7 || id == 8;
   }
 
   @override
@@ -98,7 +96,7 @@ class PrinterCard extends StatelessWidget {
               ),
             ),
           ),
-          if (getLocked())
+          if (locked)
             Positioned(
               top: 8,
               right: 8,
