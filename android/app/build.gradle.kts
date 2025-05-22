@@ -9,7 +9,7 @@ plugins {
 }
 
 android {
-    namespace = "com.example.printer_app"
+    namespace = "com.helperg.air.printer"
     compileSdk = flutter.compileSdkVersion
     ndkVersion = "27.0.12077973"
 
@@ -24,7 +24,7 @@ android {
 
     defaultConfig {
         // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
-        applicationId = "com.example.printer_app"
+        applicationId = "com.helperg.air.printer"
         // You can update the following values to match your application needs.
         // For more information, see: https://flutter.dev/to/review-gradle-config.
         minSdk = 24
