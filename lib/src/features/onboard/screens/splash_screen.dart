@@ -5,7 +5,10 @@ import 'package:go_router/go_router.dart';
 import '../../../core/config/constants.dart';
 import '../../../core/config/my_colors.dart';
 import '../../../core/widgets/svg_widget.dart';
+import '../../firebase/bloc/firebase_bloc.dart';
 import '../../home/screens/home_screen.dart';
+import '../../internet/bloc/internet_bloc.dart';
+import '../../vip/bloc/vip_bloc.dart';
 import '../data/onboard_repository.dart';
 import 'onboard_screen.dart';
 
@@ -31,11 +34,21 @@ class _SplashScreenState extends State<SplashScreen>
     )..repeat(reverse: true);
 
     _animation = Tween<double>(begin: 1.0, end: 1.05).animate(
-      CurvedAnimation(parent: _controller, curve: Curves.easeInOut),
+      CurvedAnimation(
+        parent: _controller,
+        curve: Curves.easeInOut,
+      ),
     );
 
+    final firebaseBloc = context.read<FirebaseBloc>();
+    context.read<InternetBloc>().add(CheckInternet());
+    firebaseBloc.add(GetFirebaseData());
+    context
+        .read<VipBloc>()
+        .add(CheckVip(identifier: firebaseBloc.state.paywall1));
+
     Future.delayed(
-      const Duration(seconds: 2),
+      const Duration(seconds: 3),
       () {
         _controller.stop();
         if (mounted) {

@@ -2,8 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
-import '../../../core/models/firebase_data.dart';
-import '../../firebase/data/firebase_repository.dart';
+import '../../firebase/bloc/firebase_bloc.dart';
 import '../../internet/bloc/internet_bloc.dart';
 import '../../internet/widgets/no_internet.dart';
 import '../../photo/screens/photo_screen.dart';
@@ -17,50 +16,23 @@ import 'email_screen.dart';
 import 'printables_screen.dart';
 import 'web_pages_screen.dart';
 
-class PrinterScreen extends StatefulWidget {
+class PrinterScreen extends StatelessWidget {
   const PrinterScreen({super.key});
 
   @override
-  State<PrinterScreen> createState() => _PrinterScreenState();
-}
-
-class _PrinterScreenState extends State<PrinterScreen> {
-  FirebaseData data = FirebaseData(
-    invoice: false,
-    paywall1: '',
-    paywall2: '',
-    paywall3: '',
-  );
-
-  bool isVip = false;
-
-  void check() async {
-    data = await context.read<FirebaseRepository>().checkInvoice();
-    setState(() {});
-  }
-
-  void checkVip() {
-    context.read<VipBloc>().add(CheckVip(identifier: data.paywall1));
-    final vip = context.read<VipBloc>().state;
-    setState(() {
-      isVip = vip.isVip;
-    });
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    check();
-  }
-
-  @override
   Widget build(BuildContext context) {
+    final data = context.read<FirebaseBloc>().state;
+
     return BlocConsumer<InternetBloc, bool>(
       listener: (context, hasInternet) {
-        if (hasInternet) checkVip();
+        if (hasInternet) {
+          context.read<VipBloc>().add(CheckVip(identifier: data.paywall1));
+        }
       },
       builder: (context, hasInternet) {
         if (!hasInternet) return const NoInternet();
+
+        final isVip = context.watch<VipBloc>().state.isVip;
 
         return ListView(
           padding: const EdgeInsets.all(16),
@@ -72,14 +44,16 @@ class _PrinterScreenState extends State<PrinterScreen> {
                   title: 'Documents',
                   description: 'Print Documents from a File',
                   onPressed: () async {
-                    final file =
-                        await context.read<PrinterRepository>().pickFile();
-                    if (file != null && context.mounted) {
-                      context.push(
-                        DocumentsScreen.routePath,
-                        extra: file,
-                      );
-                    }
+                    await context.read<PrinterRepository>().pickFile().then(
+                      (value) {
+                        if (value != null && context.mounted) {
+                          context.push(
+                            DocumentsScreen.routePath,
+                            extra: value,
+                          );
+                        }
+                      },
+                    );
                   },
                 ),
                 const SizedBox(width: 16),
@@ -88,14 +62,16 @@ class _PrinterScreenState extends State<PrinterScreen> {
                   title: 'Camera',
                   description: 'Make a photo and print',
                   onPressed: () async {
-                    final file =
-                        await context.read<PrinterRepository>().pickImage();
-                    if (file != null && context.mounted) {
-                      context.push(
-                        CameraScreen.routePath,
-                        extra: file,
-                      );
-                    }
+                    await context.read<PrinterRepository>().pickImage().then(
+                      (value) {
+                        if (value != null && context.mounted) {
+                          context.push(
+                            CameraScreen.routePath,
+                            extra: value,
+                          );
+                        }
+                      },
+                    );
                   },
                 ),
               ],
@@ -131,9 +107,12 @@ class _PrinterScreenState extends State<PrinterScreen> {
                   description: 'Print any website in full size',
                   locked: !isVip,
                   onPressed: () {
-                    context.push(
-                      isVip ? WebPagesScreen.routePath : VipScreen.routePath,
-                    );
+                    isVip
+                        ? context.push(WebPagesScreen.routePath)
+                        : context.push(
+                            VipScreen.routePath,
+                            extra: data.paywall3,
+                          );
                   },
                 ),
                 const SizedBox(width: 16),
@@ -143,9 +122,12 @@ class _PrinterScreenState extends State<PrinterScreen> {
                   description: 'Print giftcards, planners, calendars',
                   locked: !isVip,
                   onPressed: () {
-                    context.push(
-                      isVip ? PrintablesScreen.routePath : VipScreen.routePath,
-                    );
+                    isVip
+                        ? context.push(PrintablesScreen.routePath)
+                        : context.push(
+                            VipScreen.routePath,
+                            extra: data.paywall3,
+                          );
                   },
                 ),
               ],

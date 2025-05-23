@@ -5,9 +5,11 @@ import 'package:go_router/go_router.dart';
 import '../../../core/config/constants.dart';
 import '../../../core/config/my_colors.dart';
 import '../../../core/widgets/button.dart';
-import '../../../core/widgets/dialog_widget.dart';
 import '../../../core/widgets/svg_widget.dart';
+import '../../firebase/bloc/firebase_bloc.dart';
 import '../../settings/screens/printer_wifi_screen.dart';
+import '../../vip/bloc/vip_bloc.dart';
+import '../../vip/screens/vip_screen.dart';
 import '../bloc/home_bloc.dart';
 
 class HomeAppbar extends StatelessWidget implements PreferredSizeWidget {
@@ -55,9 +57,14 @@ class HomeAppbar extends StatelessWidget implements PreferredSizeWidget {
           ),
           const SizedBox(width: 8),
           Button(
-            onPressed: () {
-              DialogWidget.show(context, title: 'Vip');
-            },
+            onPressed: context.read<VipBloc>().state.offering == null
+                ? null
+                : () {
+                    context.push(
+                      VipScreen.routePath,
+                      extra: context.read<FirebaseBloc>().state.paywall2,
+                    );
+                  },
             child: Container(
               height: 44,
               width: 44,
@@ -73,9 +80,7 @@ class HomeAppbar extends StatelessWidget implements PreferredSizeWidget {
                 ),
               ),
               child: const Center(
-                child: SvgWidget(
-                  Assets.premium,
-                ),
+                child: SvgWidget(Assets.premium),
               ),
             ),
           ),

@@ -1,9 +1,9 @@
 class FirebaseData {
   FirebaseData({
-    required this.invoice,
-    required this.paywall1,
-    required this.paywall2,
-    required this.paywall3,
+    this.invoice = false,
+    this.paywall1 = '',
+    this.paywall2 = '',
+    this.paywall3 = '',
   });
 
   final bool invoice;

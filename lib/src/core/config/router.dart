@@ -83,7 +83,9 @@ final routerConfig = GoRouter(
     // VIP
     GoRoute(
       path: VipScreen.routePath,
-      builder: (context, state) => const VipScreen(),
+      builder: (context, state) => VipScreen(
+        identifier: state.extra as String,
+      ),
     ),
 
     // SETTINGS
