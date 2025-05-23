@@ -1,14 +1,18 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
-import 'package:purchases_flutter/purchases_flutter.dart';
+import 'package:receive_sharing_intent/receive_sharing_intent.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:firebase_core/firebase_core.dart';
+// import 'package:flutter_dotenv/flutter_dotenv.dart';
+// import 'package:purchases_flutter/purchases_flutter.dart';
+// import 'package:firebase_core/firebase_core.dart';
 
 import 'src/core/config/router.dart';
 import 'src/core/config/themes.dart';
-import 'src/features/firebase/data/firebase_options.dart';
+// import 'src/features/firebase/data/firebase_options.dart';
+import 'src/core/utils.dart';
 import 'src/features/firebase/data/firebase_repository.dart';
 import 'src/features/onboard/data/onboard_repository.dart';
 import 'src/features/internet/bloc/internet_bloc.dart';
@@ -26,15 +30,15 @@ Future<void> main() async {
     DeviceOrientation.portraitDown,
   ]);
 
-  await Firebase.initializeApp(
-    options: DefaultFirebaseOptions.currentPlatform,
-  );
+  // await Firebase.initializeApp(
+  //   options: DefaultFirebaseOptions.currentPlatform,
+  // );
 
-  await dotenv.load(fileName: ".env");
+  // await dotenv.load(fileName: ".env");
 
-  await Purchases.configure(
-    PurchasesConfiguration(dotenv.env['API_KEY'] ?? 'xyz'),
-  );
+  // await Purchases.configure(
+  //   PurchasesConfiguration(dotenv.env['API_KEY'] ?? 'xyz'),
+  // );
 
   final prefs = await SharedPreferences.getInstance();
   // await prefs.clear();
@@ -74,8 +78,51 @@ Future<void> main() async {
   );
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
   const MyApp({super.key});
+
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  late StreamSubscription _intentSub;
+  final _sharedFiles = <SharedMediaFile>[];
+
+  @override
+  void initState() {
+    super.initState();
+
+    // Listen to media sharing coming from outside the app while the app is in the memory.
+    _intentSub = ReceiveSharingIntent.instance.getMediaStream().listen((value) {
+      setState(() {
+        _sharedFiles.clear();
+        _sharedFiles.addAll(value);
+
+        logger(_sharedFiles.map((f) => f.toMap()));
+      });
+    }, onError: (err) {
+      logger("getIntentDataStream error: $err");
+    });
+
+    // Get the media sharing coming from outside the app while the app is closed.
+    ReceiveSharingIntent.instance.getInitialMedia().then((value) {
+      setState(() {
+        _sharedFiles.clear();
+        _sharedFiles.addAll(value);
+        logger(_sharedFiles.map((f) => f.toMap()));
+
+        // Tell the library that we are done processing the intent.
+        ReceiveSharingIntent.instance.reset();
+      });
+    });
+  }
+
+  @override
+  void dispose() {
+    _intentSub.cancel();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {

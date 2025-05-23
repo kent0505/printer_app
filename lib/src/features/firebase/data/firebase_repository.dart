@@ -1,4 +1,4 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
+// import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../core/config/constants.dart';
@@ -30,25 +30,25 @@ final class FirebaseRepositoryImpl implements FirebaseRepository {
   @override
   Future<FirebaseData> checkInvoice() async {
     try {
-      final firebase = FirebaseFirestore.instance;
-      final querySnapshot = await firebase
-          .collection('invoice')
-          .get()
-          .timeout(const Duration(seconds: 2));
+      // final firebase = FirebaseFirestore.instance;
+      // final querySnapshot = await firebase
+      //     .collection('invoice')
+      //     .get()
+      //     .timeout(const Duration(seconds: 2));
 
-      final data = FirebaseData.fromJson(querySnapshot.docs[0].data());
+      // final data = FirebaseData.fromJson(querySnapshot.docs[0].data());
 
-      logger(data.invoice);
-      logger(data.paywall1);
-      logger(data.paywall2);
-      logger(data.paywall3);
+      // logger(data.invoice);
+      // logger(data.paywall1);
+      // logger(data.paywall2);
+      // logger(data.paywall3);
 
-      await _prefs.setBool(Keys.invoice, data.invoice);
-      await _prefs.setString(Keys.paywall1, data.paywall1);
-      await _prefs.setString(Keys.paywall2, data.paywall2);
-      await _prefs.setString(Keys.paywall3, data.paywall3);
+      // await _prefs.setBool(Keys.invoice, data.invoice);
+      // await _prefs.setString(Keys.paywall1, data.paywall1);
+      // await _prefs.setString(Keys.paywall2, data.paywall2);
+      // await _prefs.setString(Keys.paywall3, data.paywall3);
 
-      return data;
+      // return data;
     } catch (e) {
       logger('XYZ');
       logger(e);

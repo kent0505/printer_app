@@ -1,13 +1,13 @@
-import 'dart:io';
+// import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:google_mlkit_text_recognition/google_mlkit_text_recognition.dart';
-import 'package:image_picker/image_picker.dart';
+// import 'package:image_picker/image_picker.dart';
+// import 'package:google_mlkit_text_recognition/google_mlkit_text_recognition.dart';
 
 import '../../../core/config/constants.dart';
 import '../../../core/config/my_colors.dart';
-import '../../../core/utils.dart';
+// import '../../../core/utils.dart';
 import '../../../core/widgets/button.dart';
 
 class ScannerScreen extends StatefulWidget {
@@ -23,22 +23,22 @@ class _ScannerScreenState extends State<ScannerScreen> {
   String extractedText = '';
 
   Future<void> pickAndReadText() async {
-    final picker = ImagePicker();
-    final pickedImage = await picker.pickImage(source: ImageSource.gallery);
+    // final picker = ImagePicker();
+    // final pickedImage = await picker.pickImage(source: ImageSource.gallery);
 
-    if (pickedImage == null) return;
+    // if (pickedImage == null) return;
 
-    final inputImage = InputImage.fromFile(File(pickedImage.path));
-    final textRecognizer = TextRecognizer();
+    // final inputImage = InputImage.fromFile(File(pickedImage.path));
+    // final textRecognizer = TextRecognizer();
 
-    final RecognizedText recognizedText =
-        await textRecognizer.processImage(inputImage);
+    // final RecognizedText recognizedText =
+    //     await textRecognizer.processImage(inputImage);
 
-    setState(() {
-      extractedText = recognizedText.text;
-    });
-    logger(extractedText);
-    textRecognizer.close();
+    // setState(() {
+    //   extractedText = recognizedText.text;
+    // });
+    // logger(extractedText);
+    // textRecognizer.close();
   }
 
   @override
