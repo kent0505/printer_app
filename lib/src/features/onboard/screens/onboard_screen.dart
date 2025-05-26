@@ -7,6 +7,8 @@ import '../../../core/config/constants.dart';
 import '../../../core/config/my_colors.dart';
 import '../../../core/widgets/image_widget.dart';
 import '../../../core/widgets/main_button.dart';
+import '../../../core/widgets/rotated_widget.dart';
+import '../../../core/widgets/svg_widget.dart';
 import '../data/onboard_repository.dart';
 import 'printer_model_screen.dart';
 
@@ -24,7 +26,7 @@ class _OnboardScreenState extends State<OnboardScreen> {
   final pageController = PageController();
 
   void onNext() async {
-    if (index == 2) {
+    if (index == 3) {
       await context.read<OnboardRepository>().removeOnboard();
       if (mounted) {
         context.go(
@@ -69,9 +71,14 @@ class _OnboardScreenState extends State<OnboardScreen> {
               controller: pageController,
               onPageChanged: onPageChanged,
               children: const [
-                ImageWidget(Assets.onboard1),
-                ImageWidget(Assets.onboard2),
-                ImageWidget(Assets.onboard3),
+                _Phone(asset: Assets.onboard2),
+                _Phone(asset: Assets.onboard3),
+                _Phone(asset: Assets.onboard4),
+                _Phone(asset: Assets.onboard5),
+                // ImageWidget(Assets.onboard1),
+                // ImageWidget(Assets.onboard2),
+                // ImageWidget(Assets.onboard3),
+                // ImageWidget(Assets.onboard4),
               ],
             ),
           ),
@@ -98,16 +105,18 @@ class _OnboardScreenState extends State<OnboardScreen> {
                       activeDotColor: colors.accentPrimary,
                     ),
                     controller: pageController,
-                    count: 3,
+                    count: 4,
                   ),
                 ),
                 const SizedBox(height: 24),
                 Text(
                   index == 0
-                      ? 'Fast Document Scanning and Printing'
+                      ? 'Instant Document Printing'
                       : index == 1
-                          ? 'Connect to Any Printer, Effortlessly'
-                          : 'Fast Edit your PDF and Print',
+                          ? 'Scan Documents Quickly and Easy'
+                          : index == 2
+                              ? 'Instant PDF Printing Made Simple'
+                              : '10,000+ Printers Supported',
                   style: TextStyle(
                     color: colors.textPrimary,
                     fontSize: 32,
@@ -117,10 +126,12 @@ class _OnboardScreenState extends State<OnboardScreen> {
                 const SizedBox(height: 8),
                 Text(
                   index == 0
-                      ? 'Scan files to PDF, edit, and print with ease'
+                      ? 'Print to any AirPrint-compatible printer with ease'
                       : index == 1
-                          ? 'Connect to 8,000+ printers—any brand, no hassle'
-                          : 'Quickly edit text, highlight, and organize your PDFs',
+                          ? 'Easily scan any document from your iPhone or iPad'
+                          : index == 2
+                              ? 'Organize and Manage PDFs Effortlessly'
+                              : 'Easily print to any AirPrint-compatible printer',
                   style: TextStyle(
                     color: colors.textSecondary,
                     fontSize: 14,
@@ -139,5 +150,143 @@ class _OnboardScreenState extends State<OnboardScreen> {
         ],
       ),
     );
+  }
+}
+
+class _Phone extends StatelessWidget {
+  const _Phone({required this.asset});
+
+  final String asset;
+
+  @override
+  Widget build(BuildContext context) {
+    return asset == Assets.onboard5
+        ? Stack(
+            children: const [
+              Positioned(
+                left: 16,
+                bottom: -134,
+                child: ImageWidget(
+                  Assets.onboard5,
+                  height: 458,
+                ),
+              ),
+              Positioned(
+                left: 27,
+                bottom: 42,
+                child: ImageWidget(
+                  Assets.onboard6,
+                  height: 280,
+                ),
+              ),
+              Positioned(
+                top: 76,
+                right: 20,
+                child: SvgWidget(
+                  Assets.printer,
+                  height: 185,
+                ),
+              ),
+              Positioned(
+                top: 50,
+                left: 80,
+                child: SvgWidget(
+                  Assets.wifi,
+                  height: 94,
+                ),
+              ),
+              Positioned(
+                top: 176,
+                left: 10,
+                child: RotatedWidget(
+                  degree: 18,
+                  child: SvgWidget(
+                    Assets.wifi,
+                    height: 80,
+                  ),
+                ),
+              ),
+              Positioned(
+                top: 332,
+                right: 100,
+                child: SvgWidget(
+                  Assets.wifi,
+                  height: 72,
+                ),
+              ),
+            ],
+          )
+        : Center(
+            child: SizedBox(
+              width: 360,
+              child: Stack(
+                alignment: Alignment.center,
+                children: [
+                  SizedBox(
+                    width: 300,
+                    height: 610,
+                    child: Stack(
+                      children: [
+                        Positioned(
+                          top: 68,
+                          left: 0,
+                          right: 0,
+                          child: const ImageWidget(
+                            Assets.onboard1,
+                            height: 610,
+                            width: 300,
+                          ),
+                        ),
+                        Positioned(
+                          top: 78,
+                          left: 0,
+                          right: 0,
+                          child: ImageWidget(
+                            asset,
+                            height: 580,
+                            width: 270,
+                            cacheHeight: 580 * 2,
+                            cacheWidth: 270 * 2,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  if (asset == Assets.onboard4) ...const [
+                    Positioned(
+                      top: 40,
+                      right: 0,
+                      child: SvgWidget(Assets.format1),
+                    ),
+                    Positioned(
+                      top: 150,
+                      left: 0,
+                      child: SvgWidget(Assets.format2),
+                    ),
+                    Positioned(
+                      top: 290,
+                      left: 10,
+                      child: SvgWidget(Assets.format3),
+                    ),
+                    Positioned(
+                      top: 294,
+                      right: -30,
+                      child: SvgWidget(Assets.format4),
+                    ),
+                    Positioned(
+                      top: 462,
+                      left: 6,
+                      child: SvgWidget(Assets.format5),
+                    ),
+                    Positioned(
+                      top: 520,
+                      right: 0,
+                      child: SvgWidget(Assets.format6),
+                    ),
+                  ],
+                ],
+              ),
+            ),
+          );
   }
 }

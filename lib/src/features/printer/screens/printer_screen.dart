@@ -2,13 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../../core/utils.dart';
 import '../../firebase/bloc/firebase_bloc.dart';
 import '../../internet/bloc/internet_bloc.dart';
 import '../../internet/widgets/no_internet.dart';
 import '../../photo/screens/photo_screen.dart';
 import '../../vip/bloc/vip_bloc.dart';
 import '../../vip/screens/vip_screen.dart';
-import '../data/printer_repository.dart';
 import '../widgets/printer_card.dart';
 import 'camera_screen.dart';
 import 'documents_screen.dart';
@@ -44,7 +44,7 @@ class PrinterScreen extends StatelessWidget {
                   title: 'Documents',
                   description: 'Print Documents from a File',
                   onPressed: () async {
-                    await context.read<PrinterRepository>().pickFile().then(
+                    await pickFile().then(
                       (value) {
                         if (value != null && context.mounted) {
                           context.push(
@@ -62,7 +62,7 @@ class PrinterScreen extends StatelessWidget {
                   title: 'Camera',
                   description: 'Make a photo and print',
                   onPressed: () async {
-                    await context.read<PrinterRepository>().pickImage().then(
+                    await pickImage().then(
                       (value) {
                         if (value != null && context.mounted) {
                           context.push(

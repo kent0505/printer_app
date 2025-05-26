@@ -162,6 +162,8 @@ class _Phone extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colors = Theme.of(context).extension<MyColors>()!;
+
     bool first = asset == Assets.phone2;
 
     return Center(
@@ -205,7 +207,38 @@ class _Phone extends StatelessWidget {
                 bottom: 0,
                 left: 50,
                 child: SvgWidget(Assets.connect5),
+              )
+            else if (asset == Assets.phone5) ...[
+              const Positioned(
+                bottom: 324,
+                left: 28,
+                child: SvgWidget(Assets.icon),
               ),
+              Positioned(
+                bottom: 311,
+                left: 24,
+                child: Text(
+                  'Smart Printer',
+                  style: TextStyle(
+                    color: colors.bgOne,
+                    fontSize: 8,
+                    fontFamily: AppFonts.inter500,
+                  ),
+                ),
+              ),
+              Positioned(
+                bottom: 267.5,
+                left: 82,
+                child: Text(
+                  '“Smart Printer”',
+                  style: TextStyle(
+                    color: colors.textPrimary,
+                    fontSize: 12,
+                    fontFamily: AppFonts.inter500,
+                  ),
+                ),
+              ),
+            ],
           ],
         ),
       ),

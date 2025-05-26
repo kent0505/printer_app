@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:camera/camera.dart';
@@ -5,7 +7,9 @@ import 'package:camera/camera.dart';
 
 import '../../../core/config/constants.dart';
 import '../../../core/config/my_colors.dart';
+import '../../../core/utils.dart';
 import '../../../core/widgets/button.dart';
+import '../../../core/widgets/image_widget.dart';
 import '../../../core/widgets/loading_widget.dart';
 
 class ScannerScreen extends StatefulWidget {
@@ -25,9 +29,10 @@ class _ScannerScreenState extends State<ScannerScreen> {
   List<CameraDescription> cameras = [];
   List<XFile> photos = [];
 
-  Future<void> pickAndReadText() async {
+  Future<void> takePicture() async {
     final photo = await controller.takePicture();
     photos.add(photo);
+    logger(photos.length);
     setState(() {});
 
     // final picker = ImagePicker();
@@ -118,32 +123,75 @@ class _ScannerScreenState extends State<ScannerScreen> {
                     ),
                   ),
                 ),
-                Positioned(
-                  bottom: 66,
-                  left: 0,
-                  right: 0,
-                  child: Button(
-                    onPressed: pickAndReadText,
-                    child: Container(
-                      height: 77,
-                      width: 77,
-                      decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        border: Border.all(
-                          width: 4,
-                          color: colors.tertiaryFour,
+                Align(
+                  alignment: Alignment.bottomCenter,
+                  child: Container(
+                    margin: const EdgeInsets.only(bottom: 66),
+                    height: 77,
+                    child: Row(
+                      children: [
+                        const SizedBox(width: 16),
+                        Image.file(
+                          File(photos.last.path),
+                          height: 64,
+                          width: 64,
+                          fit: BoxFit.cover,
+                          frameBuilder: frameBuilder,
+                          errorBuilder: (context, error, stackTrace) {
+                            return const SizedBox(width: 64);
+                          },
                         ),
-                      ),
-                      child: Center(
-                        child: Container(
-                          height: 65,
-                          width: 65,
-                          decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            color: colors.tertiaryFour,
+                        const SizedBox(width: 32),
+                        const Spacer(),
+                        Button(
+                          onPressed: takePicture,
+                          child: Container(
+                            height: 77,
+                            width: 77,
+                            decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              border: Border.all(
+                                width: 4,
+                                color: colors.tertiaryFour,
+                              ),
+                            ),
+                            child: Center(
+                              child: Container(
+                                height: 65,
+                                width: 65,
+                                decoration: BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  color: colors.tertiaryFour,
+                                ),
+                              ),
+                            ),
                           ),
                         ),
-                      ),
+                        const Spacer(),
+                        Button(
+                          onPressed: () {},
+                          minSize: 28,
+                          child: Container(
+                            height: 28,
+                            width: 96,
+                            decoration: BoxDecoration(
+                              color: colors.accentPrimary,
+                              borderRadius: BorderRadius.circular(28),
+                            ),
+                            child: Center(
+                              child: Text(
+                                'Save ${photos.length}',
+                                style: TextStyle(
+                                  color: colors.bgOne,
+                                  fontSize: 14,
+                                  fontFamily: AppFonts.inter400,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                        const SizedBox(width: 16),
+                      ],
                     ),
                   ),
                 ),

@@ -2,11 +2,11 @@ import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
 import 'package:screenshot/screenshot.dart';
 
+import '../../../core/utils.dart';
 import '../../../core/config/constants.dart';
 import '../../../core/config/my_colors.dart';
 import '../../../core/models/printable.dart';
@@ -16,7 +16,6 @@ import '../../../core/widgets/image_widget.dart';
 import '../../../core/widgets/loading_widget.dart';
 import '../../../core/widgets/main_button.dart';
 import '../../../core/widgets/svg_widget.dart';
-import '../data/printer_repository.dart';
 
 class PrintableDetailScreen extends StatefulWidget {
   const PrintableDetailScreen({super.key, required this.printable});
@@ -36,12 +35,12 @@ class _PrintableDetailScreenState extends State<PrintableDetailScreen> {
   File file = File('');
   final pdf = pw.Document();
 
-  void onShare() async {
-    context.read<PrinterRepository>().share([file]);
+  void onShare() {
+    shareFiles([file]);
   }
 
-  void onPrint() async {
-    context.read<PrinterRepository>().print(pdf);
+  void onPrint() {
+    printPdf(pdf);
   }
 
   @override
@@ -51,9 +50,8 @@ class _PrintableDetailScreenState extends State<PrintableDetailScreen> {
       const Duration(seconds: 1),
       () async {
         if (mounted) {
-          final repo = context.read<PrinterRepository>();
-          bytes = await repo.getBytes(screenshotController);
-          file = await repo.getFile(bytes);
+          bytes = await getBytes(screenshotController);
+          file = await getFile(bytes);
           pdf.addPage(
             pw.Page(
               margin: pw.EdgeInsets.zero,

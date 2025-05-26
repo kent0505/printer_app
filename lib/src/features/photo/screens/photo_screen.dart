@@ -6,12 +6,12 @@ import 'package:photo_manager/photo_manager.dart';
 
 import '../../../core/config/constants.dart';
 import '../../../core/config/my_colors.dart';
+import '../../../core/utils.dart';
 import '../../../core/widgets/appbar.dart';
 import '../../../core/widgets/button.dart';
 import '../../../core/widgets/loading_widget.dart';
 import '../../../core/widgets/main_button.dart';
 import '../../../core/widgets/svg_widget.dart';
-import '../../printer/data/printer_repository.dart';
 import '../bloc/photo_bloc.dart';
 import '../data/photo_repository.dart';
 import '../widgets/photo_album_tile.dart';
@@ -44,7 +44,7 @@ class _PhotoScreenState extends State<PhotoScreen> {
     final files =
         await context.read<PhotoRepository>().getFiles(selectedAssetEntities);
     if (state is PhotosLoaded && mounted) {
-      context.read<PrinterRepository>().share(files);
+      shareFiles(files);
     }
   }
 
@@ -75,9 +75,7 @@ class _PhotoScreenState extends State<PhotoScreen> {
         );
       }
 
-      if (mounted) {
-        context.read<PrinterRepository>().print(pdf);
-      }
+      if (mounted) printPdf(pdf);
     }
   }
 

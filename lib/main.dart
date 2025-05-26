@@ -10,18 +10,18 @@ import 'src/core/utils.dart';
 import 'src/core/config/router.dart';
 import 'src/core/config/themes.dart';
 import 'src/features/firebase/bloc/firebase_bloc.dart';
-import 'src/features/firebase/firebase_options.dart';
 import 'src/features/firebase/data/firebase_repository.dart';
+import 'src/features/firebase/firebase_options.dart';
 import 'src/features/onboard/data/onboard_repository.dart';
 import 'src/features/internet/bloc/internet_bloc.dart';
 import 'src/features/home/bloc/home_bloc.dart';
 import 'src/features/photo/bloc/photo_bloc.dart';
 import 'src/features/photo/data/photo_repository.dart';
-import 'src/features/printer/data/printer_repository.dart';
 import 'src/features/vip/bloc/vip_bloc.dart';
 
 // final colors = Theme.of(context).extension<MyColors>()!;
-Future<void> main() async {
+
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,
@@ -52,9 +52,6 @@ Future<void> main() async {
         ),
         RepositoryProvider<FirebaseRepository>(
           create: (context) => FirebaseRepositoryImpl(prefs: prefs),
-        ),
-        RepositoryProvider<PrinterRepository>(
-          create: (context) => PrinterRepositoryImpl(),
         ),
         RepositoryProvider<PhotoRepository>(
           create: (context) => PhotoRepositoryImpl(),

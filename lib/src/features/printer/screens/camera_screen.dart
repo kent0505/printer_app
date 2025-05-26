@@ -2,7 +2,6 @@ import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
 import 'package:printing/printing.dart';
@@ -14,7 +13,6 @@ import '../../../core/widgets/appbar.dart';
 import '../../../core/widgets/button.dart';
 import '../../../core/widgets/loading_widget.dart';
 import '../../../core/widgets/svg_widget.dart';
-import '../data/printer_repository.dart';
 
 class CameraScreen extends StatefulWidget {
   const CameraScreen({super.key, required this.file});
@@ -53,8 +51,8 @@ class _CameraScreenState extends State<CameraScreen> {
     }
   }
 
-  void printDocument() async {
-    context.read<PrinterRepository>().print(pdf);
+  void printDocument() {
+    printPdf(pdf);
   }
 
   @override

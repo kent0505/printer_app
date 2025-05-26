@@ -13,6 +13,8 @@ import '../../features/printer/screens/printables_screen.dart';
 import '../../features/printer/screens/web_pages_screen.dart';
 import '../../features/onboard/screens/onboard_screen.dart';
 import '../../features/onboard/screens/splash_screen.dart';
+import '../../features/scanner/screens/scanned_screen.dart';
+import '../../features/scanner/screens/scanner_preview_screen.dart';
 import '../../features/scanner/screens/scanner_screen.dart';
 import '../../features/settings/screens/printer_wifi_screen.dart';
 import '../../features/vip/screens/vip_screen.dart';
@@ -78,6 +80,18 @@ final routerConfig = GoRouter(
     GoRoute(
       path: ScannerScreen.routePath,
       builder: (context, state) => const ScannerScreen(),
+    ),
+    GoRoute(
+      path: ScannerPreviewScreen.routePath,
+      builder: (context, state) => ScannerPreviewScreen(
+        file: state.extra as File,
+      ),
+    ),
+    GoRoute(
+      path: ScannedScreen.routePath,
+      builder: (context, state) => ScannedScreen(
+        file: state.extra as File,
+      ),
     ),
 
     // VIP

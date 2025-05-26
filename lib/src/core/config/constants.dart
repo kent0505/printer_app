@@ -8,13 +8,25 @@ abstract final class AppFonts {
 abstract final class Assets {
   static const checkbox = 'assets/checkbox.svg';
   static const close = 'assets/close.svg';
+  static const colors = 'assets/colors.svg';
   static const connect1 = 'assets/connect1.svg';
   static const connect2 = 'assets/connect2.svg';
   static const connect3 = 'assets/connect3.svg';
   static const connect4 = 'assets/connect4.svg';
   static const connect5 = 'assets/connect5.svg';
+  static const copy = 'assets/copy.svg';
+  static const crop = 'assets/crop.svg';
   static const down = 'assets/down.svg';
   static const empty = 'assets/empty.svg';
+  static const file = 'assets/file.svg';
+  static const format1 = 'assets/format1.svg';
+  static const format2 = 'assets/format2.svg';
+  static const format3 = 'assets/format3.svg';
+  static const format4 = 'assets/format4.svg';
+  static const format5 = 'assets/format5.svg';
+  static const format6 = 'assets/format6.svg';
+  static const icon = 'assets/icon.svg';
+  static const image = 'assets/image.svg';
   static const info = 'assets/info.svg';
   static const left = 'assets/left.svg';
   static const premium = 'assets/premium.svg';
@@ -23,16 +35,22 @@ abstract final class Assets {
   static const print = 'assets/print.svg';
   static const printer = 'assets/printer.svg';
   static const right = 'assets/right.svg';
+  static const rotate = 'assets/rotate.svg';
   static const scanner = 'assets/scanner.svg';
   static const share = 'assets/share.svg';
   static const splash = 'assets/splash.svg';
+  static const trash = 'assets/trash.svg';
   static const up = 'assets/up.svg';
+  static const wifi = 'assets/wifi.svg';
 
   // images
   static const allFeatures = 'assets/images/all_features.png';
   static const onboard1 = 'assets/images/onboard1.png';
   static const onboard2 = 'assets/images/onboard2.png';
   static const onboard3 = 'assets/images/onboard3.png';
+  static const onboard4 = 'assets/images/onboard4.png';
+  static const onboard5 = 'assets/images/onboard5.png';
+  static const onboard6 = 'assets/images/onboard6.png';
   static const phone1 = 'assets/images/phone1.png';
   static const phone2 = 'assets/images/phone2.png';
   static const phone3 = 'assets/images/phone3.png';
@@ -55,6 +73,7 @@ abstract final class Assets {
   static const planner2 = 'assets/printables/12.jpg';
   static const planner3 = 'assets/printables/13.jpg';
   static const planner4 = 'assets/printables/14.jpg';
+
   // printer
   static const printer1 = 'assets/printer/printer1.svg';
   static const printer2 = 'assets/printer/printer2.svg';
