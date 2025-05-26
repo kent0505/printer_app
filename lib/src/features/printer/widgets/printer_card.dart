@@ -61,6 +61,7 @@ class PrinterCard extends StatelessWidget {
       ),
       child: Stack(
         alignment: Alignment.center,
+        fit: StackFit.expand,
         children: [
           Button(
             onPressed: onPressed,

@@ -1,78 +1,127 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:camera/camera.dart';
-// import 'package:google_mlkit_text_recognition/google_mlkit_text_recognition.dart';
+import 'package:cunning_document_scanner/cunning_document_scanner.dart';
+import 'package:google_mlkit_text_recognition/google_mlkit_text_recognition.dart';
+import 'package:pdf/widgets.dart' as pw;
+import 'package:pdf/pdf.dart';
 
+import '../../../core/models/firebase_data.dart';
+import '../../../core/utils.dart';
 import '../../../core/config/constants.dart';
 import '../../../core/config/my_colors.dart';
-import '../../../core/utils.dart';
 import '../../../core/widgets/button.dart';
 import '../../../core/widgets/image_widget.dart';
-import '../../../core/widgets/loading_widget.dart';
+import '../../../core/widgets/snack_widget.dart';
+import '../../../core/widgets/svg_widget.dart';
+import '../../firebase/bloc/firebase_bloc.dart';
+import '../../vip/bloc/vip_bloc.dart';
+import '../../vip/screens/vip_screen.dart';
 
 class ScannerScreen extends StatefulWidget {
-  const ScannerScreen({super.key});
+  const ScannerScreen({super.key, required this.paths});
 
   static const routePath = '/ScannerScreen';
+
+  final List<String> paths;
 
   @override
   State<ScannerScreen> createState() => _ScannerScreenState();
 }
 
 class _ScannerScreenState extends State<ScannerScreen> {
-  late CameraController controller;
+  List<File> files = [];
+  FirebaseData data = FirebaseData();
+  bool isVip = false;
 
-  String extractedText = '';
-
-  List<CameraDescription> cameras = [];
-  List<XFile> photos = [];
-
-  Future<void> takePicture() async {
-    final photo = await controller.takePicture();
-    photos.add(photo);
-    logger(photos.length);
-    setState(() {});
-
-    // final picker = ImagePicker();
-    // final pickedImage = await picker.pickImage(source: ImageSource.gallery);
-
-    // if (pickedImage == null) return;
-
-    // final inputImage = InputImage.fromFile(File(pickedImage.path));
-    // final textRecognizer = TextRecognizer();
-
-    // final RecognizedText recognizedText =
-    //     await textRecognizer.processImage(inputImage);
-
-    // setState(() {
-    //   extractedText = recognizedText.text;
-    // });
-    // logger(extractedText);
-    // textRecognizer.close();
+  void onCopyText() async {
+    if (isVip) {
+      final textRecognizer = TextRecognizer();
+      final recognizedText = await textRecognizer.processImage(
+        InputImage.fromFile(files.first),
+      );
+      logger(recognizedText.text);
+      textRecognizer.close();
+      await Clipboard.setData(ClipboardData(text: recognizedText.text));
+      if (mounted) {
+        SnackWidget.show(context, 'Copied to clipboard');
+      }
+    } else {
+      context.push(
+        VipScreen.routePath,
+        extra: data.paywall3,
+      );
+    }
   }
 
-  void load() async {
-    cameras = await availableCameras();
-    controller = CameraController(
-      cameras[0],
-      ResolutionPreset.max,
-    );
-    await controller.initialize();
-    setState(() {});
+  void onAddImage() async {
+    await CunningDocumentScanner.getPictures().then((value) {
+      if (value != null && mounted) {
+        for (String path in value) {
+          files.add(File(path));
+        }
+        setState(() {});
+      }
+    });
+  }
+
+  void onShare() {
+    if (isVip) {
+      shareFiles(files);
+    } else {
+      context.push(
+        VipScreen.routePath,
+        extra: data.paywall3,
+      );
+    }
+  }
+
+  void onPrint() async {
+    if (isVip) {
+      final pdf = pw.Document();
+
+      for (final file in files) {
+        final bytes = await file.readAsBytes();
+
+        pdf.addPage(
+          pw.Page(
+            margin: pw.EdgeInsets.zero,
+            pageFormat: PdfPageFormat.a4,
+            build: (context) {
+              return pw.Center(
+                child: pw.Image(
+                  pw.MemoryImage(bytes),
+                  fit: pw.BoxFit.contain,
+                ),
+              );
+            },
+          ),
+        );
+      }
+
+      printPdf(pdf);
+    } else {
+      context.push(
+        VipScreen.routePath,
+        extra: data.paywall3,
+      );
+    }
   }
 
   @override
   void initState() {
     super.initState();
-    load();
-  }
-
-  @override
-  void dispose() {
-    controller.dispose();
-    super.dispose();
+    data = context.read<FirebaseBloc>().state;
+    isVip = context.read<VipBloc>().state.isVip;
+    files = List.generate(
+      widget.paths.length,
+      (index) {
+        return File(widget.paths[index]);
+      },
+    );
   }
 
   @override
@@ -80,123 +129,78 @@ class _ScannerScreenState extends State<ScannerScreen> {
     final colors = Theme.of(context).extension<MyColors>()!;
 
     return Scaffold(
-      body: cameras.isEmpty
-          ? const LoadingWidget()
-          : Stack(
-              fit: StackFit.expand,
+      appBar: AppBar(
+        centerTitle: false,
+        automaticallyImplyLeading: false,
+        title: Text(
+          'Scanned Document',
+          style: TextStyle(
+            color: colors.textPrimary,
+            fontSize: 24,
+            fontFamily: AppFonts.inter600,
+          ),
+        ),
+        actions: [
+          Button(
+            onPressed: () {
+              context.pop();
+            },
+            child: const SvgWidget(
+              Assets.close,
+              height: 32,
+              width: 32,
+            ),
+          ),
+        ],
+      ),
+      body: Column(
+        children: [
+          Expanded(
+            child: ListView.builder(
+              padding: const EdgeInsets.all(16),
+              itemCount: files.length,
+              itemBuilder: (context, index) {
+                return Image.file(
+                  files[index],
+                  frameBuilder: frameBuilder,
+                );
+              },
+            ),
+          ),
+          SizedBox(
+            height: 60,
+            child: Row(
               children: [
-                CameraPreview(controller),
-                Positioned(
-                  top: 0,
-                  left: 0,
-                  right: 0,
-                  child: Container(
-                    height: 110,
-                    alignment: Alignment.bottomCenter,
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 16,
-                      vertical: 8,
-                    ),
-                    color: colors.layerFive,
-                    child: Row(
-                      children: [
-                        Button(
-                          onPressed: () {
-                            context.pop();
-                          },
-                          child: Padding(
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: 12,
-                              vertical: 8,
-                            ),
-                            child: Text(
-                              'Cancel',
-                              style: TextStyle(
-                                color: colors.bgOne,
-                                fontSize: 16,
-                                fontFamily: AppFonts.inter600,
-                              ),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
+                const SizedBox(width: 16),
+                Button(
+                  onPressed: onCopyText,
+                  child: const SvgWidget(Assets.copy),
+                ),
+                const Spacer(),
+                Button(
+                  onPressed: onAddImage,
+                  child: const SvgWidget(Assets.image),
+                ),
+                const Spacer(),
+                Button(
+                  onPressed: onShare,
+                  child: SvgWidget(
+                    Assets.share,
+                    color: colors.accentPrimary,
                   ),
                 ),
-                Align(
-                  alignment: Alignment.bottomCenter,
-                  child: Container(
-                    margin: const EdgeInsets.only(bottom: 66),
-                    height: 77,
-                    child: Row(
-                      children: [
-                        const SizedBox(width: 16),
-                        Image.file(
-                          File(photos.last.path),
-                          height: 64,
-                          width: 64,
-                          fit: BoxFit.cover,
-                          frameBuilder: frameBuilder,
-                          errorBuilder: (context, error, stackTrace) {
-                            return const SizedBox(width: 64);
-                          },
-                        ),
-                        const SizedBox(width: 32),
-                        const Spacer(),
-                        Button(
-                          onPressed: takePicture,
-                          child: Container(
-                            height: 77,
-                            width: 77,
-                            decoration: BoxDecoration(
-                              shape: BoxShape.circle,
-                              border: Border.all(
-                                width: 4,
-                                color: colors.tertiaryFour,
-                              ),
-                            ),
-                            child: Center(
-                              child: Container(
-                                height: 65,
-                                width: 65,
-                                decoration: BoxDecoration(
-                                  shape: BoxShape.circle,
-                                  color: colors.tertiaryFour,
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
-                        const Spacer(),
-                        Button(
-                          onPressed: () {},
-                          minSize: 28,
-                          child: Container(
-                            height: 28,
-                            width: 96,
-                            decoration: BoxDecoration(
-                              color: colors.accentPrimary,
-                              borderRadius: BorderRadius.circular(28),
-                            ),
-                            child: Center(
-                              child: Text(
-                                'Save ${photos.length}',
-                                style: TextStyle(
-                                  color: colors.bgOne,
-                                  fontSize: 14,
-                                  fontFamily: AppFonts.inter400,
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
-                        const SizedBox(width: 16),
-                      ],
-                    ),
-                  ),
+                const Spacer(),
+                Button(
+                  onPressed: onPrint,
+                  child: const SvgWidget(Assets.print),
                 ),
+                const SizedBox(width: 16),
               ],
             ),
+          ),
+          const SizedBox(height: 34),
+        ],
+      ),
     );
   }
 }

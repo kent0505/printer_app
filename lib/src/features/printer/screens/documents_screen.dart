@@ -70,7 +70,11 @@ class _DocumentsScreenState extends State<DocumentsScreen> {
   }
 
   void printDocument() {
-    printPdf(pdf);
+    if (widget.file.path.toLowerCase().endsWith('.pdf')) {
+      Printing.layoutPdf(onLayout: (_) => widget.file.readAsBytes());
+    } else {
+      printPdf(pdf);
+    }
   }
 
   @override

@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:cunning_document_scanner/cunning_document_scanner.dart';
 
-import '../../../core/utils.dart';
 import '../../../core/config/constants.dart';
 import '../../../core/config/my_colors.dart';
 import '../../../core/widgets/svg_widget.dart';
 import '../../../core/widgets/button.dart';
-import '../../scanner/screens/scanner_preview_screen.dart';
+import '../../scanner/screens/scanner_screen.dart';
 import '../bloc/home_bloc.dart';
 
 class NavBar extends StatelessWidget {
@@ -43,16 +43,14 @@ class NavBar extends StatelessWidget {
                   title: 'Scanner',
                   asset: Assets.scanner,
                   onPressed: () async {
-                    await pickImage().then(
-                      (value) {
-                        if (value != null && context.mounted) {
-                          context.push(
-                            ScannerPreviewScreen.routePath,
-                            extra: value,
-                          );
-                        }
-                      },
-                    );
+                    await CunningDocumentScanner.getPictures().then((value) {
+                      if (value != null && context.mounted) {
+                        context.push(
+                          ScannerScreen.routePath,
+                          extra: value,
+                        );
+                      }
+                    });
                   },
                 ),
                 _NavBarButton(

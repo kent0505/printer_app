@@ -23,7 +23,6 @@ class WebPagesScreen extends StatefulWidget {
 class _WebPagesScreenState extends State<WebPagesScreen> {
   late final WebViewController _controller;
   final screenshotController = ScreenshotController();
-  final pdf = pw.Document();
 
   void onLeft() async {
     if (await _controller.canGoBack()) {
@@ -42,22 +41,23 @@ class _WebPagesScreenState extends State<WebPagesScreen> {
   }
 
   void onPrint() async {
-    final bytes = await getBytes(screenshotController);
-    pdf.addPage(
-      pw.Page(
-        margin: pw.EdgeInsets.zero,
-        pageFormat: PdfPageFormat.a4,
-        build: (context) {
-          return pw.Center(
-            child: pw.Image(
-              pw.MemoryImage(bytes),
-              fit: pw.BoxFit.contain,
-            ),
-          );
-        },
-      ),
-    );
-    printPdf(pdf);
+    await getBytes(screenshotController).then((value) {
+      final pdf = pw.Document();
+      pdf.addPage(
+        pw.Page(
+          margin: pw.EdgeInsets.zero,
+          pageFormat: PdfPageFormat.a4,
+          build: (context) {
+            return pw.Center(
+              child: pw.Image(
+                pw.MemoryImage(value),
+                fit: pw.BoxFit.contain,
+              ),
+            );
+          },
+        ),
+      );
+    });
   }
 
   @override
@@ -86,8 +86,9 @@ class _WebPagesScreenState extends State<WebPagesScreen> {
         children: [
           Expanded(
             child: Screenshot(
-                controller: screenshotController,
-                child: WebViewWidget(controller: _controller)),
+              controller: screenshotController,
+              child: WebViewWidget(controller: _controller),
+            ),
           ),
           Container(
             height: 70,

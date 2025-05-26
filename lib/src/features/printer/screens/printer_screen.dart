@@ -140,7 +140,7 @@ class PrinterScreen extends StatelessWidget {
                     id: 7,
                     title: 'Invoice',
                     onPressed: () {
-                      context.push(WebPagesScreen.routePath);
+                      // context.push(WebPagesScreen.routePath);
                     },
                   ),
                   const SizedBox(width: 16),
@@ -148,7 +148,7 @@ class PrinterScreen extends StatelessWidget {
                     id: 8,
                     title: 'PDF',
                     onPressed: () {
-                      context.push(PrintablesScreen.routePath);
+                      // context.push(PrintablesScreen.routePath);
                     },
                   ),
                 ],

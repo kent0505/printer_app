@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../core/config/constants.dart';
@@ -7,6 +8,7 @@ import '../../../core/widgets/button.dart';
 import '../../../core/widgets/image_widget.dart';
 import '../../../core/widgets/svg_widget.dart';
 import '../../onboard/screens/printer_model_screen.dart';
+import '../../vip/bloc/vip_bloc.dart';
 import 'printer_wifi_screen.dart';
 
 class SettingsScreen extends StatelessWidget {
@@ -169,6 +171,7 @@ class _Subscription extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final colors = Theme.of(context).extension<MyColors>()!;
+    final vip = context.watch<VipBloc>().state;
 
     return SizedBox(
       height: 48,
@@ -185,7 +188,7 @@ class _Subscription extends StatelessWidget {
           ),
           const Spacer(),
           Text(
-            'Free',
+            vip.isVip ? 'PRO' : 'Free',
             style: TextStyle(
               color: colors.accentPrimary,
               fontSize: 16,
