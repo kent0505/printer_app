@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-import '../../../core/widgets/appbar.dart';
 import 'vip_sheet.dart';
 
 class VipScreen extends StatelessWidget {
@@ -13,9 +12,6 @@ class VipScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: Appbar(
-        title: 'Test vip app bar',
-      ),
       body: VipSheet(identifier: identifier),
     );
   }

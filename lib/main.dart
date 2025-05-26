@@ -2,11 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:purchases_flutter/purchases_flutter.dart';
 import 'package:firebase_core/firebase_core.dart';
 
-import 'src/core/utils.dart';
 import 'src/core/config/router.dart';
 import 'src/core/config/themes.dart';
 import 'src/features/firebase/bloc/firebase_bloc.dart';
@@ -32,14 +30,9 @@ void main() async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
 
-  try {
-    await dotenv.load(fileName: ".env");
-    await Purchases.configure(
-      PurchasesConfiguration(dotenv.env['API_KEY'] ?? 'xyz'),
-    );
-  } catch (e) {
-    logger(e);
-  }
+  await Purchases.configure(
+    PurchasesConfiguration('appl_QXIwkJLeTRKxrxoaXxAgYijODVh'),
+  );
 
   final prefs = await SharedPreferences.getInstance();
   // await prefs.clear();

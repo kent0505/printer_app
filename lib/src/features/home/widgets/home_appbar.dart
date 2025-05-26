@@ -6,10 +6,8 @@ import '../../../core/config/constants.dart';
 import '../../../core/config/my_colors.dart';
 import '../../../core/widgets/button.dart';
 import '../../../core/widgets/svg_widget.dart';
-import '../../firebase/bloc/firebase_bloc.dart';
 import '../../settings/screens/printer_wifi_screen.dart';
-import '../../vip/bloc/vip_bloc.dart';
-import '../../vip/screens/vip_screen.dart';
+import '../../vip/screens/vip_sheet.dart';
 import '../bloc/home_bloc.dart';
 
 class HomeAppbar extends StatelessWidget implements PreferredSizeWidget {
@@ -57,14 +55,12 @@ class HomeAppbar extends StatelessWidget implements PreferredSizeWidget {
           ),
           const SizedBox(width: 8),
           Button(
-            onPressed: context.read<VipBloc>().state.offering == null
-                ? null
-                : () {
-                    context.push(
-                      VipScreen.routePath,
-                      extra: context.read<FirebaseBloc>().state.paywall2,
-                    );
-                  },
+            onPressed: () {
+              VipSheet.show(
+                context,
+                identifier: Identifiers.paywall2,
+              );
+            },
             child: Container(
               height: 44,
               width: 44,

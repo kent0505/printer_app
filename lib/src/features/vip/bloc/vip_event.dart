@@ -4,7 +4,7 @@ part of 'vip_bloc.dart';
 sealed class VipEvent {}
 
 final class CheckVip extends VipEvent {
-  CheckVip({required this.identifier});
+  CheckVip({this.identifier = ''});
 
   final String identifier;
 }

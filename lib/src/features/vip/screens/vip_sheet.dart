@@ -3,8 +3,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:purchases_ui_flutter/purchases_ui_flutter.dart';
 
+import '../../../core/models/vip.dart';
 import '../../../core/widgets/dialog_widget.dart';
-import '../../../core/widgets/loading_widget.dart';
+// import '../../../core/widgets/loading_widget.dart';
 import '../bloc/vip_bloc.dart';
 
 class VipSheet extends StatefulWidget {
@@ -39,12 +40,13 @@ class _VipSheetState extends State<VipSheet> {
       context.pop();
     }
     DialogWidget.show(context, title: title);
-    context.read<VipBloc>().add(CheckVip(identifier: widget.identifier));
+    context.read<VipBloc>().add(CheckVip());
   }
 
   @override
   void initState() {
     super.initState();
+    context.read<VipBloc>().add(CheckVip(identifier: widget.identifier));
     Future.delayed(Duration(seconds: 1), () {
       setState(() {
         visible = true;
@@ -54,21 +56,22 @@ class _VipSheetState extends State<VipSheet> {
 
   @override
   Widget build(BuildContext context) {
-    final state = context.read<VipBloc>().state;
+    return AnimatedOpacity(
+      opacity: visible ? 1.0 : 0.0,
+      duration: const Duration(milliseconds: 1000),
+      curve: Curves.easeInOut,
+      child: BlocConsumer<VipBloc, Vip>(
+        listener: (context, state) {
+          if (state.offering == null) {
+            showInfo('Offering is null');
+          }
+        },
+        builder: (context, state) {
+          if (state.loading || state.offering == null) {
+            return const SizedBox();
+          }
 
-    if (state.offering == null) {
-      return const SizedBox();
-    }
-
-    return Stack(
-      alignment: Alignment.center,
-      children: [
-        const LoadingWidget(),
-        AnimatedOpacity(
-          opacity: visible ? 1.0 : 0.0,
-          duration: const Duration(milliseconds: 500),
-          curve: Curves.easeInOut,
-          child: PaywallView(
+          return PaywallView(
             offering: state.offering,
             onDismiss: () {
               context.pop();
@@ -88,9 +91,9 @@ class _VipSheetState extends State<VipSheet> {
             onRestoreError: (e) {
               showInfo('Restore Error');
             },
-          ),
-        ),
-      ],
+          );
+        },
+      ),
     );
   }
 }

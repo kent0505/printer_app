@@ -94,6 +94,12 @@ abstract final class Keys {
   static const paywall3 = 'paywall3';
 }
 
+abstract final class Identifiers {
+  static const paywall1 = 'paywall_1';
+  static const paywall2 = 'paywall_2';
+  static const paywall3 = 'paywall_3';
+}
+
 // abstract interface class OnboardRepository {
 //   const OnboardRepository();
 

@@ -52,7 +52,7 @@ class _ScannerScreenState extends State<ScannerScreen> {
     } else {
       context.push(
         VipScreen.routePath,
-        extra: data.paywall3,
+        extra: Identifiers.paywall3,
       );
     }
   }
@@ -74,7 +74,7 @@ class _ScannerScreenState extends State<ScannerScreen> {
     } else {
       context.push(
         VipScreen.routePath,
-        extra: data.paywall3,
+        extra: Identifiers.paywall3,
       );
     }
   }
@@ -106,7 +106,7 @@ class _ScannerScreenState extends State<ScannerScreen> {
     } else {
       context.push(
         VipScreen.routePath,
-        extra: data.paywall3,
+        extra: Identifiers.paywall3,
       );
     }
   }

@@ -4,11 +4,13 @@ import 'package:go_router/go_router.dart';
 
 import '../../../core/config/constants.dart';
 import '../../../core/config/my_colors.dart';
+import '../../../core/models/vip.dart';
 import '../../../core/widgets/button.dart';
 import '../../../core/widgets/image_widget.dart';
 import '../../../core/widgets/svg_widget.dart';
 import '../../onboard/screens/printer_model_screen.dart';
 import '../../vip/bloc/vip_bloc.dart';
+import '../../vip/screens/vip_screen.dart';
 import 'printer_wifi_screen.dart';
 
 class SettingsScreen extends StatelessWidget {
@@ -18,7 +20,11 @@ class SettingsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return ListView(
       children: [
-        const _Unlock(),
+        BlocBuilder<VipBloc, Vip>(
+          builder: (context, state) {
+            return state.isVip ? const SizedBox() : const _Unlock();
+          },
+        ),
         const SizedBox(height: 16),
         const _Subscription(),
         const SizedBox(height: 12),
@@ -133,7 +139,12 @@ class _Unlock extends StatelessWidget {
                       borderRadius: BorderRadius.circular(20),
                     ),
                     child: Button(
-                      onPressed: () {},
+                      onPressed: () {
+                        context.push(
+                          VipScreen.routePath,
+                          extra: Identifiers.paywall3,
+                        );
+                      },
                       child: Center(
                         child: Text(
                           'Unlock Now',
@@ -171,7 +182,6 @@ class _Subscription extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final colors = Theme.of(context).extension<MyColors>()!;
-    final vip = context.watch<VipBloc>().state;
 
     return SizedBox(
       height: 48,
@@ -187,13 +197,17 @@ class _Subscription extends StatelessWidget {
             ),
           ),
           const Spacer(),
-          Text(
-            vip.isVip ? 'PRO' : 'Free',
-            style: TextStyle(
-              color: colors.accentPrimary,
-              fontSize: 16,
-              fontFamily: AppFonts.inter600,
-            ),
+          BlocBuilder<VipBloc, Vip>(
+            builder: (context, state) {
+              return Text(
+                state.isVip ? 'PRO' : 'Free',
+                style: TextStyle(
+                  color: colors.accentPrimary,
+                  fontSize: 16,
+                  fontFamily: AppFonts.inter600,
+                ),
+              );
+            },
           ),
           const SizedBox(width: 32),
         ],

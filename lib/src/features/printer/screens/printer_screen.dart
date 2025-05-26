@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../../core/config/constants.dart';
 import '../../../core/utils.dart';
 import '../../firebase/bloc/firebase_bloc.dart';
 import '../../internet/bloc/internet_bloc.dart';
@@ -21,14 +22,7 @@ class PrinterScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final data = context.read<FirebaseBloc>().state;
-
-    return BlocConsumer<InternetBloc, bool>(
-      listener: (context, hasInternet) {
-        if (hasInternet) {
-          context.read<VipBloc>().add(CheckVip(identifier: data.paywall1));
-        }
-      },
+    return BlocBuilder<InternetBloc, bool>(
       builder: (context, hasInternet) {
         if (!hasInternet) return const NoInternet();
 
@@ -111,7 +105,7 @@ class PrinterScreen extends StatelessWidget {
                         ? context.push(WebPagesScreen.routePath)
                         : context.push(
                             VipScreen.routePath,
-                            extra: data.paywall3,
+                            extra: Identifiers.paywall3,
                           );
                   },
                 ),
@@ -126,14 +120,14 @@ class PrinterScreen extends StatelessWidget {
                         ? context.push(PrintablesScreen.routePath)
                         : context.push(
                             VipScreen.routePath,
-                            extra: data.paywall3,
+                            extra: Identifiers.paywall3,
                           );
                   },
                 ),
               ],
             ),
             const SizedBox(height: 16),
-            if (data.invoice)
+            if (context.read<FirebaseBloc>().state.invoice)
               Row(
                 children: [
                   PrinterCard(
