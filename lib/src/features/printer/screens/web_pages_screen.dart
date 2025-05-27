@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
 import 'package:screenshot/screenshot.dart';
@@ -24,7 +23,6 @@ class WebPagesScreen extends StatefulWidget {
 class _WebPagesScreenState extends State<WebPagesScreen> {
   late final WebViewController _controller;
   final screenshotController = ScreenshotController();
-  final platform = MethodChannel('com.example.webview/screenshot');
 
   void onLeft() async {
     if (await _controller.canGoBack()) {
@@ -42,21 +40,9 @@ class _WebPagesScreenState extends State<WebPagesScreen> {
     _controller.reload();
   }
 
-  Future<Uint8List?> captureWebViewScreenshot() async {
-    try {
-      final result = await platform.invokeMethod('captureScreenshot');
-      return result as Uint8List?;
-    } on PlatformException catch (e) {
-      logger('Failed to capture screenshot: ${e.message}');
-      return null;
-    }
-  }
-
   void onPrint() async {
     try {
-      final bytes = await captureWebViewScreenshot();
-      // final bytes = await getBytes(screenshotController);
-      if (bytes == null) throw Exception('bytes is null');
+      final bytes = await getBytes(screenshotController);
 
       final pdf = pw.Document();
       pdf.addPage(
