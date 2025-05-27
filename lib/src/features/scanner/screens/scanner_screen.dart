@@ -43,11 +43,17 @@ class _ScannerScreenState extends State<ScannerScreen> {
       final recognizedText = await textRecognizer.processImage(
         InputImage.fromFile(files.first),
       );
-      logger(recognizedText.text);
+      final text = recognizedText.text;
+      logger(text);
       textRecognizer.close();
-      await Clipboard.setData(ClipboardData(text: recognizedText.text));
+      if (text.isNotEmpty) {
+        await Clipboard.setData(ClipboardData(text: text));
+      }
       if (mounted) {
-        SnackWidget.show(context, 'Copied to clipboard');
+        SnackWidget.show(
+          context,
+          text.isEmpty ? 'Text not found' : 'Copied to clipboard',
+        );
       }
     } else {
       context.push(
@@ -174,7 +180,11 @@ class _ScannerScreenState extends State<ScannerScreen> {
                 const SizedBox(width: 16),
                 Button(
                   onPressed: onCopyText,
-                  child: const SvgWidget(Assets.copy),
+                  child: const SvgWidget(
+                    Assets.copy,
+                    width: 24,
+                    height: 24,
+                  ),
                 ),
                 const Spacer(),
                 Button(

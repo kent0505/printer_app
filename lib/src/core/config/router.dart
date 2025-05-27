@@ -55,14 +55,6 @@ final routerConfig = GoRouter(
       path: WebPagesScreen.routePath,
       builder: (context, state) => const WebPagesScreen(),
     ),
-
-    // PHOTO
-    GoRoute(
-      path: PhotoScreen.routePath,
-      builder: (context, state) => const PhotoScreen(),
-    ),
-
-    // PRINTABLES
     GoRoute(
       path: PrintablesScreen.routePath,
       builder: (context, state) => const PrintablesScreen(),
@@ -72,6 +64,12 @@ final routerConfig = GoRouter(
       builder: (context, state) => PrintableDetailScreen(
         printable: state.extra as Printable,
       ),
+    ),
+
+    // PHOTO
+    GoRoute(
+      path: PhotoScreen.routePath,
+      builder: (context, state) => const PhotoScreen(),
     ),
 
     // SCANNER

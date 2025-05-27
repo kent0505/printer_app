@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:cunning_document_scanner/cunning_document_scanner.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 import '../../../core/config/constants.dart';
 import '../../../core/config/my_colors.dart';
@@ -43,16 +44,23 @@ class NavBar extends StatelessWidget {
                   title: 'Scanner',
                   asset: Assets.scanner,
                   onPressed: () async {
-                    await CunningDocumentScanner.getPictures().then((value) {
-                      if (value != null &&
-                          value.isNotEmpty &&
-                          context.mounted) {
-                        context.push(
-                          ScannerScreen.routePath,
-                          extra: value,
-                        );
+                    if (await Permission.camera.status.isGranted) {
+                      await CunningDocumentScanner.getPictures().then((value) {
+                        if (value != null &&
+                            value.isNotEmpty &&
+                            context.mounted) {
+                          context.push(
+                            ScannerScreen.routePath,
+                            extra: value,
+                          );
+                        }
+                      });
+                    } else {
+                      final result = await Permission.camera.request();
+                      if (result.isPermanentlyDenied) {
+                        openAppSettings();
                       }
-                    });
+                    }
                   },
                 ),
                 _NavBarButton(
