@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../../../core/config/constants.dart';
 import '../../../core/utils.dart';
@@ -133,16 +134,32 @@ class PrinterScreen extends StatelessWidget {
                   PrinterCard(
                     id: 7,
                     title: 'Invoice',
-                    onPressed: () {
-                      // context.push(WebPagesScreen.routePath);
+                    onPressed: () async {
+                      try {
+                        if (!await launchUrl(
+                          Uri.parse(Urls.url1),
+                        )) {
+                          throw 'Could not launch url';
+                        }
+                      } catch (e) {
+                        logger(e);
+                      }
                     },
                   ),
                   const SizedBox(width: 16),
                   PrinterCard(
                     id: 8,
                     title: 'PDF',
-                    onPressed: () {
-                      // context.push(PrintablesScreen.routePath);
+                    onPressed: () async {
+                      try {
+                        if (!await launchUrl(
+                          Uri.parse(Urls.url2),
+                        )) {
+                          throw 'Could not launch url';
+                        }
+                      } catch (e) {
+                        logger(e);
+                      }
                     },
                   ),
                 ],

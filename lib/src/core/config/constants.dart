@@ -100,6 +100,11 @@ abstract final class Identifiers {
   static const paywall3 = 'paywall_3';
 }
 
+abstract final class Urls {
+  static const url1 = '';
+  static const url2 = '';
+}
+
 // abstract interface class OnboardRepository {
 //   const OnboardRepository();
 

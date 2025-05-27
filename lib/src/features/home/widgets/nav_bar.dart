@@ -44,7 +44,9 @@ class NavBar extends StatelessWidget {
                   asset: Assets.scanner,
                   onPressed: () async {
                     await CunningDocumentScanner.getPictures().then((value) {
-                      if (value != null && context.mounted) {
+                      if (value != null &&
+                          value.isNotEmpty &&
+                          context.mounted) {
                         context.push(
                           ScannerScreen.routePath,
                           extra: value,
