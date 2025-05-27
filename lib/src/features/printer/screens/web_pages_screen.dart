@@ -41,7 +41,9 @@ class _WebPagesScreenState extends State<WebPagesScreen> {
   }
 
   void onPrint() async {
-    await getBytes(screenshotController).then((value) {
+    try {
+      final bytes = await getBytes(screenshotController);
+
       final pdf = pw.Document();
       pdf.addPage(
         pw.Page(
@@ -50,14 +52,18 @@ class _WebPagesScreenState extends State<WebPagesScreen> {
           build: (context) {
             return pw.Center(
               child: pw.Image(
-                pw.MemoryImage(value),
+                pw.MemoryImage(bytes),
                 fit: pw.BoxFit.contain,
               ),
             );
           },
         ),
       );
-    });
+
+      printPdf(pdf);
+    } catch (e) {
+      logger(e);
+    }
   }
 
   @override

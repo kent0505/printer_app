@@ -7,6 +7,7 @@ import '../../../core/config/my_colors.dart';
 import '../../../core/models/vip.dart';
 import '../../../core/widgets/button.dart';
 import '../../../core/widgets/image_widget.dart';
+import '../../../core/widgets/loading_widget.dart';
 import '../../../core/widgets/svg_widget.dart';
 import '../../onboard/screens/printer_model_screen.dart';
 import '../../vip/bloc/vip_bloc.dart';
@@ -22,7 +23,9 @@ class SettingsScreen extends StatelessWidget {
       children: [
         BlocBuilder<VipBloc, Vip>(
           builder: (context, state) {
-            return state.isVip ? const SizedBox() : const _Unlock();
+            return state.isVip || state.loading
+                ? const SizedBox()
+                : const _Unlock();
           },
         ),
         const SizedBox(height: 16),
@@ -199,14 +202,16 @@ class _Subscription extends StatelessWidget {
           const Spacer(),
           BlocBuilder<VipBloc, Vip>(
             builder: (context, state) {
-              return Text(
-                state.isVip ? 'PRO' : 'Free',
-                style: TextStyle(
-                  color: colors.accentPrimary,
-                  fontSize: 16,
-                  fontFamily: AppFonts.inter600,
-                ),
-              );
+              return state.loading
+                  ? const LoadingWidget()
+                  : Text(
+                      state.isVip ? 'PRO' : 'Free',
+                      style: TextStyle(
+                        color: colors.accentPrimary,
+                        fontSize: 16,
+                        fontFamily: AppFonts.inter600,
+                      ),
+                    );
             },
           ),
           const SizedBox(width: 32),

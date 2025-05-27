@@ -62,90 +62,101 @@ class _OnboardScreenState extends State<OnboardScreen> {
     final colors = Theme.of(context).extension<MyColors>()!;
 
     return Scaffold(
-      backgroundColor: colors.bgTwo,
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
+      body: Stack(
         children: [
-          Expanded(
-            child: PageView(
-              controller: pageController,
-              onPageChanged: onPageChanged,
-              children: const [
-                _Phone(asset: Assets.onboard2),
-                _Phone(asset: Assets.onboard3),
-                _Phone(asset: Assets.onboard4),
-                _Phone(asset: Assets.onboard5),
-                // ImageWidget(Assets.onboard1),
-                // ImageWidget(Assets.onboard2),
-                // ImageWidget(Assets.onboard3),
-                // ImageWidget(Assets.onboard4),
-              ],
-            ),
-          ),
           Container(
-            height: 288,
-            padding: EdgeInsets.symmetric(horizontal: 16),
             decoration: BoxDecoration(
-              color: colors.bgOne,
-              borderRadius: const BorderRadius.vertical(
-                top: Radius.circular(20),
+              gradient: LinearGradient(
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
+                colors: [
+                  colors.gradient1,
+                  colors.gradient2,
+                ],
               ),
             ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const SizedBox(height: 24),
-                Center(
-                  child: SmoothPageIndicator(
-                    effect: ExpandingDotsEffect(
-                      dotHeight: 8,
-                      dotWidth: 8,
-                      spacing: 4,
-                      dotColor: colors.tertiaryOne,
-                      activeDotColor: colors.accentPrimary,
+          ),
+          Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Expanded(
+                child: PageView(
+                  controller: pageController,
+                  onPageChanged: onPageChanged,
+                  children: const [
+                    _Phone(asset: Assets.onboard2),
+                    _Phone(asset: Assets.onboard3),
+                    _Phone(asset: Assets.onboard4),
+                    _Phone(asset: Assets.onboard5),
+                  ],
+                ),
+              ),
+              Container(
+                height: 288,
+                padding: EdgeInsets.symmetric(horizontal: 16),
+                decoration: BoxDecoration(
+                  color: colors.bgOne,
+                  borderRadius: const BorderRadius.vertical(
+                    top: Radius.circular(20),
+                  ),
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const SizedBox(height: 24),
+                    Center(
+                      child: SmoothPageIndicator(
+                        effect: ExpandingDotsEffect(
+                          dotHeight: 8,
+                          dotWidth: 8,
+                          spacing: 4,
+                          dotColor: colors.tertiaryOne,
+                          activeDotColor: colors.accentPrimary,
+                        ),
+                        controller: pageController,
+                        count: 4,
+                      ),
                     ),
-                    controller: pageController,
-                    count: 4,
-                  ),
+                    const SizedBox(height: 24),
+                    Text(
+                      index == 0
+                          ? 'Instant Document Printing'
+                          : index == 1
+                              ? 'Scan Documents Quickly and Easy'
+                              : index == 2
+                                  ? 'Instant PDF Printing Made Simple'
+                                  : '10,000+ Printers Supported',
+                      style: TextStyle(
+                        color: colors.textPrimary,
+                        fontSize: 32,
+                        fontFamily: AppFonts.inter700,
+                      ),
+                    ),
+                    const SizedBox(height: 8),
+                    Text(
+                      index == 0
+                          ? 'Print to any AirPrint-compatible printer with ease'
+                          : index == 1
+                              ? 'Easily scan any document from your iPhone or iPad'
+                              : index == 2
+                                  ? 'Organize and Manage PDFs Effortlessly'
+                                  : 'Easily print to any AirPrint-compatible printer',
+                      style: TextStyle(
+                        color: colors.textSecondary,
+                        fontSize: 14,
+                        fontFamily: AppFonts.inter400,
+                      ),
+                    ),
+                    const Spacer(),
+                    MainButton(
+                      title: 'Continue',
+                      onPressed: onNext,
+                    ),
+                    const SizedBox(height: 44),
+                  ],
                 ),
-                const SizedBox(height: 24),
-                Text(
-                  index == 0
-                      ? 'Instant Document Printing'
-                      : index == 1
-                          ? 'Scan Documents Quickly and Easy'
-                          : index == 2
-                              ? 'Instant PDF Printing Made Simple'
-                              : '10,000+ Printers Supported',
-                  style: TextStyle(
-                    color: colors.textPrimary,
-                    fontSize: 32,
-                    fontFamily: AppFonts.inter700,
-                  ),
-                ),
-                const SizedBox(height: 8),
-                Text(
-                  index == 0
-                      ? 'Print to any AirPrint-compatible printer with ease'
-                      : index == 1
-                          ? 'Easily scan any document from your iPhone or iPad'
-                          : index == 2
-                              ? 'Organize and Manage PDFs Effortlessly'
-                              : 'Easily print to any AirPrint-compatible printer',
-                  style: TextStyle(
-                    color: colors.textSecondary,
-                    fontSize: 14,
-                    fontFamily: AppFonts.inter400,
-                  ),
-                ),
-                const Spacer(),
-                MainButton(
-                  title: 'Continue',
-                  onPressed: onNext,
-                ),
-                const SizedBox(height: 44),
-              ],
-            ),
+              ),
+            ],
           ),
         ],
       ),

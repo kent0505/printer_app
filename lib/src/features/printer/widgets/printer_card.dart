@@ -5,6 +5,7 @@ import '../../../core/config/constants.dart';
 import '../../../core/config/my_colors.dart';
 import '../../../core/models/vip.dart';
 import '../../../core/widgets/button.dart';
+import '../../../core/widgets/loading_widget.dart';
 import '../../../core/widgets/svg_widget.dart';
 import '../../vip/bloc/vip_bloc.dart';
 
@@ -66,53 +67,59 @@ class PrinterCard extends StatelessWidget {
         alignment: Alignment.center,
         fit: StackFit.expand,
         children: [
-          Button(
-            onPressed: onPressed,
-            child: Padding(
-              padding: const EdgeInsets.all(16),
-              child: Column(
-                children: [
-                  SizedBox(
-                    height: 64,
-                    width: 64,
-                    child: SvgWidget(getAsset()),
+          BlocBuilder<VipBloc, Vip>(
+            builder: (context, state) {
+              return Button(
+                onPressed: state.loading ? null : onPressed,
+                child: Padding(
+                  padding: const EdgeInsets.all(16),
+                  child: Column(
+                    children: [
+                      SizedBox(
+                        height: 64,
+                        width: 64,
+                        child: SvgWidget(getAsset()),
+                      ),
+                      const SizedBox(height: 12),
+                      Text(
+                        title,
+                        style: TextStyle(
+                          color: colors.bgOne,
+                          fontSize: 18,
+                          fontFamily: AppFonts.inter600,
+                        ),
+                      ),
+                      const SizedBox(height: 8),
+                      Text(
+                        description,
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          color: colors.bgOne,
+                          fontSize: 14,
+                          fontFamily: AppFonts.inter400,
+                        ),
+                      ),
+                    ],
                   ),
-                  const SizedBox(height: 12),
-                  Text(
-                    title,
-                    style: TextStyle(
-                      color: colors.bgOne,
-                      fontSize: 18,
-                      fontFamily: AppFonts.inter600,
-                    ),
-                  ),
-                  const SizedBox(height: 8),
-                  Text(
-                    description,
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      color: colors.bgOne,
-                      fontSize: 14,
-                      fontFamily: AppFonts.inter400,
-                    ),
-                  ),
-                ],
-              ),
-            ),
+                ),
+              );
+            },
           ),
           if (locked)
             BlocBuilder<VipBloc, Vip>(
               builder: (context, state) {
-                return state.isVip
-                    ? const SizedBox()
-                    : Positioned(
-                        top: 8,
-                        right: 8,
-                        child: SvgWidget(
-                          Assets.lock,
-                          color: colors.tertiaryFour,
-                        ),
-                      );
+                return Positioned(
+                  top: 8,
+                  right: 8,
+                  child: state.loading
+                      ? const LoadingWidget()
+                      : state.isVip
+                          ? const SizedBox()
+                          : SvgWidget(
+                              Assets.lock,
+                              color: colors.tertiaryFour,
+                            ),
+                );
               },
             ),
         ],

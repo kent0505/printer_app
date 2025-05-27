@@ -6,6 +6,7 @@ import '../../../core/config/constants.dart';
 import '../../../core/config/my_colors.dart';
 import '../../../core/models/vip.dart';
 import '../../../core/widgets/button.dart';
+import '../../../core/widgets/loading_widget.dart';
 import '../../../core/widgets/svg_widget.dart';
 import '../../settings/screens/printer_wifi_screen.dart';
 import '../../vip/bloc/vip_bloc.dart';
@@ -57,37 +58,39 @@ class HomeAppbar extends StatelessWidget implements PreferredSizeWidget {
           ),
           BlocBuilder<VipBloc, Vip>(
             builder: (context, state) {
-              return state.isVip
-                  ? const SizedBox()
-                  : Padding(
-                      padding: const EdgeInsets.only(left: 8),
-                      child: Button(
-                        onPressed: () {
-                          VipSheet.show(
-                            context,
-                            identifier: Identifiers.paywall2,
-                          );
-                        },
-                        child: Container(
-                          height: 44,
-                          width: 44,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(12),
-                            gradient: LinearGradient(
-                              begin: Alignment.topCenter,
-                              end: Alignment.bottomCenter,
-                              colors: [
-                                colors.gradient1,
-                                colors.gradient2,
-                              ],
+              return state.loading
+                  ? const LoadingWidget()
+                  : state.isVip
+                      ? const SizedBox()
+                      : Padding(
+                          padding: const EdgeInsets.only(left: 8),
+                          child: Button(
+                            onPressed: () {
+                              VipSheet.show(
+                                context,
+                                identifier: Identifiers.paywall2,
+                              );
+                            },
+                            child: Container(
+                              height: 44,
+                              width: 44,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(12),
+                                gradient: LinearGradient(
+                                  begin: Alignment.topCenter,
+                                  end: Alignment.bottomCenter,
+                                  colors: [
+                                    colors.gradient1,
+                                    colors.gradient2,
+                                  ],
+                                ),
+                              ),
+                              child: const Center(
+                                child: SvgWidget(Assets.premium),
+                              ),
                             ),
                           ),
-                          child: const Center(
-                            child: SvgWidget(Assets.premium),
-                          ),
-                        ),
-                      ),
-                    );
+                        );
             },
           ),
         ],

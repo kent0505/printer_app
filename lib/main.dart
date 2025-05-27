@@ -5,6 +5,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:purchases_flutter/purchases_flutter.dart';
 import 'package:firebase_core/firebase_core.dart';
 
+import 'src/core/config/constants.dart';
 import 'src/core/config/router.dart';
 import 'src/core/config/themes.dart';
 import 'src/features/firebase/bloc/firebase_bloc.dart';
@@ -52,13 +53,20 @@ void main() async {
       ],
       child: MultiBlocProvider(
         providers: [
-          BlocProvider(create: (context) => InternetBloc()),
           BlocProvider(create: (context) => HomeBloc()),
-          BlocProvider(create: (context) => VipBloc()),
+          BlocProvider(
+            create: (context) => InternetBloc()..add(CheckInternet()),
+          ),
+          BlocProvider(
+            create: (context) => VipBloc()
+              ..add(
+                CheckVip(identifier: Identifiers.paywall1),
+              ),
+          ),
           BlocProvider(
             create: (context) => FirebaseBloc(
               repository: context.read<FirebaseRepository>(),
-            ),
+            )..add(GetFirebaseData()),
           ),
           BlocProvider(
             create: (context) => PhotoBloc(

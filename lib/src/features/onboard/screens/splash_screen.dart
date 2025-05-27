@@ -5,10 +5,10 @@ import 'package:go_router/go_router.dart';
 import '../../../core/config/constants.dart';
 import '../../../core/config/my_colors.dart';
 import '../../../core/widgets/svg_widget.dart';
-import '../../firebase/bloc/firebase_bloc.dart';
 import '../../home/screens/home_screen.dart';
-import '../../internet/bloc/internet_bloc.dart';
-import '../../vip/bloc/vip_bloc.dart';
+// import '../../firebase/bloc/firebase_bloc.dart';
+// import '../../internet/bloc/internet_bloc.dart';
+// import '../../vip/bloc/vip_bloc.dart';
 import '../data/onboard_repository.dart';
 import 'onboard_screen.dart';
 
@@ -40,9 +40,9 @@ class _SplashScreenState extends State<SplashScreen>
       ),
     );
 
-    context.read<InternetBloc>().add(CheckInternet());
-    context.read<FirebaseBloc>().add(GetFirebaseData());
-    context.read<VipBloc>().add(CheckVip(identifier: Identifiers.paywall1));
+    // context.read<InternetBloc>().add(CheckInternet());
+    // context.read<FirebaseBloc>().add(GetFirebaseData());
+    // context.read<VipBloc>().add(CheckVip(identifier: Identifiers.paywall1));
 
     Future.delayed(
       const Duration(seconds: 3),
