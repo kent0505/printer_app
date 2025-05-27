@@ -99,7 +99,7 @@ class PrinterScreen extends StatelessWidget {
                   id: 5,
                   title: 'Web Pages',
                   description: 'Print any website in full size',
-                  locked: !isVip,
+                  locked: true,
                   onPressed: () {
                     isVip
                         ? context.push(WebPagesScreen.routePath)
@@ -114,7 +114,7 @@ class PrinterScreen extends StatelessWidget {
                   id: 6,
                   title: 'Printables',
                   description: 'Print giftcards, planners, calendars',
-                  locked: !isVip,
+                  locked: true,
                   onPressed: () {
                     isVip
                         ? context.push(PrintablesScreen.routePath)

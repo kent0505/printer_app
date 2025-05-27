@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../core/config/constants.dart';
 import '../../../core/config/my_colors.dart';
+import '../../../core/models/vip.dart';
 import '../../../core/widgets/button.dart';
 import '../../../core/widgets/svg_widget.dart';
+import '../../vip/bloc/vip_bloc.dart';
 
 class PrinterCard extends StatelessWidget {
   const PrinterCard({
@@ -98,13 +101,19 @@ class PrinterCard extends StatelessWidget {
             ),
           ),
           if (locked)
-            Positioned(
-              top: 8,
-              right: 8,
-              child: SvgWidget(
-                Assets.lock,
-                color: colors.tertiaryFour,
-              ),
+            BlocBuilder<VipBloc, Vip>(
+              builder: (context, state) {
+                return state.isVip
+                    ? const SizedBox()
+                    : Positioned(
+                        top: 8,
+                        right: 8,
+                        child: SvgWidget(
+                          Assets.lock,
+                          color: colors.tertiaryFour,
+                        ),
+                      );
+              },
             ),
         ],
       ),

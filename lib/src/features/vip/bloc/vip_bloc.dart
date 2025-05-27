@@ -26,25 +26,20 @@ class VipBloc extends Bloc<VipEvent, Vip> {
       emit(Vip(loading: true));
 
       try {
-        CustomerInfo customerInfo = await Purchases.getCustomerInfo().timeout(
-          Duration(seconds: 2),
-        );
+        CustomerInfo customerInfo =
+            await Purchases.getCustomerInfo().timeout(Duration(seconds: 2));
+
         bool isVip = customerInfo.entitlements.active.isNotEmpty;
 
-        logger(isVip);
+        Offerings offerings =
+            await Purchases.getOfferings().timeout(Duration(seconds: 2));
 
-        if (event.identifier.isNotEmpty) {
-          Offerings offerings = await Purchases.getOfferings().timeout(
-            Duration(seconds: 2),
-          );
-          final offering = offerings.getOffering(event.identifier);
-          emit(Vip(
-            isVip: isVip,
-            offering: offering,
-          ));
-        } else {
-          emit(Vip(isVip: isVip));
-        }
+        final offering = offerings.getOffering(event.identifier);
+
+        emit(Vip(
+          isVip: isVip,
+          offering: offering,
+        ));
       } catch (e) {
         logger(e);
         emit(Vip());

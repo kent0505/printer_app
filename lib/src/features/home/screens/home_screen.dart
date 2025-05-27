@@ -24,19 +24,20 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
     super.initState();
-    final vip = context.read<VipBloc>().state;
-    if (!vip.isVip) {
-      Future.delayed(
-        const Duration(seconds: 1),
-        () {
-          WidgetsBinding.instance.addPostFrameCallback((_) {
-            VipSheet.show(
-              context,
-              identifier: Identifiers.paywall1,
-            );
-          });
-        },
-      );
+    if (context.read<VipBloc>().state.isVip == false) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        Future.delayed(
+          const Duration(seconds: 1),
+          () {
+            if (mounted) {
+              VipSheet.show(
+                context,
+                identifier: Identifiers.paywall1,
+              );
+            }
+          },
+        );
+      });
     }
   }
 

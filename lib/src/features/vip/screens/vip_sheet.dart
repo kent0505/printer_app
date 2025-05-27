@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:purchases_ui_flutter/purchases_ui_flutter.dart';
 
 import '../../../core/models/vip.dart';
+import '../../../core/utils.dart';
 import '../../../core/widgets/dialog_widget.dart';
 // import '../../../core/widgets/loading_widget.dart';
 import '../bloc/vip_bloc.dart';
@@ -17,13 +18,17 @@ class VipSheet extends StatefulWidget {
     BuildContext context, {
     required String identifier,
   }) {
-    showModalBottomSheet(
-      context: context,
-      isScrollControlled: true,
-      builder: (context) {
-        return VipSheet(identifier: identifier);
-      },
-    );
+    try {
+      showModalBottomSheet(
+        context: context,
+        isScrollControlled: true,
+        builder: (context) {
+          return VipSheet(identifier: identifier);
+        },
+      );
+    } catch (e) {
+      logger(e);
+    }
   }
 
   @override
@@ -40,7 +45,7 @@ class _VipSheetState extends State<VipSheet> {
       context.pop();
     }
     DialogWidget.show(context, title: title);
-    context.read<VipBloc>().add(CheckVip());
+    context.read<VipBloc>().add(CheckVip(identifier: widget.identifier));
   }
 
   @override
@@ -62,9 +67,9 @@ class _VipSheetState extends State<VipSheet> {
       curve: Curves.easeInOut,
       child: BlocConsumer<VipBloc, Vip>(
         listener: (context, state) {
-          if (state.offering == null) {
-            showInfo('Offering is null');
-          }
+          // if (state.offering == null) {
+          //   showInfo('Offering is null');
+          // }
         },
         builder: (context, state) {
           if (state.loading || state.offering == null) {

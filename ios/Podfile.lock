@@ -1444,20 +1444,20 @@ PODS:
   - printing (1.0.0):
     - Flutter
   - PromisesObjC (2.4.0)
-  - purchases_flutter (8.8.0):
+  - purchases_flutter (8.8.1):
     - Flutter
-    - PurchasesHybridCommon (= 13.29.1)
-  - purchases_ui_flutter (8.8.0):
+    - PurchasesHybridCommon (= 13.32.0)
+  - purchases_ui_flutter (8.8.1):
     - Flutter
-    - PurchasesHybridCommonUI (= 13.29.1)
-  - PurchasesHybridCommon (13.29.1):
-    - RevenueCat (= 5.22.2)
-  - PurchasesHybridCommonUI (13.29.1):
-    - PurchasesHybridCommon (= 13.29.1)
-    - RevenueCatUI (= 5.22.2)
-  - RevenueCat (5.22.2)
-  - RevenueCatUI (5.22.2):
-    - RevenueCat (= 5.22.2)
+    - PurchasesHybridCommonUI (= 13.32.0)
+  - PurchasesHybridCommon (13.32.0):
+    - RevenueCat (= 5.24.0)
+  - PurchasesHybridCommonUI (13.32.0):
+    - PurchasesHybridCommon (= 13.32.0)
+    - RevenueCatUI (= 5.24.0)
+  - RevenueCat (5.24.0)
+  - RevenueCatUI (5.24.0):
+    - RevenueCat (= 5.24.0)
   - SDWebImage (5.21.0):
     - SDWebImage/Core (= 5.21.0)
   - SDWebImage/Core (5.21.0)
@@ -1616,12 +1616,12 @@ SPEC CHECKSUMS:
   photo_manager: d2fbcc0f2d82458700ee6256a15018210a81d413
   printing: 54ff03f28fe9ba3aa93358afb80a8595a071dd07
   PromisesObjC: f5707f49cb48b9636751c5b2e7d227e43fba9f47
-  purchases_flutter: 437a2d875b16ea37f1847b2f88604fc13a18646b
-  purchases_ui_flutter: 0e63afa7c5a6088088ac1fcd06f653c2260cdc9e
-  PurchasesHybridCommon: 1728ff834821ecfc85e987a565d51eda36213958
-  PurchasesHybridCommonUI: 1541272f8adcb7d809f7178cecced3eafd6f5fc8
-  RevenueCat: 234d2361e453ce1282cee7e18449d01aba45ebbf
-  RevenueCatUI: 24f46287ce3185fc9816f0128c09342ab1c76d66
+  purchases_flutter: 4cf57c17c62108103a549ebe12b28a0203f0cf55
+  purchases_ui_flutter: 3d8fc20c096bd123d665b972e3ff3c57a0f0da88
+  PurchasesHybridCommon: 662aa1f4769ff4ef594e35adf1a5d0ad7b3d08b7
+  PurchasesHybridCommonUI: ce17a7fcc23bc9e47b6ed117fb87b4fc99539e15
+  RevenueCat: 2d3639d30b8a71cbfe3d99cef8243c602793e0ec
+  RevenueCatUI: 80bec9099c200c254c0ec0025b4fb83a85fbacce
   SDWebImage: f84b0feeb08d2d11e6a9b843cb06d75ebf5b8868
   share_plus: 50da8cb520a8f0f65671c6c6a99b3617ed10a58a
   shared_preferences_foundation: 9e1978ff2562383bd5676f64ec4e9aa8fa06a6f7
