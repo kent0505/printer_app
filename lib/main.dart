@@ -66,7 +66,7 @@ void main() async {
           BlocProvider(
             create: (context) => FirebaseBloc(
               repository: context.read<FirebaseRepository>(),
-            )..add(GetFirebaseData()),
+            ),
           ),
           BlocProvider(
             create: (context) => PhotoBloc(
