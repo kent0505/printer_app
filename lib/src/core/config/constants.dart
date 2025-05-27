@@ -101,8 +101,8 @@ abstract final class Identifiers {
 }
 
 abstract final class Urls {
-  static const url1 = '';
-  static const url2 = '';
+  static const url1 = 'https://pub.dev/';
+  static const url2 = 'https://www.google.com/';
 }
 
 // abstract interface class OnboardRepository {

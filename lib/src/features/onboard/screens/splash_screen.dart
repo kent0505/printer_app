@@ -42,7 +42,7 @@ class _SplashScreenState extends State<SplashScreen>
 
     context.read<InternetBloc>().add(CheckInternet());
     context.read<FirebaseBloc>().add(GetFirebaseData());
-    context.read<VipBloc>().add(CheckVip());
+    context.read<VipBloc>().add(CheckVip(identifier: Identifiers.paywall1));
 
     Future.delayed(
       const Duration(seconds: 3),
