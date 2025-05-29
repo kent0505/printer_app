@@ -173,7 +173,7 @@ class _Phone extends StatelessWidget {
         child: Stack(
           children: [
             Positioned(
-              top: first ? 0 : null,
+              top: 0,
               bottom: first ? null : 14,
               left: 0,
               right: 0,
@@ -184,7 +184,7 @@ class _Phone extends StatelessWidget {
               ),
             ),
             Positioned(
-              top: first ? 12 : null,
+              top: 12,
               bottom: first ? null : 26,
               left: 0,
               right: 0,

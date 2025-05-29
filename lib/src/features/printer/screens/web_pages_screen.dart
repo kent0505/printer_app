@@ -1,8 +1,9 @@
+import 'dart:typed_data';
+
 import 'package:flutter/material.dart';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
-import 'package:screenshot/screenshot.dart';
-import 'package:webview_flutter/webview_flutter.dart';
+import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 
 import '../../../core/config/constants.dart';
 import '../../../core/config/my_colors.dart';
@@ -21,28 +22,42 @@ class WebPagesScreen extends StatefulWidget {
 }
 
 class _WebPagesScreenState extends State<WebPagesScreen> {
-  late final WebViewController _controller;
-  final screenshotController = ScreenshotController();
+  InAppWebViewController? webViewController;
 
   void onLeft() async {
-    if (await _controller.canGoBack()) {
-      _controller.goBack();
+    try {
+      if (await webViewController!.canGoBack()) {
+        await webViewController!.goBack();
+      }
+    } catch (e) {
+      logger(e);
     }
   }
 
   void onRight() async {
-    if (await _controller.canGoForward()) {
-      _controller.goForward();
+    try {
+      if (await webViewController!.canGoForward()) {
+        await webViewController!.goForward();
+      }
+    } catch (e) {
+      logger(e);
     }
   }
 
   void onReload() async {
-    _controller.reload();
+    try {
+      if (webViewController != null) {
+        await webViewController!.reload();
+      }
+    } catch (e) {
+      logger(e);
+    }
   }
 
   void onPrint() async {
     try {
-      final bytes = await getBytes(screenshotController);
+      Uint8List? bytes = await webViewController!.takeScreenshot();
+      if (bytes == null) return;
 
       final pdf = pw.Document();
       pdf.addPage(
@@ -59,21 +74,10 @@ class _WebPagesScreenState extends State<WebPagesScreen> {
           },
         ),
       );
-
       printPdf(pdf);
     } catch (e) {
       logger(e);
     }
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    _controller = WebViewController()
-      ..setJavaScriptMode(JavaScriptMode.unrestricted)
-      ..loadRequest(
-        Uri.parse('https://google.com'),
-      );
   }
 
   @override
@@ -91,9 +95,22 @@ class _WebPagesScreenState extends State<WebPagesScreen> {
       body: Column(
         children: [
           Expanded(
-            child: Screenshot(
-              controller: screenshotController,
-              child: WebViewWidget(controller: _controller),
+            child: InAppWebView(
+              initialUrlRequest: URLRequest(
+                url: WebUri('https://google.com'),
+              ),
+              onWebViewCreated: (controller) {
+                webViewController = controller;
+              },
+              onLoadStart: (controller, url) {
+                logger("Page started loading: $url");
+              },
+              onLoadStop: (controller, url) async {
+                logger("Page finished loading: $url");
+              },
+              onReceivedError: (controller, request, error) {
+                logger("Error: ${error.description}");
+              },
             ),
           ),
           Container(

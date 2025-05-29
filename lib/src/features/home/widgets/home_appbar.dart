@@ -59,7 +59,10 @@ class HomeAppbar extends StatelessWidget implements PreferredSizeWidget {
           BlocBuilder<VipBloc, Vip>(
             builder: (context, state) {
               return state.loading
-                  ? const LoadingWidget()
+                  ? const SizedBox(
+                      width: 52,
+                      child: LoadingWidget(),
+                    )
                   : state.isVip
                       ? const SizedBox()
                       : Padding(

@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:in_app_review/in_app_review.dart';
+import 'package:share_plus/share_plus.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../../../core/config/constants.dart';
 import '../../../core/config/my_colors.dart';
 import '../../../core/models/vip.dart';
+import '../../../core/utils.dart';
 import '../../../core/widgets/button.dart';
 import '../../../core/widgets/image_widget.dart';
 import '../../../core/widgets/loading_widget.dart';
@@ -14,8 +18,20 @@ import '../../vip/bloc/vip_bloc.dart';
 import '../../vip/screens/vip_screen.dart';
 import 'printer_wifi_screen.dart';
 
-class SettingsScreen extends StatelessWidget {
+class SettingsScreen extends StatefulWidget {
   const SettingsScreen({super.key});
+
+  @override
+  State<SettingsScreen> createState() => _SettingsScreenState();
+}
+
+class _SettingsScreenState extends State<SettingsScreen> {
+  void _sharePrinter() {
+    const shareText = 'Print your documents with Smart Printer & Scan PDF';
+    const appLink =
+        'https://apps.apple.com/us/app/smart-printer-scan-master-pro/id6746067890';
+    Share.share('$shareText $appLink');
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -33,11 +49,7 @@ class SettingsScreen extends StatelessWidget {
         const SizedBox(height: 12),
         _SettingsTile(
           title: 'Share App',
-          onPressed: () {},
-        ),
-        _SettingsTile(
-          title: 'Contact Us',
-          onPressed: () {},
+          onPressed: _sharePrinter,
         ),
         _SettingsTile(
           title: 'Printer Model',
@@ -55,16 +67,42 @@ class SettingsScreen extends StatelessWidget {
           },
         ),
         _SettingsTile(
-          title: 'Manage Subscription',
-          onPressed: () {},
+          title: 'Rate us',
+          onPressed: () {
+            InAppReview.instance.openStoreListing(appStoreId: '6746067890');
+          },
         ),
         _SettingsTile(
           title: 'Terms of Use',
-          onPressed: () {},
+          onPressed: () async {
+            try {
+              if (!await launchUrl(
+                Uri.parse(
+                    'https://docs.google.com/document/d/11uY2wAqBkwhRYUXriLmHpgcxxF3phbGPeZec0nuFLNg/edit?usp=sharing'),
+                mode: LaunchMode.inAppBrowserView,
+              )) {
+                throw 'Could not launch url';
+              }
+            } catch (e) {
+              logger(e);
+            }
+          },
         ),
         _SettingsTile(
           title: 'Privacy Policy',
-          onPressed: () {},
+          onPressed: () async {
+            try {
+              if (!await launchUrl(
+                Uri.parse(
+                    'https://docs.google.com/document/d/11yrh35mfkEWHd2DNptRYTzVXfI34FxhRDnSVHey1VUo/edit?usp=sharing'),
+                mode: LaunchMode.inAppWebView,
+              )) {
+                throw 'Could not launch url';
+              }
+            } catch (e) {
+              logger(e);
+            }
+          },
         ),
         const SizedBox(height: 12),
       ],

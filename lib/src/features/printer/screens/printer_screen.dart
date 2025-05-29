@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../../../core/config/constants.dart';
@@ -29,34 +30,35 @@ class PrinterScreen extends StatelessWidget {
 
         final isVip = context.watch<VipBloc>().state.isVip;
 
-        return ListView(
+        return SingleChildScrollView(
           padding: const EdgeInsets.all(16),
-          children: [
-            Row(
-              children: [
-                PrinterCard(
-                  id: 1,
-                  title: 'Documents',
-                  description: 'Print Documents from a File',
-                  onPressed: () async {
-                    await pickFile().then(
-                      (value) {
-                        if (value != null && context.mounted) {
-                          context.push(
-                            DocumentsScreen.routePath,
-                            extra: value,
-                          );
-                        }
-                      },
-                    );
-                  },
-                ),
-                const SizedBox(width: 16),
-                PrinterCard(
-                  id: 2,
-                  title: 'Camera',
-                  description: 'Make a photo and print',
-                  onPressed: () async {
+          child: Wrap(
+            spacing: 16,
+            runSpacing: 16,
+            children: [
+              PrinterCard(
+                id: 1,
+                title: 'Documents',
+                description: 'Print Documents from a File',
+                onPressed: () async {
+                  await pickFile().then(
+                    (value) {
+                      if (value != null && context.mounted) {
+                        context.push(
+                          DocumentsScreen.routePath,
+                          extra: value,
+                        );
+                      }
+                    },
+                  );
+                },
+              ),
+              PrinterCard(
+                id: 2,
+                title: 'Camera',
+                description: 'Make a photo and print',
+                onPressed: () async {
+                  if (await Permission.camera.status.isGranted) {
                     await pickImage().then(
                       (value) {
                         if (value != null && context.mounted) {
@@ -67,104 +69,101 @@ class PrinterScreen extends StatelessWidget {
                         }
                       },
                     );
-                  },
-                ),
-              ],
-            ),
-            const SizedBox(height: 16),
-            Row(
-              children: [
-                PrinterCard(
-                  id: 3,
-                  title: 'Photo',
-                  description: 'Print photos from gallery',
-                  onPressed: () {
-                    context.push(PhotoScreen.routePath);
-                  },
-                ),
-                const SizedBox(width: 16),
-                PrinterCard(
-                  id: 4,
-                  title: 'Email',
-                  description: 'Print files from your email',
-                  onPressed: () {
-                    context.push(EmailScreen.routePath);
-                  },
-                ),
-              ],
-            ),
-            const SizedBox(height: 16),
-            Row(
-              children: [
-                PrinterCard(
-                  id: 5,
-                  title: 'Web Pages',
-                  description: 'Print any website in full size',
-                  locked: true,
-                  onPressed: () {
-                    isVip
-                        ? context.push(WebPagesScreen.routePath)
-                        : context.push(
-                            VipScreen.routePath,
-                            extra: Identifiers.paywall3,
-                          );
-                  },
-                ),
-                const SizedBox(width: 16),
-                PrinterCard(
-                  id: 6,
-                  title: 'Printables',
-                  description: 'Print giftcards, planners, calendars',
-                  locked: true,
-                  onPressed: () {
-                    isVip
-                        ? context.push(PrintablesScreen.routePath)
-                        : context.push(
-                            VipScreen.routePath,
-                            extra: Identifiers.paywall3,
-                          );
-                  },
-                ),
-              ],
-            ),
-            const SizedBox(height: 16),
-            if (context.read<FirebaseBloc>().state.invoice)
-              Row(
-                children: [
-                  PrinterCard(
-                    id: 7,
-                    title: 'Invoice',
-                    onPressed: () async {
-                      try {
-                        if (!await launchUrl(
-                          Uri.parse(Urls.url1),
-                        )) {
-                          throw 'Could not launch url';
-                        }
-                      } catch (e) {
-                        logger(e);
-                      }
-                    },
-                  ),
-                  const SizedBox(width: 16),
-                  PrinterCard(
-                    id: 8,
-                    title: 'PDF',
-                    onPressed: () async {
-                      try {
-                        if (!await launchUrl(
-                          Uri.parse(Urls.url2),
-                        )) {
-                          throw 'Could not launch url';
-                        }
-                      } catch (e) {
-                        logger(e);
-                      }
-                    },
-                  ),
-                ],
+                  } else {
+                    final result = await Permission.camera.request();
+                    if (result.isPermanentlyDenied) {
+                      openAppSettings();
+                    }
+                  }
+                },
               ),
-          ],
+              PrinterCard(
+                id: 3,
+                title: 'Photo',
+                description: 'Print photos from gallery',
+                onPressed: () async {
+                  if (context.mounted) {
+                    context.push(PhotoScreen.routePath);
+                  }
+                  // if (await Permission.photos.status.isGranted) {
+                  // } else {
+                  //   final result = await Permission.photos.request();
+                  //   if (result.isPermanentlyDenied) {
+                  //     openAppSettings();
+                  //   }
+                  // }
+                },
+              ),
+              PrinterCard(
+                id: 4,
+                title: 'Email',
+                description: 'Print files from your email',
+                onPressed: () {
+                  context.push(EmailScreen.routePath);
+                },
+              ),
+              PrinterCard(
+                id: 5,
+                title: 'Web Pages',
+                description: 'Print any website in full size',
+                locked: true,
+                onPressed: () {
+                  isVip
+                      ? context.push(WebPagesScreen.routePath)
+                      : context.push(
+                          VipScreen.routePath,
+                          extra: Identifiers.paywall3,
+                        );
+                },
+              ),
+              PrinterCard(
+                id: 6,
+                title: 'Printables',
+                description: 'Print giftcards, planners, calendars',
+                locked: true,
+                onPressed: () {
+                  isVip
+                      ? context.push(PrintablesScreen.routePath)
+                      : context.push(
+                          VipScreen.routePath,
+                          extra: Identifiers.paywall3,
+                        );
+                },
+              ),
+              if (context.read<FirebaseBloc>().state.invoice) ...[
+                PrinterCard(
+                  id: 7,
+                  title: 'Invoice',
+                  onPressed: () async {
+                    try {
+                      if (!await launchUrl(
+                        Uri.parse(Urls.url1),
+                      )) {
+                        throw 'Could not launch url';
+                      }
+                    } catch (e) {
+                      logger(e);
+                    }
+                  },
+                ),
+                PrinterCard(
+                  id: 8,
+                  title: 'PDF',
+                  onPressed: () async {
+                    try {
+                      if (!await launchUrl(
+                        Uri.parse(Urls.url2),
+                      )) {
+                        throw 'Could not launch url';
+                      }
+                    } catch (e) {
+                      logger(e);
+                    }
+                  },
+                ),
+              ],
+            ],
+          ),
         );
       },
     );

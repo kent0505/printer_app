@@ -92,12 +92,14 @@ abstract final class Keys {
   static const paywall1 = 'paywall1';
   static const paywall2 = 'paywall2';
   static const paywall3 = 'paywall3';
+  static const showCount = 'showCount';
 }
 
 abstract final class Identifiers {
   static const paywall1 = 'paywall_1';
   static const paywall2 = 'paywall_2';
   static const paywall3 = 'paywall_3';
+  static const paywall4 = 'paywall_4';
 }
 
 abstract final class Urls {

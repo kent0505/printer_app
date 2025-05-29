@@ -50,7 +50,9 @@ class PrinterCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final colors = Theme.of(context).extension<MyColors>()!;
-    final size = (MediaQuery.sizeOf(context).width / 2) - 24;
+    final width = MediaQuery.sizeOf(context).width;
+    final isIpad = width >= 500;
+    final size = (width / (isIpad ? 3 : 2)) - (isIpad ? 22 : 24);
 
     return Container(
       height: size,
@@ -65,7 +67,7 @@ class PrinterCard extends StatelessWidget {
       ),
       child: Stack(
         alignment: Alignment.center,
-        fit: StackFit.expand,
+        // fit: StackFit.expand,
         children: [
           BlocBuilder<VipBloc, Vip>(
             builder: (context, state) {
@@ -74,13 +76,13 @@ class PrinterCard extends StatelessWidget {
                 child: Padding(
                   padding: const EdgeInsets.all(16),
                   child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
                       SizedBox(
                         height: 64,
                         width: 64,
                         child: SvgWidget(getAsset()),
                       ),
-                      const SizedBox(height: 12),
                       Text(
                         title,
                         style: TextStyle(
@@ -89,7 +91,6 @@ class PrinterCard extends StatelessWidget {
                           fontFamily: AppFonts.inter600,
                         ),
                       ),
-                      const SizedBox(height: 8),
                       Text(
                         description,
                         textAlign: TextAlign.center,

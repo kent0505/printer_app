@@ -17,6 +17,7 @@ import 'src/features/home/bloc/home_bloc.dart';
 import 'src/features/photo/bloc/photo_bloc.dart';
 import 'src/features/photo/data/photo_repository.dart';
 import 'src/features/vip/bloc/vip_bloc.dart';
+import 'src/features/vip/data/vip_repository.dart';
 
 // final colors = Theme.of(context).extension<MyColors>()!;
 
@@ -27,6 +28,9 @@ void main() async {
     DeviceOrientation.portraitDown,
   ]);
 
+  final prefs = await SharedPreferences.getInstance();
+  // await prefs.clear();
+
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
@@ -34,9 +38,6 @@ void main() async {
   await Purchases.configure(
     PurchasesConfiguration('appl_QXIwkJLeTRKxrxoaXxAgYijODVh'),
   );
-
-  final prefs = await SharedPreferences.getInstance();
-  // await prefs.clear();
 
   runApp(
     MultiRepositoryProvider(
@@ -46,6 +47,9 @@ void main() async {
         ),
         RepositoryProvider<FirebaseRepository>(
           create: (context) => FirebaseRepositoryImpl(prefs: prefs),
+        ),
+        RepositoryProvider<VipRepository>(
+          create: (context) => VipRepositoryImpl(prefs: prefs),
         ),
         RepositoryProvider<PhotoRepository>(
           create: (context) => PhotoRepositoryImpl(),
@@ -58,10 +62,14 @@ void main() async {
             create: (context) => InternetBloc()..add(CheckInternet()),
           ),
           BlocProvider(
-            create: (context) => VipBloc()
-              ..add(
-                CheckVip(identifier: Identifiers.paywall1),
-              ),
+            create: (context) =>
+                VipBloc(repository: context.read<VipRepository>())
+                  ..add(
+                    CheckVip(
+                      identifier: Identifiers.paywall1,
+                      initial: true,
+                    ),
+                  ),
           ),
           BlocProvider(
             create: (context) => FirebaseBloc(

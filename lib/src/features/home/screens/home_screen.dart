@@ -28,7 +28,10 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return BlocListener<VipBloc, Vip>(
       listener: (context, state) {
-        if (showPaywall && !state.loading && !state.isVip) {
+        if (showPaywall &&
+            !state.loading &&
+            !state.isVip &&
+            state.offering != null) {
           WidgetsBinding.instance.addPostFrameCallback((_) {
             Future.delayed(
               const Duration(seconds: 1),

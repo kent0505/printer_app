@@ -227,76 +227,77 @@ class _Phone extends StatelessWidget {
               ),
             ],
           )
-        : Center(
-            child: SizedBox(
-              width: 360,
-              child: Stack(
-                alignment: Alignment.center,
-                children: [
-                  SizedBox(
-                    width: 300,
-                    height: 610,
-                    child: Stack(
-                      children: [
-                        Positioned(
-                          top: 68,
-                          left: 0,
-                          right: 0,
-                          child: const ImageWidget(
-                            Assets.onboard1,
-                            height: 610,
-                            width: 300,
-                          ),
+        : SizedBox(
+            // color: Colors.re,
+            width: 360,
+            child: Stack(
+              alignment: Alignment.bottomCenter,
+              children: [
+                SizedBox(
+                  width: 300,
+                  height: 610,
+                  child: Stack(
+                    children: [
+                      Positioned(
+                        // top: 68,
+                        left: 0,
+                        right: 0,
+                        bottom: -100,
+                        child: const ImageWidget(
+                          Assets.onboard1,
+                          height: 610,
+                          width: 300,
                         ),
-                        Positioned(
-                          top: 78,
-                          left: 0,
-                          right: 0,
-                          child: ImageWidget(
-                            asset,
-                            height: 580,
-                            width: 270,
-                            cacheHeight: 580 * 2,
-                            cacheWidth: 270 * 2,
-                          ),
+                      ),
+                      Positioned(
+                        // top: 78,
+                        left: 0,
+                        right: 0,
+                        bottom: -80,
+                        child: ImageWidget(
+                          asset,
+                          height: 580,
+                          width: 270,
+                          cacheHeight: 580 * 2,
+                          cacheWidth: 270 * 2,
                         ),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
-                  if (asset == Assets.onboard4) ...const [
-                    Positioned(
-                      top: 40,
-                      right: 0,
-                      child: SvgWidget(Assets.format1),
-                    ),
-                    Positioned(
-                      top: 150,
-                      left: 0,
-                      child: SvgWidget(Assets.format2),
-                    ),
-                    Positioned(
-                      top: 290,
-                      left: 10,
-                      child: SvgWidget(Assets.format3),
-                    ),
-                    Positioned(
-                      top: 294,
-                      right: -30,
-                      child: SvgWidget(Assets.format4),
-                    ),
-                    Positioned(
-                      top: 462,
-                      left: 6,
-                      child: SvgWidget(Assets.format5),
-                    ),
-                    Positioned(
-                      top: 520,
-                      right: 0,
-                      child: SvgWidget(Assets.format6),
-                    ),
-                  ],
+                ),
+                if (asset == Assets.onboard4) ...const [
+                  Positioned(
+                    top: 40,
+                    right: 0,
+                    child: SvgWidget(Assets.format1),
+                  ),
+                  Positioned(
+                    top: 150,
+                    left: 0,
+                    child: SvgWidget(Assets.format2),
+                  ),
+                  Positioned(
+                    top: 290,
+                    left: 10,
+                    child: SvgWidget(Assets.format3),
+                  ),
+                  Positioned(
+                    top: 294,
+                    right: -30,
+                    child: SvgWidget(Assets.format4),
+                  ),
+                  Positioned(
+                    top: 462,
+                    left: 6,
+                    child: SvgWidget(Assets.format5),
+                  ),
+                  Positioned(
+                    top: 520,
+                    right: 0,
+                    child: SvgWidget(Assets.format6),
+                  ),
                 ],
-              ),
+              ],
             ),
           );
   }
