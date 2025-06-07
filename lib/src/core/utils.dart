@@ -1,8 +1,6 @@
 import 'dart:developer' as developer;
 import 'dart:io';
-import 'dart:ui';
 import 'dart:typed_data';
-import 'dart:ui' as ui;
 
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
@@ -94,12 +92,4 @@ Future<File?> pickImage({bool camera = true}) async {
     logger(e);
   }
   return null;
-}
-
-Future<Uint8List?> captureWidget(GlobalKey key) async {
-  RenderRepaintBoundary boundary =
-      key.currentContext!.findRenderObject() as RenderRepaintBoundary;
-  ui.Image image = await boundary.toImage(pixelRatio: 3.0);
-  ByteData? byteData = await image.toByteData(format: ui.ImageByteFormat.png);
-  return byteData?.buffer.asUint8List();
 }

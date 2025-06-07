@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "928094657426",
+    "project_id": "printer-f1c27",
+    "storage_bucket": "printer-f1c27.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:928094657426:android:926cdcb004170f8467ff4b",
+        "android_client_info": {
+          "package_name": "com.helperg.smart.printer"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDsKS7vAc7WR3XrU-xwjzMmD8sPKs7Yrmo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

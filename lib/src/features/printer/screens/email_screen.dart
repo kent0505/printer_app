@@ -163,83 +163,91 @@ class _Phone extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final colors = Theme.of(context).extension<MyColors>()!;
+    // final isIpad = MediaQuery.sizeOf(context).width > 500;
 
-    bool first = asset == Assets.phone2;
+    // bool first = asset == Assets.phone2;
 
-    return Center(
-      child: SizedBox(
-        width: 300,
-        height: 610,
-        child: Stack(
-          children: [
-            Positioned(
-              top: 0,
-              bottom: first ? null : 14,
-              left: 0,
-              right: 0,
-              child: const ImageWidget(
-                Assets.phone1,
-                height: 610,
-                width: 300,
-              ),
-            ),
-            Positioned(
-              top: 12,
-              bottom: first ? null : 26,
-              left: 0,
-              right: 0,
-              child: ImageWidget(
-                asset,
-                height: 580,
-                width: 270,
-                cacheHeight: 580 * 2,
-                cacheWidth: 270 * 2,
-              ),
-            ),
-            if (asset == Assets.phone3)
-              const Positioned(
-                bottom: 64,
-                left: 128,
-                child: SvgWidget(Assets.connect5),
-              )
-            else if (asset == Assets.phone4)
-              const Positioned(
-                bottom: 0,
-                left: 50,
-                child: SvgWidget(Assets.connect5),
-              )
-            else if (asset == Assets.phone5) ...[
-              const Positioned(
-                bottom: 324,
-                left: 28,
-                child: SvgWidget(Assets.icon),
-              ),
+    return FittedBox(
+      child: Padding(
+        padding: const EdgeInsets.all(10),
+        child: SizedBox(
+          width: 300,
+          height: 610,
+          child: Stack(
+            children: [
               Positioned(
-                bottom: 311,
-                left: 24,
-                child: Text(
-                  'Smart Printer',
-                  style: TextStyle(
-                    color: colors.bgOne,
-                    fontSize: 8,
-                    fontFamily: AppFonts.inter500,
-                  ),
+                // top: first || isIpad ? 0 : null,
+                // bottom: first ? null : 14,
+                left: 0,
+                right: 0,
+                child: const ImageWidget(
+                  Assets.phone1,
+                  height: 610,
+                  width: 300,
                 ),
               ),
               Positioned(
-                bottom: 267.5,
-                left: 82,
-                child: Text(
-                  '“Smart Printer”',
-                  style: TextStyle(
-                    color: colors.textPrimary,
-                    fontSize: 12,
-                    fontFamily: AppFonts.inter500,
-                  ),
+                top: 12,
+                // top: first || isIpad ? 12 : null,
+                // bottom: first ? null : 26,
+                left: 0,
+                right: 0,
+                child: ImageWidget(
+                  asset,
+                  height: 584,
+                  width: 274,
+                  cacheHeight: 584 * 2,
+                  cacheWidth: 274 * 2,
                 ),
               ),
+              if (asset == Assets.phone3)
+                const Positioned(
+                  bottom: 64,
+                  left: 128,
+                  child: SvgWidget(Assets.connect5),
+                )
+              else if (asset == Assets.phone4)
+                const Positioned(
+                  bottom: 0,
+                  left: 50,
+                  child: SvgWidget(Assets.connect5),
+                )
+              else if (asset == Assets.phone5) ...[
+                const Positioned(
+                  // bottom: 324,
+                  bottom: 314,
+                  left: 28,
+                  child: SvgWidget(Assets.icon),
+                ),
+                Positioned(
+                  // bottom: 311,
+                  bottom: 301,
+                  left: 24,
+                  child: Text(
+                    'Smart Printer',
+                    style: TextStyle(
+                      color: colors.bgOne,
+                      fontSize: 8,
+                      fontFamily: AppFonts.inter500,
+                    ),
+                  ),
+                ),
+                Positioned(
+                  // bottom: 267.5,
+                  bottom: 257.5,
+                  left: 82,
+                  child: Text(
+                    '“Smart Printer”',
+                    style: TextStyle(
+                      color: colors.textPrimary,
+                      fontSize: 12,
+                      fontFamily: AppFonts.inter500,
+                    ),
+                  ),
+                ),
+              ],
             ],
-          ],
+          ),
         ),
       ),
     );

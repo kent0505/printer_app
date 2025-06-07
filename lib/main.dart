@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -16,6 +18,7 @@ import 'src/features/internet/bloc/internet_bloc.dart';
 import 'src/features/home/bloc/home_bloc.dart';
 import 'src/features/photo/bloc/photo_bloc.dart';
 import 'src/features/photo/data/photo_repository.dart';
+import 'src/features/share/bloc/share_bloc.dart';
 import 'src/features/vip/bloc/vip_bloc.dart';
 import 'src/features/vip/data/vip_repository.dart';
 
@@ -35,9 +38,11 @@ void main() async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
 
-  await Purchases.configure(
-    PurchasesConfiguration('appl_QXIwkJLeTRKxrxoaXxAgYijODVh'),
-  );
+  if (Platform.isIOS) {
+    await Purchases.configure(
+      PurchasesConfiguration('appl_QXIwkJLeTRKxrxoaXxAgYijODVh'),
+    );
+  }
 
   runApp(
     MultiRepositoryProvider(
@@ -58,6 +63,7 @@ void main() async {
       child: MultiBlocProvider(
         providers: [
           BlocProvider(create: (context) => HomeBloc()),
+          BlocProvider(create: (context) => ShareBloc()..add(ListenToShare())),
           BlocProvider(
             create: (context) => InternetBloc()..add(CheckInternet()),
           ),

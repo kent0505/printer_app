@@ -1,11 +1,15 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 
-import '../../../core/models/vip.dart';
 import '../../../core/utils.dart';
 import '../../../core/config/constants.dart';
+import '../../printer/screens/documents_screen.dart';
 import '../../settings/screens/settings_screen.dart';
 import '../../printer/screens/printer_screen.dart';
+import '../../share/bloc/share_bloc.dart';
 import '../../vip/bloc/vip_bloc.dart';
 import '../../vip/screens/vip_sheet.dart';
 import '../widgets/home_appbar.dart';
@@ -22,30 +26,41 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  bool showPaywall = true;
+  bool _paywallShown = false;
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      final state = context.read<VipBloc>().state;
+
+      if (!_paywallShown &&
+          !state.loading &&
+          !state.isVip &&
+          state.offering != null &&
+          mounted) {
+        _paywallShown = true;
+        Future.delayed(const Duration(seconds: 1), () {
+          if (mounted) {
+            VipSheet.show(
+              context,
+              identifier: Identifiers.paywall1,
+            );
+          }
+        });
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
-    return BlocListener<VipBloc, Vip>(
+    return BlocListener<ShareBloc, ShareState>(
       listener: (context, state) {
-        if (showPaywall &&
-            !state.loading &&
-            !state.isVip &&
-            state.offering != null) {
-          WidgetsBinding.instance.addPostFrameCallback((_) {
-            Future.delayed(
-              const Duration(seconds: 1),
-              () {
-                if (context.mounted) {
-                  showPaywall = false;
-                  VipSheet.show(
-                    context,
-                    identifier: Identifiers.paywall1,
-                  );
-                }
-              },
-            );
-          });
+        if (state is ShareLoaded) {
+          context.push(
+            DocumentsScreen.routePath,
+            extra: File(state.files[0].path),
+          );
         }
       },
       child: Scaffold(

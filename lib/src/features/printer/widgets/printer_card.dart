@@ -5,7 +5,6 @@ import '../../../core/config/constants.dart';
 import '../../../core/config/my_colors.dart';
 import '../../../core/models/vip.dart';
 import '../../../core/widgets/button.dart';
-import '../../../core/widgets/loading_widget.dart';
 import '../../../core/widgets/svg_widget.dart';
 import '../../vip/bloc/vip_bloc.dart';
 
@@ -15,14 +14,12 @@ class PrinterCard extends StatelessWidget {
     required this.id,
     required this.title,
     this.description = '',
-    this.locked = false,
     required this.onPressed,
   });
 
   final int id;
   final String title;
   final String description;
-  final bool locked;
   final VoidCallback onPressed;
 
   String getAsset() {
@@ -106,23 +103,6 @@ class PrinterCard extends StatelessWidget {
               );
             },
           ),
-          if (locked)
-            BlocBuilder<VipBloc, Vip>(
-              builder: (context, state) {
-                return Positioned(
-                  top: 8,
-                  right: 8,
-                  child: state.loading
-                      ? const LoadingWidget()
-                      : state.isVip
-                          ? const SizedBox()
-                          : SvgWidget(
-                              Assets.lock,
-                              color: colors.tertiaryFour,
-                            ),
-                );
-              },
-            ),
         ],
       ),
     );

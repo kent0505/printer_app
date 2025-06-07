@@ -1246,7 +1246,7 @@ PODS:
   - firebase_core (3.13.1):
     - Firebase/CoreOnly (= 11.10.0)
     - Flutter
-  - FirebaseAppCheckInterop (11.13.0)
+  - FirebaseAppCheckInterop (11.14.0)
   - FirebaseCore (11.10.0):
     - FirebaseCoreInternal (~> 11.10.0)
     - GoogleUtilities/Environment (~> 8.0)
@@ -1275,7 +1275,7 @@ PODS:
     - gRPC-Core (~> 1.69.0)
     - leveldb-library (~> 1.22)
     - nanopb (~> 3.30910.0)
-  - FirebaseSharedSwift (11.13.0)
+  - FirebaseSharedSwift (11.14.0)
   - Flutter (1.0.0)
   - flutter_inappwebview_ios (0.0.1):
     - Flutter
@@ -1448,28 +1448,28 @@ PODS:
     - FlutterMacOS
   - permission_handler_apple (9.3.0):
     - Flutter
-  - photo_manager (2.0.0):
+  - photo_manager (3.7.1):
     - Flutter
     - FlutterMacOS
   - printing (1.0.0):
     - Flutter
   - PromisesObjC (2.4.0)
-  - purchases_flutter (8.8.1):
+  - purchases_flutter (8.10.1):
     - Flutter
-    - PurchasesHybridCommon (= 13.32.0)
-  - purchases_ui_flutter (8.8.1):
+    - PurchasesHybridCommon (= 13.35.0)
+  - purchases_ui_flutter (8.10.1):
     - Flutter
-    - PurchasesHybridCommonUI (= 13.32.0)
-  - PurchasesHybridCommon (13.32.0):
-    - RevenueCat (= 5.24.0)
-  - PurchasesHybridCommonUI (13.32.0):
-    - PurchasesHybridCommon (= 13.32.0)
-    - RevenueCatUI (= 5.24.0)
+    - PurchasesHybridCommonUI (= 13.35.0)
+  - PurchasesHybridCommon (13.35.0):
+    - RevenueCat (= 5.27.1)
+  - PurchasesHybridCommonUI (13.35.0):
+    - PurchasesHybridCommon (= 13.35.0)
+    - RevenueCatUI (= 5.27.1)
   - receive_sharing_intent (1.8.1):
     - Flutter
-  - RevenueCat (5.24.0)
-  - RevenueCatUI (5.24.0):
-    - RevenueCat (= 5.24.0)
+  - RevenueCat (5.27.1)
+  - RevenueCatUI (5.27.1):
+    - RevenueCat (= 5.27.1)
   - SDWebImage (5.21.0):
     - SDWebImage/Core (= 5.21.0)
   - SDWebImage/Core (5.21.0)
@@ -1612,13 +1612,13 @@ SPEC CHECKSUMS:
   file_picker: a0560bc09d61de87f12d246fc47d2119e6ef37be
   Firebase: 1fe1c0a7d9aaea32efe01fbea5f0ebd8d70e53a2
   firebase_core: ba71b44041571da878cb624ce0d80250bcbe58ad
-  FirebaseAppCheckInterop: 72066489c209823649a997132bcd9269bc33a4bb
+  FirebaseAppCheckInterop: a92ba81d0ee3c4cddb1a2e52c668ea51dc63c3ae
   FirebaseCore: 8344daef5e2661eb004b177488d6f9f0f24251b7
   FirebaseCoreExtension: 6f357679327f3614e995dc7cf3f2d600bdc774ac
   FirebaseCoreInternal: ef4505d2afb1d0ebbc33162cb3795382904b5679
   FirebaseFirestore: 3f1488ff7739cb3c5d10e572bc4e9fcd8e8cb4ac
   FirebaseFirestoreInternal: 97a2bb5f16951c77753c860d3519379702ab6f8a
-  FirebaseSharedSwift: aca73668bc95e8efccb618e0167eab05d19d3a75
+  FirebaseSharedSwift: bdd5c8674c4712a98e70287c936bc5cca5d640f6
   Flutter: e0871f40cf51350855a761d2e70bf5af5b9b5de7
   flutter_inappwebview_ios: b89ba3482b96fb25e00c967aae065701b66e9b99
   google_mlkit_commons: 2abe6a70e1824e431d16a51085cb475b672c8aab
@@ -1643,16 +1643,16 @@ SPEC CHECKSUMS:
   OrderedSet: e539b66b644ff081c73a262d24ad552a69be3a94
   path_provider_foundation: 080d55be775b7414fd5a5ef3ac137b97b097e564
   permission_handler_apple: 4ed2196e43d0651e8ff7ca3483a069d469701f2d
-  photo_manager: d2fbcc0f2d82458700ee6256a15018210a81d413
+  photo_manager: 1d80ae07a89a67dfbcae95953a1e5a24af7c3e62
   printing: 54ff03f28fe9ba3aa93358afb80a8595a071dd07
   PromisesObjC: f5707f49cb48b9636751c5b2e7d227e43fba9f47
-  purchases_flutter: 4cf57c17c62108103a549ebe12b28a0203f0cf55
-  purchases_ui_flutter: 3d8fc20c096bd123d665b972e3ff3c57a0f0da88
-  PurchasesHybridCommon: 662aa1f4769ff4ef594e35adf1a5d0ad7b3d08b7
-  PurchasesHybridCommonUI: ce17a7fcc23bc9e47b6ed117fb87b4fc99539e15
+  purchases_flutter: 7cf9cb2f7608e31c3d7db9a6896e12076655b38b
+  purchases_ui_flutter: 31586be2feec6feb51a8f9f06be5d528e035de5e
+  PurchasesHybridCommon: 18288b8ad932cfeb5f142f592d5c65e626a35770
+  PurchasesHybridCommonUI: f64a0ff31581e7642331b4b933d90775bca5d1e2
   receive_sharing_intent: 222384f00ffe7e952bbfabaa9e3967cb87e5fe00
-  RevenueCat: 2d3639d30b8a71cbfe3d99cef8243c602793e0ec
-  RevenueCatUI: 80bec9099c200c254c0ec0025b4fb83a85fbacce
+  RevenueCat: 87171c9f2412778354c8523f5625d1fece2560a5
+  RevenueCatUI: 938bf0fb4bc9b8694aec7039decf3c4f3140cd49
   SDWebImage: f84b0feeb08d2d11e6a9b843cb06d75ebf5b8868
   share_plus: 50da8cb520a8f0f65671c6c6a99b3617ed10a58a
   shared_preferences_foundation: 9e1978ff2562383bd5676f64ec4e9aa8fa06a6f7
@@ -1661,6 +1661,6 @@ SPEC CHECKSUMS:
   url_launcher_ios: 694010445543906933d732453a59da0a173ae33d
   webview_flutter_wkwebview: 1821ceac936eba6f7984d89a9f3bcb4dea99ebb2
 
-PODFILE CHECKSUM: 53b37234833960d87543a9576fd235f66b8f79f5
+PODFILE CHECKSUM: b892ee59ec68d8f0044db6288b64ba99bf65e05e
 
 COCOAPODS: 1.16.2

@@ -19,8 +19,8 @@ class Button extends StatelessWidget {
     return CupertinoButton(
       onPressed: onPressed,
       padding: padding,
-      minSize: minSize,
       sizeStyle: CupertinoButtonSize.small,
+      minimumSize: Size(minSize, minSize),
       child: child,
     );
   }
