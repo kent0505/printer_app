@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:go_router/go_router.dart';
 import 'package:purchases_ui_flutter/purchases_ui_flutter.dart';
+import 'package:onesignal_flutter/onesignal_flutter.dart';
 
 import '../../../core/models/vip.dart';
 import '../../../core/utils.dart';
@@ -10,7 +10,6 @@ import '../bloc/vip_bloc.dart';
 
 class VipSheet extends StatefulWidget {
   const VipSheet({super.key, required this.identifier});
-
   final String identifier;
 
   static void show(
@@ -18,13 +17,11 @@ class VipSheet extends StatefulWidget {
     required String identifier,
   }) {
     try {
-      showModalBottomSheet(
-        context: context,
-        isScrollControlled: true,
-        isDismissible: true,
-        builder: (context) {
-          return VipSheet(identifier: identifier);
-        },
+      Navigator.of(context).push(
+        MaterialPageRoute(
+          builder: (context) => VipSheet(identifier: identifier),
+          fullscreenDialog: true,
+        ),
       );
     } catch (e) {
       logger(e);
@@ -42,10 +39,25 @@ class _VipSheetState extends State<VipSheet> {
   void showInfo(String title) {
     if (!isClosed) {
       isClosed = true;
-      context.pop();
+      Navigator.of(context).pop();
     }
     DialogWidget.show(context, title: title);
     context.read<VipBloc>().add(CheckVip(identifier: widget.identifier));
+  }
+
+  Future<void> _setPaidUserTag() async {
+    try {
+      Map<String, String> tags = {
+        'subscription_type': 'paid',
+        'user_status': 'premium',
+        'upgrade_date': DateTime.now().toIso8601String()
+      };
+
+      OneSignal.User.addTags(tags);
+      logger('OneSignal: Установлены теги для paid пользователя: $tags');
+    } catch (e) {
+      logger('OneSignal: Ошибка установки paid тегов: $e');
+    }
   }
 
   @override
@@ -56,10 +68,9 @@ class _VipSheetState extends State<VipSheet> {
       setState(() {
         visible = true;
       });
-
       if (mounted) {
         if (context.read<VipBloc>().state.offering == null) {
-          context.pop();
+          Navigator.of(context).pop();
           DialogWidget.show(context, title: 'Error');
         }
       }
@@ -68,38 +79,45 @@ class _VipSheetState extends State<VipSheet> {
 
   @override
   Widget build(BuildContext context) {
-    return AnimatedOpacity(
-      opacity: visible ? 1.0 : 0.0,
-      duration: const Duration(milliseconds: 1000),
-      curve: Curves.easeInOut,
-      child: BlocBuilder<VipBloc, Vip>(
-        builder: (context, state) {
-          if (state.loading || state.offering == null) {
-            return const SizedBox();
-          }
-
-          return PaywallView(
-            offering: state.offering,
-            onDismiss: () {
-              context.pop();
-            },
-            onPurchaseCompleted: (customerInfo, storeTransaction) {
-              showInfo('Purchase Completed');
-            },
-            onPurchaseCancelled: () {
-              showInfo('Purchase Cancelled');
-            },
-            onPurchaseError: (e) {
-              showInfo('Purchase Error');
-            },
-            onRestoreCompleted: (customerInfo) {
-              showInfo('Restore Completed');
-            },
-            onRestoreError: (e) {
-              showInfo('Restore Error');
-            },
-          );
-        },
+    return Scaffold(
+      body: AnimatedOpacity(
+        opacity: visible ? 1.0 : 0.0,
+        duration: const Duration(milliseconds: 1000),
+        curve: Curves.easeInOut,
+        child: BlocBuilder<VipBloc, Vip>(
+          builder: (context, state) {
+            if (state.loading || state.offering == null) {
+              return const Center(
+                child: CircularProgressIndicator(),
+              );
+            }
+            return PaywallView(
+              offering: state.offering,
+              onDismiss: () {
+                Navigator.of(context).pop();
+              },
+              onPurchaseCompleted: (customerInfo, storeTransaction) async {
+                await _setPaidUserTag();
+                showInfo('Purchase Completed');
+              },
+              onPurchaseCancelled: () {
+                showInfo('Purchase Cancelled');
+              },
+              onPurchaseError: (e) {
+                showInfo('Purchase Error');
+              },
+              onRestoreCompleted: (customerInfo) async {
+                if (customerInfo.entitlements.active.isNotEmpty) {
+                  await _setPaidUserTag();
+                }
+                showInfo('Restore Completed');
+              },
+              onRestoreError: (e) {
+                showInfo('Restore Error');
+              },
+            );
+          },
+        ),
       ),
     );
   }

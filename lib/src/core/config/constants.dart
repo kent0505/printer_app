@@ -17,6 +17,7 @@ abstract final class Assets {
   static const copy = 'assets/copy.svg';
   static const crop = 'assets/crop.svg';
   static const down = 'assets/down.svg';
+  static const dropbox = 'assets/dropbox.svg';
   static const empty = 'assets/empty.svg';
   static const file = 'assets/file.svg';
   static const format1 = 'assets/format1.svg';
@@ -25,6 +26,7 @@ abstract final class Assets {
   static const format4 = 'assets/format4.svg';
   static const format5 = 'assets/format5.svg';
   static const format6 = 'assets/format6.svg';
+  static const icloud = 'assets/icloud.svg';
   static const icon = 'assets/icon.svg';
   static const image = 'assets/image.svg';
   static const info = 'assets/info.svg';
@@ -93,6 +95,7 @@ abstract final class Keys {
   static const paywall2 = 'paywall2';
   static const paywall3 = 'paywall3';
   static const showCount = 'showCount';
+  static const userID = 'userID';
 }
 
 abstract final class Identifiers {
@@ -105,6 +108,7 @@ abstract final class Identifiers {
 abstract final class Urls {
   static const url1 = 'https://pub.dev/';
   static const url2 = 'https://www.google.com/';
+  static const url3 = 'https://www.dropbox.com/';
 }
 
 // abstract interface class OnboardRepository {

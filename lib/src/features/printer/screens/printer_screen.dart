@@ -58,29 +58,22 @@ class PrinterScreen extends StatelessWidget {
                 title: 'Camera',
                 description: 'Make a photo and print',
                 onPressed: () async {
-                  if (isVip) {
-                    if (await Permission.camera.status.isGranted) {
-                      await pickImage().then(
-                        (value) {
-                          if (value != null && context.mounted) {
-                            context.push(
-                              CameraScreen.routePath,
-                              extra: value,
-                            );
-                          }
-                        },
-                      );
-                    } else {
-                      final result = await Permission.camera.request();
-                      if (result.isPermanentlyDenied) {
-                        openAppSettings();
-                      }
-                    }
-                  } else {
-                    context.push(
-                      VipScreen.routePath,
-                      extra: Identifiers.paywall3,
+                  if (await Permission.camera.status.isGranted) {
+                    await pickImage().then(
+                      (value) {
+                        if (value != null && context.mounted) {
+                          context.push(
+                            CameraScreen.routePath,
+                            extra: value,
+                          );
+                        }
+                      },
                     );
+                  } else {
+                    final result = await Permission.camera.request();
+                    if (result.isPermanentlyDenied) {
+                      openAppSettings();
+                    }
                   }
                 },
               ),
@@ -110,12 +103,7 @@ class PrinterScreen extends StatelessWidget {
                 title: 'Web Pages',
                 description: 'Print any website in full size',
                 onPressed: () {
-                  isVip
-                      ? context.push(WebPagesScreen.routePath)
-                      : context.push(
-                          VipScreen.routePath,
-                          extra: Identifiers.paywall3,
-                        );
+                  context.push(WebPagesScreen.routePath);
                 },
               ),
               PrinterCard(
@@ -129,6 +117,53 @@ class PrinterScreen extends StatelessWidget {
                           VipScreen.routePath,
                           extra: Identifiers.paywall3,
                         );
+                },
+              ),
+              PrinterCard(
+                id: 9,
+                title: 'Dropbox',
+                description: 'Print files from your Dropbox account',
+                onPressed: () async {
+                  if (isVip) {
+                    try {
+                      if (!await launchUrl(
+                        Uri.parse(Urls.url3),
+                      )) {
+                        throw 'Could not launch url';
+                      }
+                    } catch (e) {
+                      logger(e);
+                    }
+                  } else {
+                    context.push(
+                      VipScreen.routePath,
+                      extra: Identifiers.paywall3,
+                    );
+                  }
+                },
+              ),
+              PrinterCard(
+                id: 10,
+                title: 'iCloud Drive',
+                description: 'Print Documents from iCloud Drive',
+                onPressed: () async {
+                  if (isVip) {
+                    await pickFile().then(
+                      (value) {
+                        if (value != null && context.mounted) {
+                          context.push(
+                            DocumentsScreen.routePath,
+                            extra: value,
+                          );
+                        }
+                      },
+                    );
+                  } else {
+                    context.push(
+                      VipScreen.routePath,
+                      extra: Identifiers.paywall3,
+                    );
+                  }
                 },
               ),
               if (context.read<FirebaseBloc>().state.invoice) ...[

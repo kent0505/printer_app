@@ -8,7 +8,7 @@ import 'package:cunning_document_scanner/cunning_document_scanner.dart';
 import 'package:google_mlkit_text_recognition/google_mlkit_text_recognition.dart';
 import 'package:pdf/widgets.dart' as pw;
 import 'package:pdf/pdf.dart';
-
+import 'package:in_app_review/in_app_review.dart';
 import '../../../core/models/firebase_data.dart';
 import '../../../core/utils.dart';
 import '../../../core/config/constants.dart';
@@ -39,6 +39,7 @@ class _ScannerScreenState extends State<ScannerScreen> {
 
   void onCopyText() async {
     if (isVip) {
+      InAppReview.instance.requestReview();
       final textRecognizer = TextRecognizer();
       final recognizedText = await textRecognizer.processImage(
         InputImage.fromFile(files.first),

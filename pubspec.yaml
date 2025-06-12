@@ -16,7 +16,6 @@ dependencies:
   go_router: ^15.1.2
   connectivity_plus: ^6.1.4
   smooth_page_indicator: ^1.2.1
-  webview_flutter: ^4.11.0
   flutter_inappwebview: ^6.1.5
   image_picker: ^1.1.2
   file_picker: ^10.1.9
@@ -29,8 +28,6 @@ dependencies:
   url_launcher: ^6.3.1
   permission_handler: ^11.2.1
   google_mlkit_text_recognition: ^0.15.0
-  camera: ^0.11.1
-  image_cropper: ^9.1.0
   cunning_document_scanner: ^1.2.3
   firebase_core: ^3.13.1
   cloud_firestore: ^5.6.8
@@ -38,6 +35,10 @@ dependencies:
   purchases_ui_flutter: ^8.8.1
   receive_sharing_intent: ^1.8.1
   in_app_review: ^2.0.10
+  onesignal_flutter: ^5.1.2
+  app_tracking_transparency: ^2.0.6+1
+  appsflyer_sdk: ^6.16.2
+  uuid: ^4.5.1
   ###
 dev_dependencies:
   flutter_test:

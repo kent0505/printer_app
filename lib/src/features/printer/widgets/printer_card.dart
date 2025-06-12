@@ -30,17 +30,21 @@ class PrinterCard extends StatelessWidget {
     if (id == 5) return Assets.printer5;
     if (id == 6) return Assets.printer6;
     if (id == 7) return Assets.printer7;
+    if (id == 9) return Assets.dropbox;
+    if (id == 10) return Assets.icloud;
     return Assets.printer8;
   }
 
   List<Color> getColors() {
     if (id == 1) return const [Color(0xff5C9EFD), Color(0xff1A76FF)];
-    if (id == 2) return const [Color(0xff536ED9), Color(0xff102880)];
+    if (id == 2) return const [Color(0xffFFA25C), Color(0xffFF5C00)];
     if (id == 3) return const [Color(0xffFDE200), Color(0xffF9B400)];
     if (id == 4) return const [Color(0xff37D6F3), Color(0xff0FBFEE)];
     if (id == 5) return const [Color(0xff28F2CA), Color(0xff14DEB6)];
     if (id == 6) return const [Color(0xff9F51FF), Color(0xff603199)];
     if (id == 7) return const [Color(0xff28F23C), Color(0xff0DBE25)];
+    if (id == 9) return const [Color(0xff536ED9), Color(0xff102880)];
+    if (id == 10) return const [Color(0xffFF5CA9), Color(0xffD6006E)];
     return const [Color(0xffED2F22), Color(0xffB00B00)];
   }
 
@@ -78,7 +82,10 @@ class PrinterCard extends StatelessWidget {
                       SizedBox(
                         height: 64,
                         width: 64,
-                        child: SvgWidget(getAsset()),
+                        child: SvgWidget(
+                          getAsset(),
+                          color: Colors.white,
+                        ),
                       ),
                       Text(
                         title,
