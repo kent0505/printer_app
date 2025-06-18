@@ -31,25 +31,18 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      final state = context.read<VipBloc>().state;
-
-      if (!_paywallShown &&
-          !state.loading &&
-          !state.isVip &&
-          state.offering != null &&
-          mounted) {
-        _paywallShown = true;
-        Future.delayed(const Duration(seconds: 1), () {
-          if (mounted) {
-            VipSheet.show(
-              context,
-              identifier: Identifiers.paywall1,
-            );
-          }
-        });
-      }
-    });
+    final state = context.read<VipBloc>().state;
+    if (!_paywallShown && !state.isVip) {
+      _paywallShown = true;
+      Future.delayed(const Duration(seconds: 1), () {
+        if (mounted) {
+          VipSheet.show(
+            context,
+            identifier: Identifiers.paywall1,
+          );
+        }
+      });
+    }
   }
 
   @override
